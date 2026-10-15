@@ -743,6 +743,12 @@ a{color:var(--accent)}
 .tab[aria-current="true"]{background:var(--soft);color:var(--ink)}
 .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .tab.only-mobile{display:none}
+.tab .ic{display:none}
+.ic{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.chip .ic{width:15px;height:15px}
+.fcount{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--panel);color:var(--accent);font-size:.72rem;font-weight:700}
+.chip.q[data-on="true"]{background:var(--accent);border-color:var(--accent);color:var(--panel)}
+.top{position:relative}
 
 /* Body */
 .body{flex:1;min-height:0;display:grid;grid-template-columns:minmax(340px,440px) 1fr}
@@ -860,7 +866,7 @@ form.add .status{font-size:.82rem;color:var(--muted);min-height:1.2em;margin:0}
 .leaflet-bar a,.leaflet-bar a:hover{background:var(--panel);color:var(--ink);border-bottom-color:var(--line)}
 .leaflet-bar{border:1px solid var(--line)!important;box-shadow:none!important}
 .leaflet-top.leaflet-right{top:env(safe-area-inset-top,0px);right:env(safe-area-inset-right,0px)}
-.mcard{position:absolute;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:600;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:0 6px 24px rgb(0 0 0/.18);max-height:62%;overflow:auto;overscroll-behavior:contain}
+.mcard{position:absolute;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:1050;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:0 6px 24px rgb(0 0 0/.18);max-height:62%;overflow:auto;overscroll-behavior:contain}
 .mcard .x{position:absolute;top:6px;right:8px;background:none;border:0;color:var(--muted);padding:2px 8px;font-size:1.3rem;line-height:1;cursor:pointer;border-radius:6px}
 .mcard .x:hover{background:var(--soft);color:var(--ink)}
 
@@ -940,11 +946,58 @@ ol.crawl .ctrl button:focus-visible{outline:2px solid var(--accent)}
   .app.show-map .panel{display:none}
   .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-right:calc(-1 * max(16px,env(safe-area-inset-right,0px)));padding-right:16px}
   .chips::-webkit-scrollbar{display:none}
-  .legend{display:none}
   .brand p{display:none}
   .top{gap:8px}
+  /* bottom tab bar */
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:900;margin:0;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);background:color-mix(in srgb,var(--panel) 94%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);padding:6px max(6px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px))}
+  .tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 0 3px;font-size:.7rem;font-weight:600;border-radius:12px;color:var(--muted)}
+  .tab.only-mobile{display:flex}
+  .tab .ic{display:block;width:22px;height:22px}
+  .tab[aria-current="true"]{background:none;color:var(--accent)}
+  .body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+  /* header tucks away while you scroll down a list */
+  .top .search,.top #quick{max-height:64px;transition:max-height .22s ease,opacity .18s ease;overflow:hidden}
+  .top.tuck .search,.top.tuck #quick{max-height:0;opacity:0}
+  .top.tuck{row-gap:0}
+  .chips{overflow:visible;margin-right:0;padding-right:0}
 }
 @media (min-width:861px){ .mcard{display:none!important} }
+/* filters panel: a dropdown on desktop, a sheet from the bottom on phones */
+.scrim{position:fixed;inset:0;z-index:1100;background:transparent}
+.fsheet{position:fixed;z-index:1101;width:360px;max-width:calc(100vw - 24px);background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 40px rgb(0 0 0/.18);padding:14px 16px 16px;animation:pop .16s ease-out}
+.fs-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.fs-head h2{font-family:var(--display);font-weight:400;font-size:1.2rem;margin:0}
+.fs-x{all:unset;cursor:pointer;width:32px;height:32px;display:grid;place-items:center;border-radius:8px;color:var(--muted);font-size:1.3rem}
+.fs-x:hover{background:var(--soft);color:var(--ink)}
+.fs-sec{padding:10px 0;border-top:1px solid var(--soft)}
+.fs-sec:first-of-type{border-top:0}
+.fs-sec h3{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:700}
+.fs-opts{display:flex;flex-wrap:wrap;gap:6px}
+.opt{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:7px 12px;font-size:.86rem;cursor:pointer;display:inline-flex;align-items:center;gap:6px;color:var(--ink)}
+.opt[aria-pressed="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.opt .dot{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.fs-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:12px;border-top:1px solid var(--soft)}
+.fs-clear{all:unset;cursor:pointer;color:var(--muted);font-weight:600;font-size:.88rem;padding:8px 4px;text-decoration:underline;text-underline-offset:3px}
+.fs-go{border:0;border-radius:10px;background:var(--ink);color:var(--panel);font-weight:700;padding:10px 16px;cursor:pointer}
+@media (max-width:860px){
+  .scrim{background:rgb(0 0 0/.32);animation:fade .18s ease-out}
+  .fsheet{left:0!important;right:0;top:auto!important;bottom:0;width:auto;max-width:none;max-height:82vh;overflow:auto;border-radius:20px 20px 0 0;border-bottom:0;padding:10px 16px calc(16px + env(safe-area-inset-bottom,0px));animation:sheetup .26s cubic-bezier(.2,.8,.2,1)}
+  .fsheet::before{content:"";display:block;width:36px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 8px}
+}
+/* map key behind a small button */
+.keybtn{position:absolute;left:max(12px,env(safe-area-inset-left,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:500;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--ink);display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 8px rgb(0 0 0/.1)}
+.keybtn[aria-expanded="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.keybtn .ic{width:18px;height:18px}
+.legend{bottom:calc(56px + env(safe-area-inset-bottom,0px));animation:pop .16s ease-out}
+.c-next{margin:0;color:var(--muted)}
+.mapwrap:has(.mcard:not([hidden])) .leaflet-control-scale{visibility:hidden}
+/* motion */
+@keyframes sheetup{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+@keyframes pop{from{transform:translateY(-4px) scale(.98);opacity:0}to{transform:none;opacity:1}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes rise{from{transform:translateY(6px);opacity:0}to{transform:none;opacity:1}}
+.mcard:not([hidden]){animation:sheetup .24s cubic-bezier(.2,.8,.2,1)}
+.pane.enter{animation:rise .2s ease-out}
 @media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important} }
 /* tonight summary, access, feedback */
 .tonight{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:var(--soft);border-radius:12px;padding:10px 12px;margin:0 0 12px}
@@ -961,20 +1014,19 @@ ol.crawl .ctrl button:focus-visible{outline:2px solid var(--accent)}
 </style>
 
 <div class="app" id="app">
-  <header class="top">
+  <header class="top" id="top">
     <div class="brand">
       <h1>Smiff&rsquo;s Cambridge Compass</h1>
       <p id="updated">Loading venues…</p>
     </div>
     <div class="search"><input id="q" type="search" placeholder="Search pubs, bands, streets" aria-label="Search venues and listings" autocomplete="off"></div>
     <div class="chips" id="quick" role="group" aria-label="Quick filters"></div>
-    <div class="chips" id="cats" role="group" aria-label="Filter by type"></div>
     <p class="note" id="note" role="status" hidden></p>
     <nav class="tabs" aria-label="Views">
-      <button class="tab" id="tab-whatson" aria-current="true">What's on</button>
-      <button class="tab" id="tab-venues" aria-current="false">Venues</button>
-      <button class="tab" id="tab-crawl" aria-current="false">Crawl</button>
-      <button class="tab only-mobile" id="tab-map" aria-current="false">Map</button>
+      <button class="tab" id="tab-whatson" aria-current="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span class="tl">What's on</span></button>
+      <button class="tab" id="tab-venues" aria-current="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6.5H20M9.5 12H20M9.5 17.5H20"/><circle cx="5" cy="6.5" r="1.2"/><circle cx="5" cy="12" r="1.2"/><circle cx="5" cy="17.5" r="1.2"/></svg><span class="tl">Venues</span></button>
+      <button class="tab" id="tab-crawl" aria-current="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="18" r="2.3"/><circle cx="18" cy="6" r="2.3"/><path d="M8.3 18h7.2a3.3 3.3 0 0 0 0-6.6h-7a3.3 3.3 0 0 1 0-6.6h7.2"/></svg><span class="tl">Crawl</span></button>
+      <button class="tab only-mobile" id="tab-map" aria-current="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5 3.5 6.5v13L9 17.5l6 2 5.5-2v-13l-5.5 2-6-2z"/><path d="M9 4.5v13M15 6.5v13"/></svg><span class="tl">Map</span></button>
     </nav>
     <p class="sr-only" id="sr" role="status" aria-live="polite"></p>
   </header>
@@ -984,10 +1036,13 @@ ol.crawl .ctrl button:focus-visible{outline:2px solid var(--accent)}
     </section>
     <section class="mapwrap" aria-label="Map of venues. Every venue on the map is also in the Venues list.">
       <div id="map"></div>
-      <div class="legend" id="legend"></div>
+      <button class="keybtn" id="keybtn" aria-expanded="false" aria-controls="legend" aria-label="Map key"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.2M12 7.8h.01"/></svg></button>
+      <div class="legend" id="legend" hidden></div>
       <div class="mcard" id="mcard" role="region" aria-label="Selected venue" hidden></div>
     </section>
   </main>
+  <div class="scrim" id="scrim" hidden></div>
+  <div class="fsheet" id="fsheet" role="dialog" aria-modal="true" aria-labelledby="fs-title" hidden></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
@@ -1082,44 +1137,91 @@ function venuePass(v){
 function visible(){return V.filter(venuePass)}
 
 /* ---------- header chips ---------- */
+const SVG={
+  clock:'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
+  near:'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 4.5 4.5 10.8l6.6 2.1 2.1 6.6z"/></svg>',
+  sliders:'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M19 7h1M4 17h3M13 17h7"/><circle cx="16" cy="7" r="2.4"/><circle cx="10" cy="17" r="2.4"/></svg>'
+};
+function filterCount(){return (S.cat!=="all"?1:0)+QF.filter(([k])=>S.am[k]).length+(S.fav?1:0)+(S.socials?1:0)}
 function renderChips(){
-  const n=V.filter(v=>v.checkSocials).length;
-  const nf=V.filter(isFav).length;
-  const nOpen=V.filter(v=>{const st=openStatus(v);return st&&st.open}).length;
-  $("quick").innerHTML=[`<button class="chip q" data-q="open" aria-pressed="${S.open}">${ICO("🕒")}Open now (${nOpen})</button>`,`<button class="chip q" data-q="near" aria-pressed="${S.near}">${ICO("📍")}Near me</button>`]
-    .concat(QF.map(([k,l,i])=>`<button class="chip q" data-q="am" data-k="${k}" aria-pressed="${!!S.am[k]}">${ICO(i)}${l} (${V.filter(v=>hasAm(v,k)).length})</button>`))
-    .concat([`<button class="chip favc" id="favchip" aria-pressed="${S.fav}"><span class="star" aria-hidden="true">★</span>${PUBLIC?"Smiff's favourites":"Favourites"} (${nf})</button>`]).join("");
-  const html=[`<button class="chip" data-cat="all" aria-pressed="${S.cat==="all"}">All</button>`]
-    .concat(CATS.map(([k,l])=>`<button class="chip" data-cat="${k}" aria-pressed="${S.cat===k}" style="--c:${catColor(k)}"><span class="dot"></span>${l}</button>`))
-    .concat(PUBLIC?[]:[`<button class="chip socials" id="socials" aria-pressed="${S.socials}" title="Venues whose gigs or offers are mostly posted on Instagram or Facebook">Check socials (${n})</button>`]);
-  $("cats").innerHTML=html.join("");
+  const n=filterCount();
+  $("quick").innerHTML=`<button class="chip q" data-q="open" aria-pressed="${S.open}">${SVG.clock}Open now</button><button class="chip q" data-q="near" aria-pressed="${S.near}">${SVG.near}Near me</button><button class="chip q" id="fbtn" data-on="${n>0}" aria-haspopup="dialog" aria-expanded="${!$("fsheet").hidden}">${SVG.sliders}Filters${n?`<span class="fcount" aria-label="${n} on">${n}</span>`:""}</button>`;
 }
-$("cats").addEventListener("click",e=>{
-  const b=e.target.closest(".chip");if(!b)return;
-  if(b.id==="socials"){S.socials=!S.socials;if(S.socials&&S.view==="whatson")setView("venues")}
-  else S.cat=b.dataset.cat;
-  renderChips();render();drawPins();announce();
-});
 $("quick").addEventListener("click",e=>{
   const b=e.target.closest(".chip");if(!b)return;
-  if(b.id==="favchip"){S.fav=!S.fav}
-  else if(b.dataset.q==="open"){S.open=!S.open;if(S.open&&S.view==="whatson")setView("venues")}
-  else if(b.dataset.q==="am"){const k=b.dataset.k;S.am[k]=!S.am[k];if(S.am[k]&&S.view==="whatson")setView("venues")}
+  if(b.id==="fbtn"){openSheet();return}
+  if(b.dataset.q==="open"){S.open=!S.open;if(S.open&&S.view==="whatson")setView("venues")}
   else if(b.dataset.q==="near"){
     if(S.near){S.near=false;note("");renderChips();render();drawPins();announce();return}
     locate(true);return;
   }
   renderChips();render();drawPins();announce();
 });
+/* ---------- filters panel ---------- */
+let FS_LAST=null;
+function sheetHtml(){
+  const n=visible().length;
+  const opt=(fs,k,on,label,extra)=>`<button class="opt" data-fs="${fs}"${k?` data-k="${k}"`:""} aria-pressed="${on}">${extra||""}${label}</button>`;
+  return `<div class="fs-head"><h2 id="fs-title">Filters</h2><button class="fs-x" data-fs="close" aria-label="Close filters">&times;</button></div>
+  <div class="fs-sec"><h3>Type</h3><div class="fs-opts">${[["all","Everything"]].concat(CATS).map(([k,l])=>opt("cat",k,S.cat===k,l,k==="all"?"":`<span class="dot" style="--c:${catColor(k)}"></span>`)).join("")}</div></div>
+  <div class="fs-sec"><h3>Has</h3><div class="fs-opts">${QF.map(([k,l])=>opt("am",k,!!S.am[k],l)).join("")}</div></div>
+  <div class="fs-sec"><h3>Just show</h3><div class="fs-opts">${opt("fav","",S.fav,PUBLIC?"Smiff's favourites":"Favourites",'<span class="star" aria-hidden="true">★</span>')}${PUBLIC?"":opt("socials","",S.socials,"Check socials")}</div></div>
+  <div class="fs-foot"><button class="fs-clear" data-fs="clear">Clear all</button><button class="fs-go" data-fs="go">Show ${n} place${n===1?"":"s"}</button></div>`;
+}
+function placeSheet(){
+  const s=$("fsheet");
+  if(isMobile()){s.style.top="";s.style.left="";return}
+  const r=$("fbtn").getBoundingClientRect();
+  s.style.top=(r.bottom+8)+"px";s.style.left=Math.min(r.left,innerWidth-s.offsetWidth-12)+"px";
+}
+function openSheet(){
+  FS_LAST=document.activeElement;
+  const s=$("fsheet");s.innerHTML=sheetHtml();s.hidden=false;$("scrim").hidden=false;
+  placeSheet();renderChips();
+  const f=s.querySelector('.opt[aria-pressed="true"]')||s.querySelector(".opt");if(f)f.focus({preventScroll:true});
+}
+function closeSheet(go){
+  const s=$("fsheet");if(s.hidden)return;
+  s.hidden=true;$("scrim").hidden=true;renderChips();
+  if(go&&filterCount()&&(S.view==="whatson"||S.view==="crawl")){setView("venues");render();drawPins()}
+  const b=$("fbtn");if(b)b.focus({preventScroll:true});
+}
+$("scrim").addEventListener("click",()=>closeSheet(false));
+$("fsheet").addEventListener("click",e=>{
+  const b=e.target.closest("[data-fs]");if(!b)return;
+  const a=b.dataset.fs;
+  if(a==="close"){closeSheet(false);return}
+  if(a==="go"){closeSheet(true);return}
+  if(a==="cat")S.cat=b.dataset.k;
+  else if(a==="am")S.am[b.dataset.k]=!S.am[b.dataset.k];
+  else if(a==="fav")S.fav=!S.fav;
+  else if(a==="socials")S.socials=!S.socials;
+  else if(a==="clear"){S.cat="all";S.am={};S.fav=false;S.socials=false}
+  if(S.view==="detail")setView(S.prev);
+  render();drawPins();announce();
+  const sel=a==="clear"?'[data-fs="clear"]':`[data-fs="${a}"]${b.dataset.k?`[data-k="${b.dataset.k}"]`:""}`;
+  $("fsheet").innerHTML=sheetHtml();renderChips();
+  const again=$("fsheet").querySelector(sel);if(again)again.focus({preventScroll:true});
+});
+$("fsheet").addEventListener("keydown",e=>{
+  if(e.key!=="Tab")return;
+  const f=[...$("fsheet").querySelectorAll("button")];if(!f.length)return;
+  if(e.shiftKey&&document.activeElement===f[0]){e.preventDefault();f[f.length-1].focus()}
+  else if(!e.shiftKey&&document.activeElement===f[f.length-1]){e.preventDefault();f[0].focus()}
+});
+addEventListener("resize",()=>{if(!$("fsheet").hidden)placeSheet()});
 let qt;$("q").addEventListener("input",e=>{clearTimeout(qt);qt=setTimeout(()=>{S.q=e.target.value.trim();if(S.view==="detail")setView(S.prev);render();drawPins();announce()},300)});
 
 /* ---------- tabs ---------- */
 function setView(v){
   if(v!=="detail"&&v!=="map")S.prev=v;
+  const changed=S.view!==v;
   S.view=v;
+  $("top").classList.remove("tuck");
+  if(changed&&v!=="map"){const pn=$("pane");pn.classList.remove("enter");void pn.offsetWidth;pn.classList.add("enter")}
   const app=$("app");
   app.classList.toggle("show-map",v==="map");
-  $("tab-crawl").textContent=CRAWL.length?`Crawl (${CRAWL.length})`:"Crawl";
+  $("tab-crawl").querySelector(".tl").textContent=CRAWL.length?`Crawl (${CRAWL.length})`:"Crawl";
   [["whatson","tab-whatson"],["venues","tab-venues"],["crawl","tab-crawl"],["map","tab-map"]].forEach(([k,id])=>$(id).setAttribute("aria-current",String(S.view===k||(S.view==="detail"&&S.prev===k&&!isMobile()))));
   if(v==="map"&&map)setTimeout(()=>{map.invalidateSize();if(PENDING_CENTER&&LOC){PENDING_CENTER=false;map.setView([LOC.lat,LOC.lng],Math.max(map.getZoom(),15.5))}placeLabels()},0);
   if(v!=="map")$("mcard").hidden=true;
@@ -1279,7 +1381,7 @@ function drawExtras(){
     [5,10,15].forEach(min=>{
       const r=min*80/1.3;
       L.circle([ctr.lat,ctr.lng],{pane:"rings",radius:r,interactive:false,color:ink,weight:1.3,opacity:.5,dashArray:"5 6",fill:min===5,fillColor:acc,fillOpacity:.07}).addTo(extraLayer);
-      L.marker([ctr.lat+r/111320,ctr.lng],{pane:"labels",interactive:false,keyboard:false,icon:L.divIcon({className:"ring-l",html:`<span>${min} min walk</span>`,iconSize:[0,0]})}).addTo(extraLayer);
+      L.marker([ctr.lat+r/111320,ctr.lng],{pane:"labels",interactive:false,keyboard:false,icon:L.divIcon({className:"ring-l",html:`<span>${min} min</span>`,iconSize:[0,0]})}).addTo(extraLayer);
     });
   }
   if(LOC){L.circleMarker([LOC.lat,LOC.lng],{renderer:pinR,pane:"pins",interactive:false,radius:8,color:"#ffffff",weight:3,fillColor:"#2F7FD8",fillOpacity:1}).addTo(extraLayer)}
@@ -1351,7 +1453,7 @@ function nextUp(v){
 function renderVenues(p){
   const near=S.near&&LOC;
   const vs=visible().slice().sort((a,b)=>near?distM(a)-distM(b):((isFav(b)?1:0)-(isFav(a)?1:0)||(onDay(b,TODAY).length?1:0)-(onDay(a,TODAY).length?1:0)||a.name.localeCompare(b.name)));
-  const bits=[];if(S.open)bits.push("open now");QF.forEach(([k,l])=>{if(S.am[k])bits.push(l.toLowerCase())});
+  const bits=[];if(S.cat!=="all")bits.push((CATS.find(x=>x[0]===S.cat)||["",""])[1].toLowerCase());if(S.fav)bits.push(PUBLIC?"Smiff's favourites":"favourites");if(S.open)bits.push("open now");QF.forEach(([k,l])=>{if(S.am[k])bits.push(l.toLowerCase())});
   ANN=`${vs.length} venue${vs.length===1?"":"s"}${bits.length?", "+bits.join(", "):""}`;
   let out=`<p class="count">${vs.length} venue${vs.length===1?"":"s"}${bits.length?" · "+esc(bits.join(", ")):""}${S.socials?" to check on Instagram or Facebook":""} · ${near?"nearest first":"favourites, then on tonight, first"}</p><ul class="vlist">`;
   out+=vs.map(v=>{const pc=primary(v);const nu=nextUp(v);
@@ -1363,7 +1465,7 @@ function renderVenues(p){
   p.innerHTML=out;
 }
 function footer(){
-  return `<p class="foot">Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}. ${USE_TILES?"Street map © OpenStreetMap contributors. ":"Map is a simplified drawing. "}Pin positions from CAMRA, Songkick and DesignMyNight, otherwise by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright). Walking times are estimates.</p>${PUBLIC?`<p class="foot fb" style="border:0;padding-top:0">Spotted something wrong, or know a gig or quiz that's missing? <a href="${esc(mailHref("Smiff's Cambridge Compass"))}">Email Smiff</a>.</p><p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers are counted anonymously, without cookies. Your pub crawl is saved on your device. The street map is loaded from OpenStreetMap.</p>`:""}`;
+  return `<p class="foot">Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}; rechecked every Monday and Thursday. ${USE_TILES?"Street map © OpenStreetMap contributors. ":"Map is a simplified drawing. "}Pin positions from CAMRA, Songkick and DesignMyNight, otherwise by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright). Walking times are estimates.</p>${PUBLIC?`<p class="foot fb" style="border:0;padding-top:0">Spotted something wrong, or know a gig or quiz that's missing? <a href="${esc(mailHref("Smiff's Cambridge Compass"))}">Email Smiff</a>.</p><p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers are counted anonymously, without cookies. Your pub crawl is saved on your device. The street map is loaded from OpenStreetMap.</p>`:""}`;
 }
 $("pane").addEventListener("click",e=>{
   const k=e.target.closest("[data-kind]");if(k){S.kind=(k.classList.contains("tn")&&S.kind===k.dataset.kind)?"all":k.dataset.kind;render();announce();const again=$("pane").querySelector((k.classList.contains("tn")?".tn":".kinds .chip")+'[data-kind="'+k.dataset.kind+'"]');if(again)again.focus({preventScroll:true});return}
@@ -1393,7 +1495,7 @@ function sectionsHtml(v){
   if(v.hours){const th=todayHours(v.hours);h+=`<div class="sec"><h3>Opening hours</h3>${th?`<p class="today">Today: ${esc(th)}</p>`:""}<p>${esc(v.hours).replace(/ · /g,"<br>")}</p></div>`}
   if(v.food) h+=`<div class="sec"><h3>Food</h3><p>${esc(v.food)}</p></div>`;
   if(L.notes.length) h+=`<div class="sec"><h3>Good to know</h3><ul>${L.notes.map(n=>`<li><span class="what">${esc(n.text)}${n.manual?' <span class="badge you">'+YOU_ADDED+'</span>':""}</span>${n.manual&&canWrite?`<button class="del" data-id="${esc(n.id)}" aria-label="Remove">Remove</button>`:""}</li>`).join("")}</ul></div>`;
-  {const am=AMEN.filter(([k])=>hasAm(v,k)).map(([,l,i])=>ICO(i)+" "+esc(l));const fe=(v.features||[]).filter(f=>!/garden|real fire|sports tv|dog/i.test(f)).map(esc);const all=am.concat(fe);
+  {const am=AMEN.filter(([k])=>hasAm(v,k)).map(([,l])=>esc(l));const fe=(v.features||[]).filter(f=>!/garden|real fire|sports tv|dog/i.test(f)).map(esc);const all=am.concat(fe);
   if(all.length) h+=`<div class="sec"><h3>Features</h3><div class="feat">${all.map(f=>`<span>${f}</span>`).join("")}</div></div>`;}
   h+=accessHtml(v);
   {const nb=nearby(v,5);if(nb.length)h+=`<div class="sec"><h3>Close by</h3><ul>${nb.map(([x,m])=>`<li><span class="when">${walkMin(m)} min walk</span><span class="what"><button class="linkbtn" data-v="${esc(x.id)}">${esc(x.name)}</button></span></li>`).join("")}</ul></div>`}
@@ -1408,7 +1510,7 @@ function accessHtml(v){
   if(!a){return (v.cats||[]).includes("pub")?`<div class="sec"><h3>Access</h3><p class="acc-sub">No access details listed for this pub yet. Ring ahead if you need step-free access.</p></div>`:""}
   const main=[];if(a.step)main.push(STEP_LONG[a.step]);if(a.wc===true)main.push("accessible toilet");if(a.wc===false)main.push("no accessible toilet");
   const line=main.join(" · ");
-  return `<div class="sec"><h3>${ICO("♿")} Access</h3>${line?`<p class="acc-main">${esc(line.charAt(0).toUpperCase()+line.slice(1))}</p>`:""}${a.note?`<p class="acc-sub">${esc(a.note)}</p>`:""}<p class="acc-sub">From CAMRA's access notes. Worth ringing ahead to check.</p></div>`;
+  return `<div class="sec"><h3>Access</h3>${line?`<p class="acc-main">${esc(line.charAt(0).toUpperCase()+line.slice(1))}</p>`:""}${a.note?`<p class="acc-sub">${esc(a.note)}</p>`:""}<p class="acc-sub">From ${esc(a.src||"CAMRA's access notes")}. Worth ringing ahead to check.</p></div>`;
 }
 function accessShort(v){
   const a=v.access;if(!a||(!a.step&&a.wc!==true))return "";
@@ -1473,7 +1575,7 @@ function initMap(){
   map.zoomControl.setPosition("topright");
   map.setView([52.2048,0.1250],mob?14.5:15);
   /* own layers: base drawing, rings and labels never catch taps; pins always sit on top */
-  [["base",350],["rings",420],["labels",450],["plabels",630],["pins",640],["crawlnum",660]].forEach(([n,z])=>{const pn=map.createPane(n);pn.style.zIndex=z;if(n!=="pins"&&n!=="plabels")pn.style.pointerEvents="none"});
+  [["base",350],["rings",420],["labels",450],["plabels",630],["pins",640],["sellabel",650],["crawlnum",660]].forEach(([n,z])=>{const pn=map.createPane(n);pn.style.zIndex=z;if(!["pins","plabels","sellabel"].includes(n))pn.style.pointerEvents="none"});
   baseR=L.canvas({padding:.5,pane:"base"});
   L.control.scale({imperial:false,position:"bottomright",maxWidth:110}).addTo(map);
   if(USE_TILES){
@@ -1550,24 +1652,29 @@ function labelPrio(v){return (v.id===S.sel?100:0)+(isFav(v)?20:0)+(CRAWL.include
 function placeLabels(){
   if(!map)return;
   if(plLayer){plLayer.remove();plLayer=null}
-  if(!V.length||map.getZoom()<14||!map.getContainer().offsetWidth)return;
-  const sz=map.getSize(),H=16;
-  const items=visible().map(v=>{const p=map.latLngToContainerPoint([v.lat,v.lng]);const r=PINS[v.id]?PINS[v.id].getRadius()+2:9;return{v,p,r,box:[p.x-r,p.y-r,p.x+r,p.y+r]}}).filter(o=>o.p.x>-120&&o.p.x<sz.x+120&&o.p.y>-30&&o.p.y<sz.y+30);
-  items.sort((a,b)=>labelPrio(b.v)-labelPrio(a.v)||a.v.name.localeCompare(b.v.name));
+  if(!V.length||!map.getContainer().offsetWidth)return;
+  const sz=map.getSize(),H=16,near=map.getZoom()>=15.5;
+  const all=visible().map(v=>{const p=map.latLngToContainerPoint([v.lat,v.lng]);const r=PINS[v.id]?PINS[v.id].getRadius()+2:9;return{v,p,r,box:[p.x-r,p.y-r,p.x+r,p.y+r]}}).filter(o=>o.p.x>-120&&o.p.x<sz.x+120&&o.p.y>-30&&o.p.y<sz.y+30);
+  const items=all.filter(o=>near||o.v.id===S.sel).sort((a,b)=>labelPrio(b.v)-labelPrio(a.v)||a.v.name.localeCompare(b.v.name));
   const placed=[],ov=(a,b)=>a[0]<b[2]&&a[2]>b[0]&&a[1]<b[3]&&a[3]>b[1];
-  {const mr=map.getContainer().getBoundingClientRect();document.querySelectorAll(".mapwrap .legend,.leaflet-control-zoom,.leaflet-control-scale,.leaflet-control-attribution").forEach(el=>{const r=el.getBoundingClientRect();if(r.width&&r.height)placed.push([r.left-mr.left-4,r.top-mr.top-4,r.right-mr.left+4,r.bottom-mr.top+4])})}
+  {const mr=map.getContainer().getBoundingClientRect();document.querySelectorAll(".mapwrap .legend,.keybtn,.leaflet-control-zoom,.leaflet-control-scale,.leaflet-control-attribution").forEach(el=>{const r=el.getBoundingClientRect();if(r.width&&r.height)placed.push([r.left-mr.left-4,r.top-mr.top-4,r.right-mr.left+4,r.bottom-mr.top+4])})}
   plLayer=L.layerGroup();
   for(const o of items){
-    const t=o.v.name.replace(/^The /,""),w=textW(t)+11,g=o.r+1;
-    for(const [dx,dy] of [[g,-H/2],[-g-w,-H/2],[-w/2,-g-H],[-w/2,g]]){
+    const sel=o.v.id===S.sel,t=o.v.name.replace(/^The /,""),w=textW(t)+11,g=o.r+1;
+    const cands=[[g,-H/2],[-g-w,-H/2],[-w/2,-g-H],[-w/2,g]];
+    let pick=null;
+    for(const [dx,dy] of cands){
       const b=[o.p.x+dx,o.p.y+dy,o.p.x+dx+w,o.p.y+dy+H];
       if(b[0]<4||b[1]<4||b[2]>sz.x-4||b[3]>sz.y-4)continue;
-      if(placed.some(q=>ov(q,b))||items.some(q=>q!==o&&ov(q.box,b)))continue;
-      placed.push(b);
-      const m=L.marker([o.v.lat,o.v.lng],{pane:"plabels",keyboard:false,bubblingMouseEvents:false,icon:L.divIcon({className:"plabel"+(o.v.id===S.sel?" sel":"")+(isFav(o.v)?" fav":""),html:esc(t),iconSize:[w,H],iconAnchor:[-dx,-dy]})});
-      m.on("click",ev=>{L.DomEvent.stopPropagation(ev);pinClick(o.v,PINS[o.v.id])});
-      m.addTo(plLayer);break;
+      if(placed.some(q=>ov(q,b))||all.some(q=>q!==o&&ov(q.box,b)))continue;
+      pick=[dx,dy,b];break;
     }
+    if(!pick&&sel){const [dx,dy]=o.p.x+g+w<sz.x-4?cands[0]:cands[1];pick=[dx,dy,[o.p.x+dx,o.p.y+dy,o.p.x+dx+w,o.p.y+dy+H]]}
+    if(!pick)continue;
+    const [dx,dy,b]=pick;placed.push(b);
+    const m=L.marker([o.v.lat,o.v.lng],{pane:sel?"sellabel":"plabels",keyboard:false,bubblingMouseEvents:false,icon:L.divIcon({className:"plabel"+(sel?" sel":"")+(isFav(o.v)?" fav":""),html:esc(t),iconSize:[w,H],iconAnchor:[-dx,-dy]})});
+    m.on("click",ev=>{L.DomEvent.stopPropagation(ev);pinClick(o.v,PINS[o.v.id])});
+    m.addTo(plLayer);
   }
   plLayer.addTo(map);
   plLayer.eachLayer(m=>{const el=m.getElement();if(el)el.setAttribute("aria-hidden","true")});
@@ -1588,34 +1695,18 @@ function pinClick(v,m){
 /* the information shown when a pin is tapped */
 function cardHtml(v){
   const L2=listings(v),today=onDay(v,TODAY),pc=primary(v);
-  const cats=(v.cats||[]).map(c=>`<span style="--c:${catColor(c)}">${esc(CATS.find(x=>x[0]===c)?.[1]||c)}</span>`).join("");
-  let h=`<div class="card"><div class="c-head" style="--c:${catColor(pc)}"><span class="pin"></span><div><div class="c-name">${isFav(v)?'<span class="star" aria-hidden="true">★</span><span class="sr-only">Favourite: </span>':""}${esc(v.name)}</div><div class="c-addr">${esc(v.address)}, ${esc(v.postcode)}</div>${v.group?`<div class="c-group">${esc(v.group.startsWith("Greene King-owned")?v.group:v.group+" pub")}</div>`:""}</div></div><div class="c-cats">${cats}</div>`;
-  const kTag=e=>`<span class="k" style="--c:${catColor(KIND_CAT[e.kind]||"pub")}">${esc(KIND_LABEL[e.kind]||"Event")}</span>`;
-  if(today.length){
-    h+=`<div class="c-sec"><div class="c-lab">Tonight</div><ul>${today.map(e=>`<li class="on">${kTag(e)}${esc(e.title)}</li>`).join("")}</ul></div>`;
-  }
-  const upcoming=L2.dated.filter(e=>e.date!==T0).slice(0,3);
-  if(upcoming.length){
-    h+=`<div class="c-sec"><div class="c-lab">${today.length?"Coming up":"Next up"}</div><ul>${upcoming.map(e=>`<li>${esc(fmt(pd(e.date)))} · ${esc(e.title)}</li>`).join("")}</ul>${L2.dated.length>upcoming.length+(today.filter(e=>!e.weekly).length)?`<span class="c-more">More dates in full details</span>`:""}</div>`;
-  }
-  const otherWeekly=L2.weekly.filter(w=>w.day!==DAYS[TODAY.getDay()]);
-  if(otherWeekly.length){
-    h+=`<div class="c-sec"><div class="c-lab">Regular nights</div><ul>${otherWeekly.slice(0,4).map(w=>`<li>${esc(DAYLONG[w.day]||w.day)}: ${esc(w.title)}</li>`).join("")}</ul>${otherWeekly.length>4?`<span class="c-more">+${otherWeekly.length-4} more</span>`:""}</div>`;
-  }
-  if(L2.offers.length){
-    h+=`<div class="c-sec"><div class="c-lab">Offers</div><ul>${L2.offers.slice(0,3).map(o=>`<li>${esc(o.text)}</li>`).join("")}</ul>${L2.offers.length>3?`<span class="c-more">+${L2.offers.length-3} more</span>`:""}</div>`;
-  }
-  h+=statusHtml(v,true);
-  const th=closedNote(v)?null:todayHours(v.hours);
+  const catL=(CATS.find(x=>x[0]===pc)||["",""])[1];
+  let h=`<div class="card"><div class="c-head" style="--c:${catColor(pc)}"><span class="pin"></span><div><div class="c-name">${isFav(v)?'<span class="star" aria-hidden="true">★</span><span class="sr-only">Favourite: </span>':""}${esc(v.name)}</div><div class="c-addr">${esc(catL)} · ${esc(v.address)}</div></div></div>`;
   if(closedNote(v)) h+=`<p class="c-flag">${esc(closedNote(v))}</p>`;
-  if(th) h+=`<div class="c-sec"><div class="c-lab">Open today</div><p>${esc(th)}</p></div>`;
-  else if(v.hours) h+=`<div class="c-sec"><div class="c-lab">Opening hours</div><p>${esc(v.hours).replace(/ · /g,"<br>")}</p></div>`;
-  if(v.food) h+=`<div class="c-sec"><div class="c-lab">Food</div><p>${esc(v.food)}</p></div>`;
-  h+=accessShort(v);
-  {const nb=nearby(v,3);if(nb.length)h+=`<div class="c-sec"><div class="c-lab">Close by</div><ul class="c-near">${nb.map(([x,m])=>`<li><button class="linkbtn" data-hop="${esc(x.id)}">${esc(x.name)}</button> · ${walkMin(m)} min walk</li>`).join("")}</ul></div>`}
-  if(!today.length&&!upcoming.length&&!otherWeekly.length&&!L2.offers.length) h+=`<p class="c-more">No dates or offers listed on their website.</p>`;
-  if(v.checkSocials&&!PUBLIC) h+=`<p class="c-flag">Check socials · ${esc(v.checkSocials)}</p>`;
-  h+=`<div class="c-btns"><button data-open="${esc(v.id)}">Full details</button>${crawlBtn(v)}${db&&canWrite?`<a href="#" data-fav="${esc(v.id)}" role="button">${isFav(v)?"★ Unfavourite":"☆ Favourite"}</a>`:""}<a href="${esc(mapsLink(v))}" target="_blank" rel="noopener">Directions ↗</a>${v.website?`<a href="${esc(v.website)}" target="_blank" rel="noopener">Website ↗</a>`:""}</div></div>`;
+  else h+=statusHtml(v);
+  if(today.length){
+    h+=`<div class="c-sec"><div class="c-lab">Tonight</div><ul>${today.slice(0,2).map(e=>`<li class="on">${esc(e.title)}</li>`).join("")}</ul>${today.length>2?`<span class="c-more">+${today.length-2} more in details</span>`:""}</div>`;
+  } else if(!closedNote(v)){
+    const nx=L2.dated[0],wk=L2.weekly[0];
+    if(nx) h+=`<p class="c-next">Next: ${esc(fmt(pd(nx.date)))} · ${esc(nx.title)}</p>`;
+    else if(wk) h+=`<p class="c-next">${esc(DAYLONG[wk.day]||wk.day)}: ${esc(wk.title)}</p>`;
+  }
+  h+=`<div class="c-btns"><button data-open="${esc(v.id)}">Details</button><a href="${esc(mapsLink(v))}" target="_blank" rel="noopener">Directions ↗</a></div></div>`;
   return h;
 }
 function favBtn(v){
@@ -1633,7 +1724,7 @@ async function toggleFav(id){
   catch(e){ if(was)FAVS.add(id);else FAVS.delete(id); refreshAll() }
 }
 function refreshAll(){
-  $("tab-crawl").textContent=CRAWL.length?`Crawl (${CRAWL.length})`:"Crawl";
+  $("tab-crawl").querySelector(".tl").textContent=CRAWL.length?`Crawl (${CRAWL.length})`:"Crawl";
   renderChips();
   if(S.view==="detail"&&S.sel) renderDetail(BYID[S.sel]); else render();
   drawPins();
@@ -1653,9 +1744,14 @@ document.addEventListener("click",e=>{
 });
 document.addEventListener("keydown",e=>{
   if(e.key!=="Escape")return;
+  if(!$("fsheet").hidden){closeSheet(false);return}
+  if(!$("legend").hidden){toggleKey(false);return}
   if(!$("mcard").hidden){$("mcard").hidden=true;S.sel=null;drawPins()}
   else if(map&&map._popup&&map.hasLayer(map._popup))map.closePopup();
 });
+function toggleKey(show){const k=$("legend"),b=$("keybtn");show=show==null?k.hidden:show;k.hidden=!show;b.setAttribute("aria-expanded",String(show));placeLabels()}
+$("keybtn").addEventListener("click",e=>{e.stopPropagation();toggleKey()});
+{let lastY=0;$("panel").addEventListener("scroll",()=>{if(!isMobile())return;const y=$("panel").scrollTop,t=$("top");if(y>lastY+6&&y>70)t.classList.add("tuck");else if(y<lastY-6||y<30)t.classList.remove("tuck");lastY=y},{passive:true})}
 function retheme(){if(map){drawBase();drawPins()}renderChips();if(V.length)render()}
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change",retheme);
 new MutationObserver(retheme).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
@@ -1666,7 +1762,7 @@ addEventListener("resize",()=>{const m=isMobile();if(m!==wasMobile){wasMobile=m;
 function boot(data){
   V=data.venues||[];META=data.meta||{};
   BYID={};V.forEach(v=>BYID[v.id]=v);
-  $("updated").textContent=V.length+" venues · checked "+(META.checkedLabel||"")+" · rechecked every Monday and Thursday";
+  $("updated").textContent="Updated "+(META.checkedLabel||"").replace(/ \d{4}$/,"");
   renderChips();render();drawPins();
 }
 initMap();
