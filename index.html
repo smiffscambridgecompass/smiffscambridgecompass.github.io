@@ -990,6 +990,16 @@ ol.crawl .ctrl button:focus-visible{outline:2px solid var(--accent)}
 .keybtn .ic{width:18px;height:18px}
 .legend{bottom:calc(56px + env(safe-area-inset-bottom,0px));animation:pop .16s ease-out}
 .c-next{margin:0;color:var(--muted)}
+.c-sun{margin:0;display:flex;gap:6px;align-items:center;font-weight:600;color:var(--warn)}
+.c-sun .ic{width:16px;height:16px}
+.sunbar{all:unset;box-sizing:border-box;width:100%;display:flex;align-items:center;gap:10px;cursor:pointer;margin:0 0 10px;padding:10px 12px;border-radius:12px;background:var(--warn-bg);color:var(--warn);font-size:.92rem}
+.sunbar .ic{width:20px;height:20px}
+.sunbar .go{margin-left:auto;font-size:1.2rem}
+.sunbar:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.gpick{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:8px;font-size:.8rem;color:var(--muted)}
+.gpick span{margin-right:4px;font-weight:600}
+.gpick button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:3px 7px;font-size:.78rem;cursor:pointer;min-width:34px}
+.gpick button[aria-pressed="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
 .mapwrap:has(.mcard:not([hidden])) .leaflet-control-scale{visibility:hidden}
 /* motion */
 @keyframes sheetup{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
@@ -1064,8 +1074,8 @@ const PUBLIC=!!window.SMIFF_PUBLIC;
 const YOU_ADDED=PUBLIC?"Smiff's tip":"Added by you", FROM_YOU=PUBLIC?"Smiff's tip":"From you";
 let LOC=null,PENDING_CENTER=false;
 const AMEN=[["garden","Beer garden","🌳"],["fire","Real fire","🔥"],["sport","Sports on TV","⚽"],["dogs","Dog friendly","🐕"]];
-const QF=AMEN.concat([["step","Step-free","♿"]]);
-function hasAm(v,k){return k==="step"?!!(v.access&&v.access.step==="yes"):!!(v.amen&&v.amen[k])}
+const QF=AMEN.concat([["step","Step-free","♿"],["sunny","Garden in the sun now","☀"]]);
+function hasAm(v,k){if(k==="sunny")return sunnyNow(v);return k==="step"?!!(v.access&&v.access.step==="yes"):!!(v.amen&&v.amen[k])}
 const ICO=i=>`<span class="ico" aria-hidden="true">${i}</span>`;
 const MAIL=["jmcs1994","gmail.com"].join("@");
 function mailHref(subject){return "mailto:"+MAIL+"?subject="+encodeURIComponent(subject)}
@@ -1164,7 +1174,7 @@ function sheetHtml(){
   const opt=(fs,k,on,label,extra)=>`<button class="opt" data-fs="${fs}"${k?` data-k="${k}"`:""} aria-pressed="${on}">${extra||""}${label}</button>`;
   return `<div class="fs-head"><h2 id="fs-title">Filters</h2><button class="fs-x" data-fs="close" aria-label="Close filters">&times;</button></div>
   <div class="fs-sec"><h3>Type</h3><div class="fs-opts">${[["all","Everything"]].concat(CATS).map(([k,l])=>opt("cat",k,S.cat===k,l,k==="all"?"":`<span class="dot" style="--c:${catColor(k)}"></span>`)).join("")}</div></div>
-  <div class="fs-sec"><h3>Has</h3><div class="fs-opts">${QF.map(([k,l])=>opt("am",k,!!S.am[k],l)).join("")}</div></div>
+  <div class="fs-sec"><h3>Has</h3><div class="fs-opts">${QF.filter(([k])=>k!=="sunny"||V.some(gardenOf)).map(([k,l])=>opt("am",k,!!S.am[k],l)).join("")}</div></div>
   <div class="fs-sec"><h3>Just show</h3><div class="fs-opts">${opt("fav","",S.fav,PUBLIC?"Smiff's favourites":"Favourites",'<span class="star" aria-hidden="true">★</span>')}${PUBLIC?"":opt("socials","",S.socials,"Check socials")}</div></div>
   <div class="fs-foot"><button class="fs-clear" data-fs="clear">Clear all</button><button class="fs-go" data-fs="go">Show ${n} place${n===1?"":"s"}</button></div>`;
 }
@@ -1281,6 +1291,56 @@ function openStatus(v){
   return{open:false,text:"Closed now"};
 }
 function statusHtml(v,block){const st=openStatus(v);const d=distLabel(v);if(!st&&!d)return"";return `<div class="st ${st?(st.open?"open":"closed"):""}"${block?' style="margin:0 0 10px"':""}>${st?esc(st.text):""}${d?`<span class="dist">${st?" · ":""}${d}</span>`:""}</div>`}
+
+/* ---------- sun on the garden ----------
+   Sun position from the standard astronomical formulas (as used by SunCalc).
+   A garden "faces" a compass bearing: the direction you look from the pub out into the garden.
+   It gets sun when the sun is within 80° of that bearing and high enough to clear nearby buildings. */
+const RAD=Math.PI/180,OBL=RAD*23.4397;
+function sunAt(date,lat,lng){
+  const d=date.valueOf()/864e5-0.5+2440588-2451545,lw=RAD*-lng,phi=RAD*lat;
+  const M=RAD*(357.5291+0.98560028*d),C=RAD*(1.9148*Math.sin(M)+0.02*Math.sin(2*M)+0.0003*Math.sin(3*M)),Lm=M+C+RAD*102.9372+Math.PI;
+  const dec=Math.asin(Math.sin(OBL)*Math.sin(Lm)),ra=Math.atan2(Math.sin(Lm)*Math.cos(OBL),Math.cos(Lm));
+  const H=RAD*(280.16+360.9856235*d)-lw-ra;
+  const az=Math.atan2(Math.sin(H),Math.cos(H)*Math.sin(phi)-Math.tan(dec)*Math.cos(phi));
+  const alt=Math.asin(Math.sin(phi)*Math.sin(dec)+Math.cos(phi)*Math.cos(dec)*Math.cos(H));
+  return {az:((az/RAD+180)%360+360)%360,alt:alt/RAD};
+}
+const COMPASS=["north","north-east","east","south-east","south","south-west","west","north-west"];
+function compass(b){return COMPASS[Math.round(((b%360)+360)%360/45)%8]}
+let GARDENS=null;const GARDEN_COLL="data/updates/gardens";
+function gardenOf(v){const g=(GARDENS&&GARDENS[v.id])||v.garden;return g&&(g.open||typeof g.face==="number")?g:null}
+function sunOn(g,s){if(s.alt<(g.open?5:12))return false;if(g.open)return true;return Math.abs(((s.az-g.face)%360+540)%360-180)<=80}
+function sunWindows(g,v,day){
+  const out=[];let cur=null;
+  for(let m=4*60;m<=22*60;m+=5){const on=sunOn(g,sunAt(new Date(day.getFullYear(),day.getMonth(),day.getDate(),0,m),v.lat,v.lng));if(on){if(!cur)cur=[m,m];cur[1]=m}else if(cur){out.push(cur);cur=null}}
+  if(cur)out.push(cur);return out;
+}
+let WX=null;
+function cloudNow(){
+  if(!WX||!WX.current)return null;
+  return WX.current.cloud_cover;
+}
+const r15=m=>Math.round(m/15)*15;
+const SUNC={};
+function gardenSun(v){
+  const g=gardenOf(v);if(!g)return null;
+  const now=new Date(),key=v.id+"|"+Math.floor(now/3e5)+"|"+(WX?1:0)+"|"+(g.open?"o":g.face);
+  if(SUNC[v.id]&&SUNC[v.id].key===key)return SUNC[v.id].val;
+  const today=new Date(now.getFullYear(),now.getMonth(),now.getDate()),nm=now.getHours()*60+now.getMinutes();
+  const wins=sunWindows(g,v,today),cur=wins.find(w=>nm>=w[0]&&nm<=w[1]),next=wins.find(w=>w[0]>nm);
+  const cloud=cloudNow(),grey=cloud!=null&&cloud>=80;
+  let val;
+  if(cur&&!grey) val={now:true,text:`In the sun now, until about ${t12(r15(cur[1]))}`,short:`Garden in the sun until about ${t12(r15(cur[1]))}`};
+  else if(cur) val={now:false,text:`Facing the sun until about ${t12(r15(cur[1]))}, but it's cloudy right now`,short:""};
+  else if(next) val={now:false,text:`In shade now. Sun on it from about ${t12(r15(next[0]))} to ${t12(r15(next[1]))}`,short:`Garden sun from about ${t12(r15(next[0]))}`};
+  else{const tw=sunWindows(g,v,addDays(today,1));val={now:false,text:tw.length?`No more sun on it today. Tomorrow from about ${t12(r15(tw[0][0]))} to ${t12(r15(tw[tw.length-1][1]))}`:"No direct sun on it at this time of year",short:""}}
+  val.face=g.open?"is open to the sun all round":"faces "+compass(g.face);
+  SUNC[v.id]={key,val};return val;
+}
+function sunnyNow(v){const g=gardenOf(v);if(!g)return false;const c=cloudNow();if(c!=null&&c>=80)return false;return sunOn(g,sunAt(new Date(),v.lat,v.lng))}
+if(PUBLIC){fetch("https://api.open-meteo.com/v1/forecast?latitude=52.205&longitude=0.12&current=cloud_cover&timezone=Europe%2FLondon").then(r=>r.ok?r.json():null).then(j=>{if(j&&j.current){WX=j;if(V.length)refreshAll()}}).catch(()=>{})}
+const SUN_ICO='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>';
 
 /* ---------- near me ---------- */
 function distBetween(a,b){const R=6371000,toR=Math.PI/180;const dLa=(b.lat-a.lat)*toR,dLo=(b.lng-a.lng)*toR;const x=Math.sin(dLa/2)**2+Math.cos(a.lat*toR)*Math.cos(b.lat*toR)*Math.sin(dLo/2)**2;return 2*R*Math.asin(Math.sqrt(x))}
@@ -1410,7 +1470,7 @@ function itemRow(v,e,showDay){
 }
 function kindPass(e){return S.kind==="all"||e.kind===S.kind||(S.kind==="event"&&(e.kind==="event"||e.kind==="comedy"))}
 function renderWhatson(p){
-  const vs=visible();let out=tonightHtml(vs)+`<div class="kinds" role="group" aria-label="Filter listings">${KINDS.map(([k,l])=>`<button class="chip" data-kind="${k}" aria-pressed="${S.kind===k}">${l}</button>`).join("")}</div>`;
+  const vs=visible();let out=sunBar()+tonightHtml(vs)+`<div class="kinds" role="group" aria-label="Filter listings">${KINDS.map(([k,l])=>`<button class="chip" data-kind="${k}" aria-pressed="${S.kind===k}">${l}</button>`).join("")}</div>`;
   let any=false,total=0;
   for(let i=0;i<14;i++){
     const d=addDays(TODAY,i);const rows=[];
@@ -1429,6 +1489,12 @@ function renderWhatson(p){
   ANN=any?`${total} listing${total===1?"":"s"} in the next two weeks${S.kind!=="all"?", "+(KINDS.find(x=>x[0]===S.kind)||["",""])[1].toLowerCase()+" only":""}`:"Nothing listed for this filter";
   out+=footer();
   p.innerHTML=out;
+}
+/* daytime nudge when gardens are in the sun */
+function sunBar(){
+  if(S.am.sunny)return "";
+  const n=V.filter(sunnyNow).length;if(!n)return "";
+  return `<button class="sunbar" data-sunny>${SUN_ICO}<span><b>${n} beer garden${n===1?"":"s"}</b> in the sun right now</span><span class="go" aria-hidden="true">›</span></button>`;
 }
 /* tonight at a glance: tap a count to show just those */
 function tonightHtml(vs){
@@ -1465,7 +1531,7 @@ function renderVenues(p){
   p.innerHTML=out;
 }
 function footer(){
-  return `<p class="foot">Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}; rechecked every Monday and Thursday. ${USE_TILES?"Street map © OpenStreetMap contributors. ":"Map is a simplified drawing. "}Pin positions from CAMRA, Songkick and DesignMyNight, otherwise by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright). Walking times are estimates.</p>${PUBLIC?`<p class="foot fb" style="border:0;padding-top:0">Spotted something wrong, or know a gig or quiz that's missing? <a href="${esc(mailHref("Smiff's Cambridge Compass"))}">Email Smiff</a>.</p><p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers are counted anonymously, without cookies. Your pub crawl is saved on your device. The street map is loaded from OpenStreetMap.</p>`:""}`;
+  return `<p class="foot">Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}; rechecked every Monday and Thursday. ${USE_TILES?"Street map © OpenStreetMap contributors. ":"Map is a simplified drawing. "}Pin positions from CAMRA, Songkick and DesignMyNight, otherwise by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright). Walking times are estimates. Garden sun times are worked out from the sun's position${PUBLIC?"; cloud cover from Open-Meteo.com (CC BY 4.0)":""}.</p>${PUBLIC?`<p class="foot fb" style="border:0;padding-top:0">Spotted something wrong, or know a gig or quiz that's missing? <a href="${esc(mailHref("Smiff's Cambridge Compass"))}">Email Smiff</a>.</p><p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers are counted anonymously, without cookies. Your pub crawl is saved on your device. The street map is loaded from OpenStreetMap and cloud cover from Open-Meteo.</p>`:""}`;
 }
 $("pane").addEventListener("click",e=>{
   const k=e.target.closest("[data-kind]");if(k){S.kind=(k.classList.contains("tn")&&S.kind===k.dataset.kind)?"all":k.dataset.kind;render();announce();const again=$("pane").querySelector((k.classList.contains("tn")?".tn":".kinds .chip")+'[data-kind="'+k.dataset.kind+'"]');if(again)again.focus({preventScroll:true});return}
@@ -1498,9 +1564,25 @@ function sectionsHtml(v){
   {const am=AMEN.filter(([k])=>hasAm(v,k)).map(([,l])=>esc(l));const fe=(v.features||[]).filter(f=>!/garden|real fire|sports tv|dog/i.test(f)).map(esc);const all=am.concat(fe);
   if(all.length) h+=`<div class="sec"><h3>Features</h3><div class="feat">${all.map(f=>`<span>${f}</span>`).join("")}</div></div>`;}
   h+=accessHtml(v);
+  h+=gardenHtml(v);
   {const nb=nearby(v,5);if(nb.length)h+=`<div class="sec"><h3>Close by</h3><ul>${nb.map(([x,m])=>`<li><span class="when">${walkMin(m)} min walk</span><span class="what"><button class="linkbtn" data-v="${esc(x.id)}">${esc(x.name)}</button></span></li>`).join("")}</ul></div>`}
   h+=`<p class="src">Details from <a href="${esc(v.src)}" target="_blank" rel="noopener">${esc(hostOf(v.src))}</a>${v.eventsUrl?` · listings from <a href="${esc(v.eventsUrl)}" target="_blank" rel="noopener">${esc(hostOf(v.eventsUrl))}</a>`:""} · checked ${esc(META.checkedLabel||"")}${PUBLIC?` · <a href="${esc(mailHref("Smiff's Compass: "+v.name))}">Something wrong? Tell Smiff</a>`:""}</p>`;
   return h;
+}
+/* garden sun section, with a direction picker in Smiff's own version */
+const FACES=[["N",0],["NE",45],["E",90],["SE",135],["S",180],["SW",225],["W",270],["NW",315]];
+function gardenHtml(v){
+  const gs=gardenSun(v),has=v.amen&&v.amen.garden;
+  if(!gs&&!has)return "";
+  const pick=db&&canWrite&&has?`<div class="gpick" role="group" aria-label="Which way the garden faces"><span>Garden faces</span>${FACES.map(([l,b])=>{const g=gardenOf(v);return `<button data-gface="${b}" data-gid="${esc(v.id)}" aria-pressed="${!!(g&&!g.open&&g.face===b)}">${l}</button>`}).join("")}<button data-gface="open" data-gid="${esc(v.id)}" aria-pressed="${!!(gardenOf(v)&&gardenOf(v).open)}">Open</button></div>`:"";
+  if(!gs) return pick?`<div class="sec"><h3>Garden sun</h3><p class="acc-sub">Set which way the garden faces and the app works out when the sun is on it.</p>${pick}</div>`:"";
+  return `<div class="sec"><h3>Garden sun</h3><p class="acc-main">${esc(gs.text)}</p><p class="acc-sub">The garden ${esc(gs.face)}. Based on the sun's position${WX?" and today's cloud":""}; trees and buildings can still cast shade.</p>${pick}</div>`;
+}
+async function setGarden(id,val){
+  if(!db||!canWrite)return;
+  const doc=val==="open"?{venueId:id,open:true,by:"J",at:new Date().toISOString()}:{venueId:id,face:Number(val),by:"J",at:new Date().toISOString()};
+  if(!GARDENS)GARDENS={};GARDENS[id]=doc;delete SUNC[id];refreshAll();
+  try{await db.collection(GARDEN_COLL).doc(id).set(doc)}catch(e){}
 }
 /* access: from CAMRA's mobility notes */
 const STEP_LONG={yes:"Step-free way in",partly:"Partly step-free",no:"Steps at the entrance"};
@@ -1706,6 +1788,7 @@ function cardHtml(v){
     if(nx) h+=`<p class="c-next">Next: ${esc(fmt(pd(nx.date)))} · ${esc(nx.title)}</p>`;
     else if(wk) h+=`<p class="c-next">${esc(DAYLONG[wk.day]||wk.day)}: ${esc(wk.title)}</p>`;
   }
+  {const gs=closedNote(v)?null:gardenSun(v);if(gs&&gs.short)h+=`<p class="c-sun">${SUN_ICO}${esc(gs.short)}</p>`}
   h+=`<div class="c-btns"><button data-open="${esc(v.id)}">Details</button><a href="${esc(mapsLink(v))}" target="_blank" rel="noopener">Directions ↗</a></div></div>`;
   return h;
 }
@@ -1736,6 +1819,10 @@ document.addEventListener("click",e=>{
   if(ca){e.preventDefault();toggleCrawl(ca.dataset.crawladd);return}
   const fb=e.target.closest("[data-fav]");
   if(fb){e.preventDefault();toggleFav(fb.dataset.fav);return}
+  const sb=e.target.closest("[data-sunny]");
+  if(sb){S.am.sunny=true;setView("venues");renderChips();render();drawPins();announce();return}
+  const gp=e.target.closest("[data-gface]");
+  if(gp){setGarden(gp.dataset.gid,gp.dataset.gface);return}
   const hp=e.target.closest("[data-hop]");
   if(hp){e.preventDefault();const x=BYID[hp.dataset.hop];if(x&&map){if(isMobile())moveMap([x.lat,x.lng],Math.max(map.getZoom(),15.5));pinClick(x,PINS[x.id])}return}
   const o=e.target.closest("[data-open]");
@@ -1785,6 +1872,11 @@ fetch("venues.json",{cache:"no-cache"}).then(r=>{if(!r.ok)throw new Error(r.stat
       if(S.view==="detail"&&S.sel){const box=$("d-sections");if(box){box.innerHTML=sectionsHtml(BYID[S.sel])}else render()}
       else render();
       drawPins();
+    },()=>{});
+    db.collection(GARDEN_COLL).onSnapshot(snap=>{
+      GARDENS={};snap.docs.forEach(s=>{GARDENS[s.id]=s.data()});
+      for(const k in SUNC)delete SUNC[k];
+      if(V.length)refreshAll();
     },()=>{});
     db.collection(FAV_COLL).onSnapshot(snap=>{
       FAVS=new Set(snap.docs.map(s=>s.id));
