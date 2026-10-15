@@ -10,6 +10,7 @@
 <meta name="theme-color" content="#15211D">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%2315211D'/%3E%3Cpath d='M32 10l7 22-7 22-7-22z' fill='%23E3A04E'/%3E%3Cpath d='M32 32l7 0-7 22-7-22z' fill='%23FAFBF9'/%3E%3C/svg%3E">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}*{box-sizing:border-box}</style>
+<script>window.SMIFF_PUBLIC=true</script>
 <!--ANALYTICS-->
 <title>Smiff's Cambridge Compass</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -856,6 +857,40 @@ form.add .status{font-size:.82rem;color:var(--muted);min-height:1.2em;margin:0}
 .leaflet-container .c-btns a{color:var(--ink)}
 .today{font-weight:600;margin-bottom:4px}
 
+/* quick filters, open status, distance */
+.chips#quick .chip{font-weight:600}
+.chip .ico{font-size:.95em;line-height:1}
+.chip.q[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--panel)}
+.note{grid-column:1/-1;margin:0;font-size:.82rem;color:var(--warn);background:var(--warn-bg);border-radius:8px;padding:6px 10px}
+.st{font-size:.8rem;font-weight:600;margin-top:2px}
+.st.open{color:var(--ok)}
+.st.closed{color:var(--muted)}
+.dist{color:var(--muted);font-weight:500}
+.amen{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.amen span{font-size:.72rem;border:1px solid var(--line);border-radius:999px;padding:1px 7px;color:var(--muted)}
+/* crawl */
+.crawlbtn{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:.88rem;border:1px solid var(--accent);color:var(--accent);border-radius:8px;padding:6px 10px}
+.crawlbtn[aria-pressed="true"]{background:var(--accent);color:var(--panel)}
+.crawlbtn:focus-visible{outline:2px solid var(--ink)}
+.crawl-head h2{font-family:var(--display);font-weight:400;font-size:1.5rem;margin:0 0 4px}
+.crawl-head p{margin:0 0 12px;color:var(--muted);font-size:.88rem}
+.crawl-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.crawl-tools button,.crawl-actions button{font:inherit;font-size:.85rem;font-weight:700;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:6px 10px;cursor:pointer}
+.crawl-tools label{font-size:.85rem;display:inline-flex;gap:6px;align-items:center}
+ol.crawl{list-style:none;margin:0;padding:0;counter-reset:c}
+ol.crawl li{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:start;padding:10px 0;border-bottom:1px solid var(--soft)}
+ol.crawl .num{width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--panel);display:grid;place-items:center;font-weight:700;font-variant-numeric:tabular-nums}
+ol.crawl .nm{font-weight:600;background:none;border:0;padding:0;font:inherit;font-weight:600;color:var(--ink);cursor:pointer;text-align:left}
+ol.crawl .sub{color:var(--muted);font-size:.82rem}
+ol.crawl .leg{font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+ol.crawl .ctrl{display:flex;gap:2px}
+ol.crawl .ctrl button{all:unset;cursor:pointer;width:30px;height:30px;display:grid;place-items:center;border-radius:6px;color:var(--muted);font-size:1rem}
+ol.crawl .ctrl button:hover{background:var(--soft);color:var(--ink)}
+ol.crawl .ctrl button:focus-visible{outline:2px solid var(--accent)}
+.crawl-tot{margin:12px 0;font-weight:600;font-variant-numeric:tabular-nums}
+.crawl-actions{display:flex;flex-wrap:wrap;gap:8px}
+.crawl-actions a{display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-weight:700;font-size:.88rem;border-radius:8px;padding:8px 12px;background:var(--ink);color:var(--panel)}
+.cnum{width:20px!important;height:20px!important;margin-left:-10px!important;margin-top:-30px!important;border-radius:50%;background:var(--accent);color:var(--panel);font:700 11px/20px var(--body);text-align:center;box-shadow:0 0 0 2px var(--panel)}
 .foot{color:var(--muted);font-size:.74rem;margin-top:22px;border-top:1px solid var(--soft);padding-top:10px}
 
 @media (max-width:860px){
@@ -871,6 +906,8 @@ form.add .status{font-size:.82rem;color:var(--muted);min-height:1.2em;margin:0}
   .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-right:calc(-1 * max(16px,env(safe-area-inset-right,0px)));padding-right:16px}
   .chips::-webkit-scrollbar{display:none}
   .legend{display:none}
+  .brand p{display:none}
+  .top{gap:8px}
 }
 @media (min-width:861px){ .mcard{display:none!important} }
 @media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important} }
@@ -883,10 +920,13 @@ form.add .status{font-size:.82rem;color:var(--muted);min-height:1.2em;margin:0}
       <p id="updated">Loading venues…</p>
     </div>
     <div class="search"><input id="q" type="search" placeholder="Search pubs, bands, streets" aria-label="Search venues and listings" autocomplete="off"></div>
+    <div class="chips" id="quick" role="group" aria-label="Quick filters"></div>
     <div class="chips" id="cats" role="group" aria-label="Filter by type"></div>
+    <p class="note" id="note" role="status" hidden></p>
     <div class="tabs" role="tablist" aria-label="Views">
       <button class="tab" role="tab" id="tab-whatson" aria-selected="true">What's on</button>
       <button class="tab" role="tab" id="tab-venues" aria-selected="false">Venues</button>
+      <button class="tab" role="tab" id="tab-crawl" aria-selected="false">Crawl</button>
       <button class="tab only-mobile" role="tab" id="tab-map" aria-selected="false">Map</button>
     </div>
   </header>
@@ -916,7 +956,11 @@ const DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const DAYLONG={Sun:"Sundays",Mon:"Mondays",Tue:"Tuesdays",Wed:"Wednesdays",Thu:"Thursdays",Fri:"Fridays",Sat:"Saturdays"};
 const UPD_COLL="data/updates/items";
 
-const S={view:"whatson",prev:"whatson",cat:"all",kind:"all",socials:false,fav:false,q:"",sel:null};
+const S={view:"whatson",prev:"whatson",cat:"all",kind:"all",socials:false,fav:false,open:false,near:false,am:{},q:"",sel:null};
+const PUBLIC=!!window.SMIFF_PUBLIC;
+const YOU_ADDED=PUBLIC?"Smiff's tip":"Added by you", FROM_YOU=PUBLIC?"Smiff's tip":"From you";
+let LOC=null,PENDING_CENTER=false;
+const AMEN=[["garden","Beer garden","🌳"],["fire","Real fire","🔥"],["sport","Sports on TV","⚽"]];
 let FAVS=null;const FAV_COLL="data/updates/favs";
 function isFav(v){return FAVS?FAVS.has(v.id):!!v.fav}
 let V=[], BYID={}, META={}, UPD=null, db=null, canWrite=false;
@@ -973,6 +1017,8 @@ function venuePass(v){
   if(S.cat!=="all"&&!(v.cats||[]).includes(S.cat)) return false;
   if(S.socials&&!v.checkSocials) return false;
   if(S.fav&&!isFav(v)) return false;
+  for(const [k] of AMEN){if(S.am[k]&&!(v.amen&&v.amen[k]))return false}
+  if(S.open){const st=openStatus(v);if(!st||!st.open)return false}
   if(S.q){const words=S.q.toLowerCase().split(/\s+/).filter(Boolean);const t=venueText(v);if(!words.every(w=>t.includes(w)))return false}
   return true;
 }
@@ -982,16 +1028,30 @@ function visible(){return V.filter(venuePass)}
 function renderChips(){
   const n=V.filter(v=>v.checkSocials).length;
   const nf=V.filter(isFav).length;
-  const html=[`<button class="chip" data-cat="all" aria-pressed="${S.cat==="all"}">All</button>`,`<button class="chip favc" id="favchip" aria-pressed="${S.fav}"><span class="star">★</span>Favourites (${nf})</button>`]
+  const nOpen=V.filter(v=>{const st=openStatus(v);return st&&st.open}).length;
+  $("quick").innerHTML=[`<button class="chip q" data-q="open" aria-pressed="${S.open}"><span class="ico">🕒</span>Open now (${nOpen})</button>`,`<button class="chip q" data-q="near" aria-pressed="${S.near}"><span class="ico">📍</span>Near me</button>`]
+    .concat(AMEN.map(([k,l,i])=>`<button class="chip q" data-q="am" data-k="${k}" aria-pressed="${!!S.am[k]}"><span class="ico">${i}</span>${l}</button>`))
+    .concat([`<button class="chip favc" id="favchip" aria-pressed="${S.fav}"><span class="star">★</span>${PUBLIC?"Smiff's favourites":"Favourites"} (${nf})</button>`]).join("");
+  const html=[`<button class="chip" data-cat="all" aria-pressed="${S.cat==="all"}">All</button>`]
     .concat(CATS.map(([k,l])=>`<button class="chip" data-cat="${k}" aria-pressed="${S.cat===k}" style="--c:${catColor(k)}"><span class="dot"></span>${l}</button>`))
-    .concat([`<button class="chip socials" id="socials" aria-pressed="${S.socials}" title="Venues whose gigs or offers are mostly posted on Instagram or Facebook">Check socials (${n})</button>`]);
+    .concat(PUBLIC?[]:[`<button class="chip socials" id="socials" aria-pressed="${S.socials}" title="Venues whose gigs or offers are mostly posted on Instagram or Facebook">Check socials (${n})</button>`]);
   $("cats").innerHTML=html.join("");
 }
 $("cats").addEventListener("click",e=>{
   const b=e.target.closest(".chip");if(!b)return;
   if(b.id==="socials"){S.socials=!S.socials;if(S.socials&&S.view==="whatson")setView("venues")}
-  else if(b.id==="favchip"){S.fav=!S.fav}
   else S.cat=b.dataset.cat;
+  renderChips();render();drawPins();
+});
+$("quick").addEventListener("click",e=>{
+  const b=e.target.closest(".chip");if(!b)return;
+  if(b.id==="favchip"){S.fav=!S.fav}
+  else if(b.dataset.q==="open"){S.open=!S.open;if(S.open&&S.view==="whatson")setView("venues")}
+  else if(b.dataset.q==="am"){const k=b.dataset.k;S.am[k]=!S.am[k];if(S.am[k]&&S.view==="whatson")setView("venues")}
+  else if(b.dataset.q==="near"){
+    if(S.near){S.near=false;note("");renderChips();render();drawPins();return}
+    locate(true);return;
+  }
   renderChips();render();drawPins();
 });
 let qt;$("q").addEventListener("input",e=>{clearTimeout(qt);qt=setTimeout(()=>{S.q=e.target.value.trim();if(S.view==="detail")setView(S.prev);render();drawPins()},120)});
@@ -1002,26 +1062,180 @@ function setView(v){
   S.view=v;
   const app=$("app");
   app.classList.toggle("show-map",v==="map");
-  [["whatson","tab-whatson"],["venues","tab-venues"],["map","tab-map"]].forEach(([k,id])=>$(id).setAttribute("aria-selected",String(S.view===k||(S.view==="detail"&&S.prev===k&&!isMobile()))));
-  if(v==="map"&&map)setTimeout(()=>map.invalidateSize(),0);
+  $("tab-crawl").textContent=CRAWL.length?`Crawl (${CRAWL.length})`:"Crawl";
+  [["whatson","tab-whatson"],["venues","tab-venues"],["crawl","tab-crawl"],["map","tab-map"]].forEach(([k,id])=>$(id).setAttribute("aria-selected",String(S.view===k||(S.view==="detail"&&S.prev===k&&!isMobile()))));
+  if(v==="map"&&map)setTimeout(()=>{map.invalidateSize();if(PENDING_CENTER&&LOC){PENDING_CENTER=false;map.setView([LOC.lat,LOC.lng],Math.max(map.getZoom(),15.5))}},0);
   if(v!=="map")$("mcard").hidden=true;
 }
 $("tab-whatson").onclick=()=>{setView("whatson");S.sel=null;render();drawPins()};
 $("tab-venues").onclick=()=>{setView("venues");S.sel=null;render();drawPins()};
 $("tab-map").onclick=()=>{setView("map");render()};
+$("tab-crawl").onclick=()=>{setView("crawl");S.sel=null;render();drawPins()};
+
+/* ---------- opening hours ---------- */
+const DN=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+function dayPart(h,dayIdx){ /* dayIdx: 0=Sun..6=Sat; returns the hours text for that day, or null */
+  if(!h)return null;
+  const t=DN.indexOf(DAYS[dayIdx]);
+  const D="(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)",Rg=D+"(?:\\s*[\\u2013-]\\s*"+D+")?";
+  const re=new RegExp("^(Daily|"+Rg+"(?:\\s*[&,]\\s*"+Rg+")*)\\s+(.+)$");
+  for(const seg of h.split(" · ")){
+    const m=seg.trim().match(re);if(!m)continue;
+    if(m[1]==="Daily")return m[2];
+    for(const part of m[1].split(/\s*[&,]\s*/)){
+      const r=part.split(/\s*[–-]\s*/),a=DN.indexOf(r[0]),b=r[1]?DN.indexOf(r[1]):a;
+      if(a<0||b<0)continue;
+      if(a<=b?(t>=a&&t<=b):(t>=a||t<=b))return m[2];
+    }
+  }
+  return null;
+}
+function todayHours(h){const r=dayPart(h,new Date().getDay());return r&&/^closed/i.test(r)?"Closed today":r}
+function clock(tok){const m=String(tok).trim().toLowerCase().match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)?$/);if(!m)return null;return{h:+m[1],m:+(m[2]||0),ap:m[3]||null}}
+function ranges(txt){ /* "12–2:30pm, 5:30pm–12am" -> [[startMin,endMin],...] ; end may pass midnight */
+  if(!txt||/^closed/i.test(txt))return [];
+  const out=[];const re=/(\d{1,2}(?::\d{2})?\s*(?:am|pm)?)\s*[–-]\s*(\d{1,2}(?::\d{2})?\s*(?:am|pm)?|late)/gi;let m;
+  while((m=re.exec(txt))){
+    const a=clock(m[1]);let end;
+    if(/late/i.test(m[2]))end=26*60;else{const b=clock(m[2]);if(!b)continue;let bh=b.h%12+(b.ap==="pm"?12:0);if(b.ap==="am"&&b.h===12)bh=24;if(!b.ap)bh=b.h<=6?b.h+24:(b.h===12?12:b.h+12);end=bh*60+b.m}
+    if(!a)continue;let ah;
+    if(a.ap)ah=a.h%12+(a.ap==="pm"?12:0);
+    else if(a.h===12)ah=12;
+    else ah=(a.h+12)*60+a.m<=end?a.h+12:a.h;
+    let st=ah*60+a.m;if(end<=st)end+=1440;
+    out.push([st,end]);
+  }
+  return out;
+}
+function t12(min){min=((min%1440)+1440)%1440;const h=Math.floor(min/60),m=min%60;const ap=h<12?"am":"pm";const hh=h%12===0?12:h%12;return hh+(m?":"+String(m).padStart(2,"0"):"")+ap}
+function openStatus(v){
+  const now=new Date();const nm=now.getHours()*60+now.getMinutes();
+  if(v.closedUntil&&ymd(now)<v.closedUntil)return{open:false,text:closedNote(v)};
+  const tp=dayPart(v.hours,now.getDay()), yp=dayPart(v.hours,(now.getDay()+6)%7);
+  if(!DAYS.some((_,d)=>dayPart(v.hours,d)!=null))return null; /* no usable hours at all */
+  for(const [a,b] of ranges(yp))if(b>1440&&nm+1440<b)return{open:true,text:"Open now · until "+t12(b)};
+  const tr=ranges(tp);
+  if(tp!=null&&!tr.length&&!/^closed/i.test(tp))return null;
+  for(const [a,b] of tr)if(nm>=a&&nm<b)return{open:true,text:"Open now · until "+t12(b)};
+  const next=tr.find(([a])=>a>nm);
+  if(next)return{open:false,text:"Closed · opens "+t12(next[0])};
+  return{open:false,text:"Closed now"};
+}
+function statusHtml(v,block){const st=openStatus(v);const d=distLabel(v);if(!st&&!d)return"";return `<div class="st ${st?(st.open?"open":"closed"):""}"${block?' style="margin:0 0 10px"':""}>${st?esc(st.text):""}${d?`<span class="dist">${st?" · ":""}${d}</span>`:""}</div>`}
+
+/* ---------- near me ---------- */
+function distBetween(a,b){const R=6371000,toR=Math.PI/180;const dLa=(b.lat-a.lat)*toR,dLo=(b.lng-a.lng)*toR;const x=Math.sin(dLa/2)**2+Math.cos(a.lat*toR)*Math.cos(b.lat*toR)*Math.sin(dLo/2)**2;return 2*R*Math.asin(Math.sqrt(x))}
+function distM(v){return LOC?distBetween(LOC,v):0}
+function walkLabel(m){const real=m*1.3;const min=Math.max(1,Math.round(real/80));return (real<1000?Math.round(real/10)*10+" m":(real/1000).toFixed(1)+" km")+" · "+min+" min walk"}
+function distLabel(v){return LOC&&S.near?walkLabel(distBetween(LOC,v)):""}
+function note(t){const n=$("note");n.textContent=t;n.hidden=!t}
+function locate(turnOn){
+  if(!navigator.geolocation){note("Your browser can't share your location, so Near me isn't available here.");return}
+  note("Finding where you are…");
+  navigator.geolocation.getCurrentPosition(pos=>{
+    LOC={lat:pos.coords.latitude,lng:pos.coords.longitude};S.near=true;
+    const far=distBetween(LOC,{lat:52.2053,lng:0.1218})>15000;
+    note(far?"You look to be outside Cambridge, so distances are long. They're measured from where you are now.":"");
+    if(S.view==="whatson")setView("venues");
+    renderChips();render();drawPins();
+    if(map&&!far){if(map.getContainer().offsetWidth)map.flyTo([LOC.lat,LOC.lng],Math.max(map.getZoom(),15.5),{duration:.6});else PENDING_CENTER=true}
+  },err=>{
+    S.near=false;renderChips();
+    note(window.claude&&!PUBLIC?"Near me doesn't work inside Claude. It works on the public site, smiffscambridgecompass.github.io.":err&&err.code===1?"Location is switched off for this site. Allow location in your browser settings to use Near me.":"Couldn't get your location just now. Try again in a moment.");
+  },{enableHighAccuracy:true,timeout:12000,maximumAge:60000});
+}
+
+/* ---------- pub crawl ---------- */
+let CRAWL=[],CRAWL_AUTO=true,CRAWL_FROM_ME=false;
+try{const c=JSON.parse(localStorage.getItem("smiff-crawl")||"null");if(c&&Array.isArray(c.ids)){CRAWL=c.ids;CRAWL_AUTO=c.auto!==false}}catch(e){}
+function saveCrawl(){try{localStorage.setItem("smiff-crawl",JSON.stringify({ids:CRAWL,auto:CRAWL_AUTO}))}catch(e){}}
+function crawlStart(){return CRAWL_FROM_ME&&LOC?LOC:null}
+function pathLen(pts,start){let s=start&&pts.length?distBetween(start,pts[0]):0;for(let i=1;i<pts.length;i++)s+=distBetween(pts[i-1],pts[i]);return s}
+function orderCrawl(ids){
+  const pts=ids.map(id=>BYID[id]).filter(Boolean);if(pts.length<2)return pts.map(p=>p.id);
+  const start=crawlStart();
+  const nn=first=>{const rest=pts.slice();const out=[];let cur=start;if(first!=null){out.push(rest.splice(first,1)[0]);cur=out[0]}
+    while(rest.length){let bi=0,bd=Infinity;rest.forEach((p,i)=>{const d=distBetween(cur,p);if(d<bd){bd=d;bi=i}});cur=rest.splice(bi,1)[0];out.push(cur)}return out};
+  const twoOpt=arr=>{let best=arr,imp=true;while(imp){imp=false;for(let i=0;i<best.length-1;i++)for(let k=i+1;k<best.length;k++){const c=best.slice(0,i).concat(best.slice(i,k+1).reverse(),best.slice(k+1));if(pathLen(c,start)<pathLen(best,start)-1){best=c;imp=true}}}return best};
+  let best=null;
+  const starts=start?[null]:pts.map((_,i)=>i);
+  for(const f of starts){const r=twoOpt(nn(f));if(!best||pathLen(r,start)<pathLen(best,start))best=r}
+  return best.map(p=>p.id);
+}
+function toggleCrawl(id){
+  const i=CRAWL.indexOf(id);
+  if(i>=0)CRAWL.splice(i,1);else{CRAWL.push(id);if(CRAWL_AUTO)CRAWL=orderCrawl(CRAWL)}
+  saveCrawl();refreshAll();
+}
+function crawlBtn(v){const on=CRAWL.includes(v.id);return `<button class="crawlbtn" data-crawladd="${esc(v.id)}" aria-pressed="${on}">${on?"✓ On your crawl":"+ Add to crawl"}</button>`}
+function crawlAction(a,id,btn){
+  const i=CRAWL.indexOf(id);
+  if(a==="up"&&i>0){[CRAWL[i-1],CRAWL[i]]=[CRAWL[i],CRAWL[i-1]];CRAWL_AUTO=false}
+  else if(a==="down"&&i>=0&&i<CRAWL.length-1){[CRAWL[i+1],CRAWL[i]]=[CRAWL[i],CRAWL[i+1]];CRAWL_AUTO=false}
+  else if(a==="del"&&i>=0){CRAWL.splice(i,1)}
+  else if(a==="order"){CRAWL_AUTO=true;CRAWL=orderCrawl(CRAWL)}
+  else if(a==="clear"){if(btn.dataset.confirm!=="1"){btn.dataset.confirm="1";btn.textContent="Tap again to clear";setTimeout(()=>{if(btn.isConnected){btn.dataset.confirm="";btn.textContent="Clear crawl"}},3000);return}CRAWL=[];CRAWL_AUTO=true}
+  else if(a==="open"){openVenue(id,true);return}
+  saveCrawl();refreshAll();
+}
+function placeQ(v){return encodeURIComponent(v.name+", "+v.address+", Cambridge "+v.postcode)}
+function crawlMapsLink(stops){
+  const start=crawlStart();
+  const seq=stops.slice();
+  const origin=start?start.lat+","+start.lng:placeQ(seq.shift());
+  const dest=placeQ(seq.pop());
+  const way=seq.map(placeQ).join("%7C");
+  return "https://www.google.com/maps/dir/?api=1&travelmode=walking&origin="+origin+"&destination="+dest+(way?"&waypoints="+way:"");
+}
+function renderCrawl(p){
+  const stops=CRAWL.map(id=>BYID[id]).filter(Boolean);
+  let h=`<div class="crawl-head"><h2>Your pub crawl</h2><p>${stops.length?"In walking order. Distances are estimates on foot.":"Tap “+ Add to crawl” on any pub, from the list or a pin on the map. I'll put them in the best walking order and give you a route for Google Maps."}</p></div>`;
+  if(stops.length){
+    h+=`<div class="crawl-tools"><button data-crawl="order">Best walking order</button>${LOC?`<label><input type="checkbox" id="crawl-fromme" ${CRAWL_FROM_ME?"checked":""}> Start from where I am</label>`:""}</div><ol class="crawl">`;
+    let prev=crawlStart(),tot=0;
+    stops.forEach((v,i)=>{
+      const leg=prev?distBetween(prev,v):0;tot+=leg;
+      const st=openStatus(v);
+      h+=`<li><span class="num">${i+1}</span><div><button class="nm" data-crawl="open" data-id="${esc(v.id)}">${esc(v.name)}</button><div class="sub">${esc(v.address)}</div>${st?`<div class="st ${st.open?"open":"closed"}">${esc(st.text)}</div>`:""}${prev?`<div class="leg">${walkLabel(leg)} from ${i===0?"you":"the last stop"}</div>`:""}</div><div class="ctrl"><button data-crawl="up" data-id="${esc(v.id)}" aria-label="Move ${esc(v.name)} earlier" ${i===0?"disabled":""}>↑</button><button data-crawl="down" data-id="${esc(v.id)}" aria-label="Move ${esc(v.name)} later" ${i===stops.length-1?"disabled":""}>↓</button><button data-crawl="del" data-id="${esc(v.id)}" aria-label="Remove ${esc(v.name)}">×</button></div></li>`;
+      prev=v;
+    });
+    h+=`</ol>`;
+    if(stops.length>1||crawlStart()) h+=`<p class="crawl-tot">${stops.length} stop${stops.length===1?"":"s"} · ${walkLabel(tot).replace(" walk"," walking")} in total</p>`;
+    h+=`<div class="crawl-actions">${stops.length>1||crawlStart()?`<a href="${esc(crawlMapsLink(stops))}" target="_blank" rel="noopener">Open walking route in Google Maps ↗</a>`:""}<button data-crawl="clear">Clear crawl</button></div>`;
+  }
+  h+=footer();
+  p.innerHTML=h;
+}
+
+/* ---------- map extras: you + crawl route ---------- */
+let extraLayer=null;
+function drawExtras(){
+  if(!map)return;
+  if(extraLayer)extraLayer.remove();
+  extraLayer=L.layerGroup();
+  if(LOC){L.circleMarker([LOC.lat,LOC.lng],{renderer:pinR,pane:"pins",interactive:false,radius:8,color:"#ffffff",weight:3,fillColor:"#2F7FD8",fillOpacity:1}).addTo(extraLayer)}
+  const stops=CRAWL.map(id=>BYID[id]).filter(Boolean);
+  if(stops.length){
+    const pts=(crawlStart()?[crawlStart()]:[]).concat(stops).map(v=>[v.lat,v.lng]);
+    if(pts.length>1)L.polyline(pts,{pane:"labels",interactive:false,color:css("--accent"),weight:4,opacity:.9,dashArray:"2 9",lineCap:"round"}).addTo(extraLayer);
+    stops.forEach((v,i)=>L.marker([v.lat,v.lng],{pane:"crawlnum",interactive:false,keyboard:false,icon:L.divIcon({className:"cnum",html:String(i+1),iconSize:[20,20]})}).addTo(extraLayer));
+  }
+  extraLayer.addTo(map);
+}
 
 /* ---------- views ---------- */
 function render(){
   const p=$("pane");
   if(!V.length){return}
   if(S.view==="detail"&&S.sel) return renderDetail(BYID[S.sel]);
+  if(S.view==="crawl"||(S.view==="map"&&S.prev==="crawl")) return renderCrawl(p);
   if(S.view==="venues"||(S.view==="map"&&S.prev==="venues")) return renderVenues(p);
   return renderWhatson(p);
 }
 function itemRow(v,e,showDay){
   const k=e.kind||"event";const c=catColor(KIND_CAT[k]||"pub");
-  const extra=(e.weekly?`<span class="badge">${showDay?"Every "+esc(e.day):"Weekly"}</span>`:"")+(e.manual?`<span class="badge you">Added by you</span>`:e.by==="J"?`<span class="badge you">From you</span>`:"");
-  return `<li class="item"><button data-v="${esc(v.id)}" style="--c:${c}"><span class="bar"></span><span><span class="t">${esc(e.title)}</span>${extra}<br><span class="v">${esc(v.name)} · ${esc(v.address)}</span></span><span class="tag">${esc(KIND_LABEL[k]||"Event")}</span></button></li>`;
+  const extra=(e.weekly?`<span class="badge">${showDay?"Every "+esc(e.day):"Weekly"}</span>`:"")+(e.manual?`<span class="badge you">${YOU_ADDED}</span>`:e.by==="J"?`<span class="badge you">${FROM_YOU}</span>`:"");
+  return `<li class="item"><button data-v="${esc(v.id)}" style="--c:${c}"><span class="bar"></span><span><span class="t">${esc(e.title)}</span>${extra}<br><span class="v">${esc(v.name)} · ${esc(v.address)}${distLabel(v)?` <span class="dist">· ${distLabel(v)}</span>`:""}</span></span><span class="tag">${esc(KIND_LABEL[k]||"Event")}</span></button></li>`;
 }
 function kindPass(e){return S.kind==="all"||e.kind===S.kind||(S.kind==="event"&&(e.kind==="event"||e.kind==="comedy"))}
 function renderWhatson(p){
@@ -1032,7 +1246,7 @@ function renderWhatson(p){
     vs.forEach(v=>onDay(v,d).forEach(e=>{if(i>6&&e.weekly)return;if(kindPass(e))rows.push([v,e])}));
     if(!rows.length)continue;any=true;
     const ord={music:0,club:1,comedy:2,event:3,quiz:4,offer:5};
-    rows.sort((a,b)=>(ord[a[1].kind]??9)-(ord[b[1].kind]??9)||(a[1].weekly?1:0)-(b[1].weekly?1:0)||a[0].name.localeCompare(b[0].name));
+    rows.sort((a,b)=>(S.near&&LOC?distM(a[0])-distM(b[0]):0)||(ord[a[1].kind]??9)-(ord[b[1].kind]??9)||(a[1].weekly?1:0)-(b[1].weekly?1:0)||a[0].name.localeCompare(b[0].name));
     const title=i===0?"Tonight":i===1?"Tomorrow":fmt(d,{weekday:"long"});
     out+=`<section class="day"><h2>${title} <small>${fmt(d,{day:"numeric",month:"short"})}</small></h2><ul class="items">${rows.map(([v,e])=>itemRow(v,e)).join("")}</ul></section>`;
   }
@@ -1055,24 +1269,28 @@ function nextUp(v){
   return "";
 }
 function renderVenues(p){
-  const vs=visible().slice().sort((a,b)=>(isFav(b)?1:0)-(isFav(a)?1:0)||(onDay(b,TODAY).length?1:0)-(onDay(a,TODAY).length?1:0)||a.name.localeCompare(b.name));
-  let out=`<p class="count">${vs.length} venue${vs.length===1?"":"s"}${S.socials?" to check on Instagram or Facebook":""} · favourites, then on tonight, first</p><ul class="vlist">`;
+  const near=S.near&&LOC;
+  const vs=visible().slice().sort((a,b)=>near?distM(a)-distM(b):((isFav(b)?1:0)-(isFav(a)?1:0)||(onDay(b,TODAY).length?1:0)-(onDay(a,TODAY).length?1:0)||a.name.localeCompare(b.name)));
+  const bits=[];if(S.open)bits.push("open now");AMEN.forEach(([k,l])=>{if(S.am[k])bits.push(l.toLowerCase())});
+  let out=`<p class="count">${vs.length} venue${vs.length===1?"":"s"}${bits.length?" · "+esc(bits.join(", ")):""}${S.socials?" to check on Instagram or Facebook":""} · ${near?"nearest first":"favourites, then on tonight, first"}</p><ul class="vlist">`;
   out+=vs.map(v=>{const pc=primary(v);const nu=nextUp(v);
-    return `<li class="vrow"><button data-v="${esc(v.id)}" style="--c:${catColor(pc)}"><span class="pin"></span><span><span class="n">${isFav(v)?'<span class="star" title="Favourite">★</span> ':""}${esc(v.name)}</span><br><span class="a">${esc(v.address)}</span>${nu?`<div class="now">${nu}</div>`:""}${v.checkSocials?`<div class="flag">Check socials · ${esc(v.checkSocials)}</div>`:""}</span><span class="cats">${(v.cats||[]).map(c=>`<i style="--c:${catColor(c)}" title="${esc(CATS.find(x=>x[0]===c)?.[1]||c)}"></i>`).join("")}</span></button></li>`}).join("");
+    return `<li class="vrow"><button data-v="${esc(v.id)}" style="--c:${catColor(pc)}"><span class="pin"></span><span><span class="n">${isFav(v)?'<span class="star" title="Favourite">★</span> ':""}${esc(v.name)}</span><br><span class="a">${esc(v.address)}</span>${nu?`<div class="now">${nu}</div>`:""}${statusHtml(v)}${v.checkSocials&&!PUBLIC?`<div class="flag">Check socials · ${esc(v.checkSocials)}</div>`:""}</span><span class="cats">${(v.cats||[]).map(c=>`<i style="--c:${catColor(c)}" title="${esc(CATS.find(x=>x[0]===c)?.[1]||c)}"></i>`).join("")}</span></button></li>`}).join("");
   out+=`</ul>`;
-  if(!vs.length) out+=`<p class="empty">No venues match. Clear the search or pick “All”.</p>`;
+  if(!vs.length) out+=`<p class="empty">No venues match. Turn off a filter or clear the search.</p>`;
   out+=footer();
   p.innerHTML=out;
 }
 function footer(){
-  return `<p class="foot">Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; weekly nights marked “From you” come from you. Checked ${esc(META.checkedLabel||"")}. Map is a simplified drawing: pins placed by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright).</p>`;
+  return `<p class="foot">Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}. Map is a simplified drawing: pins placed by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright).</p>`;
 }
 $("pane").addEventListener("click",e=>{
   const k=e.target.closest("[data-kind]");if(k){S.kind=k.dataset.kind;render();return}
   const b=e.target.closest("[data-v]");if(b){openVenue(b.dataset.v,true);return}
   if(e.target.closest(".back")){S.sel=null;setView(S.prev);render();drawPins();return}
   const d=e.target.closest(".del");if(d){removeUpdate(d.dataset.id,d);return}
+  const c=e.target.closest("[data-crawl]");if(c){crawlAction(c.dataset.crawl,c.dataset.id,c);return}
 });
+$("pane").addEventListener("change",e=>{if(e.target.id==="crawl-fromme"){CRAWL_FROM_ME=e.target.checked;if(CRAWL_AUTO)CRAWL=orderCrawl(CRAWL);saveCrawl();render();drawPins()}});
 
 function openVenue(id,fly){
   const v=BYID[id];if(!v)return;
@@ -1085,14 +1303,15 @@ function mapsLink(v){return "https://www.google.com/maps/search/?api=1&query="+e
 function sectionsHtml(v){
   const L=listings(v);let h="";
   const tonight=onDay(v,TODAY);
-  if(L.dated.length) h+=`<div class="sec"><h3>Coming up</h3><ul>${L.dated.slice(0,15).map(e=>`<li><span class="when">${e.date===T0?"Tonight":fmt(pd(e.date))}</span><span class="what">${esc(e.title)}${e.manual?' <span class="badge you">Added by you</span>':""}</span>${e.manual&&canWrite?`<button class="del" data-id="${esc(e.id)}" aria-label="Remove">Remove</button>`:""}</li>`).join("")}</ul></div>`;
-  if(L.weekly.length) h+=`<div class="sec"><h3>Regular nights</h3><ul>${L.weekly.map(w=>`<li><span class="when">${esc(DAYLONG[w.day]||w.day)}</span><span class="what">${esc(w.title)}${w.manual?' <span class="badge you">Added by you</span>':w.by==="J"?' <span class="badge you">From you</span>':""}</span>${w.manual&&canWrite?`<button class="del" data-id="${esc(w.id)}" aria-label="Remove">Remove</button>`:""}</li>`).join("")}</ul></div>`;
-  if(L.offers.length) h+=`<div class="sec"><h3>Offers</h3><ul>${L.offers.map(o=>`<li><span class="what">${esc(o.text)}${o.manual?' <span class="badge you">Added by you</span>':""}</span>${o.manual&&canWrite?`<button class="del" data-id="${esc(o.id)}" aria-label="Remove">Remove</button>`:""}</li>`).join("")}</ul></div>`;
+  if(L.dated.length) h+=`<div class="sec"><h3>Coming up</h3><ul>${L.dated.slice(0,15).map(e=>`<li><span class="when">${e.date===T0?"Tonight":fmt(pd(e.date))}</span><span class="what">${esc(e.title)}${e.manual?' <span class="badge you">'+YOU_ADDED+'</span>':""}</span>${e.manual&&canWrite?`<button class="del" data-id="${esc(e.id)}" aria-label="Remove">Remove</button>`:""}</li>`).join("")}</ul></div>`;
+  if(L.weekly.length) h+=`<div class="sec"><h3>Regular nights</h3><ul>${L.weekly.map(w=>`<li><span class="when">${esc(DAYLONG[w.day]||w.day)}</span><span class="what">${esc(w.title)}${w.manual?' <span class="badge you">'+YOU_ADDED+'</span>':w.by==="J"?' <span class="badge you">'+FROM_YOU+'</span>':""}</span>${w.manual&&canWrite?`<button class="del" data-id="${esc(w.id)}" aria-label="Remove">Remove</button>`:""}</li>`).join("")}</ul></div>`;
+  if(L.offers.length) h+=`<div class="sec"><h3>Offers</h3><ul>${L.offers.map(o=>`<li><span class="what">${esc(o.text)}${o.manual?' <span class="badge you">'+YOU_ADDED+'</span>':""}</span>${o.manual&&canWrite?`<button class="del" data-id="${esc(o.id)}" aria-label="Remove">Remove</button>`:""}</li>`).join("")}</ul></div>`;
   if(!L.dated.length&&!L.weekly.length&&!L.offers.length) h+=`<div class="sec"><h3>Coming up</h3><p class="empty">No dates or offers found on their website.</p></div>`;
   if(v.hours){const th=todayHours(v.hours);h+=`<div class="sec"><h3>Opening hours</h3>${th?`<p class="today">Today: ${esc(th)}</p>`:""}<p>${esc(v.hours).replace(/ · /g,"<br>")}</p></div>`}
   if(v.food) h+=`<div class="sec"><h3>Food</h3><p>${esc(v.food)}</p></div>`;
-  if(L.notes.length) h+=`<div class="sec"><h3>Good to know</h3><ul>${L.notes.map(n=>`<li><span class="what">${esc(n.text)}${n.manual?' <span class="badge you">Added by you</span>':""}</span>${n.manual&&canWrite?`<button class="del" data-id="${esc(n.id)}" aria-label="Remove">Remove</button>`:""}</li>`).join("")}</ul></div>`;
-  if((v.features||[]).length) h+=`<div class="sec"><h3>Features</h3><div class="feat">${v.features.map(f=>`<span>${esc(f)}</span>`).join("")}</div></div>`;
+  if(L.notes.length) h+=`<div class="sec"><h3>Good to know</h3><ul>${L.notes.map(n=>`<li><span class="what">${esc(n.text)}${n.manual?' <span class="badge you">'+YOU_ADDED+'</span>':""}</span>${n.manual&&canWrite?`<button class="del" data-id="${esc(n.id)}" aria-label="Remove">Remove</button>`:""}</li>`).join("")}</ul></div>`;
+  {const am=AMEN.filter(([k])=>v.amen&&v.amen[k]).map(([,l,i])=>i+" "+l);const fe=(v.features||[]).filter(f=>!/garden|real fire|sports tv/i.test(f));const all=am.concat(fe);
+  if(all.length) h+=`<div class="sec"><h3>Features</h3><div class="feat">${all.map(f=>`<span>${esc(f)}</span>`).join("")}</div></div>`;}
   h+=`<p class="src">Details from <a href="${esc(v.src)}" target="_blank" rel="noopener">${esc(hostOf(v.src))}</a>${v.eventsUrl?` · listings from <a href="${esc(v.eventsUrl)}" target="_blank" rel="noopener">${esc(hostOf(v.eventsUrl))}</a>`:""} · checked ${esc(META.checkedLabel||"")}</p>`;
   return h;
 }
@@ -1102,9 +1321,10 @@ function renderDetail(v){
   const cats=(v.cats||[]).map(c=>`<span style="--c:${catColor(c)}">${esc(CATS.find(x=>x[0]===c)?.[1]||c)}</span>`).join("");
   let h=`<button class="back">← ${S.prev==="venues"?"All venues":"What's on"}</button>
   <div class="d-head"><h2>${esc(v.name)}</h2><div class="d-cats">${cats}</div><p class="d-addr">${esc(v.address)}, ${esc(v.postcode)}</p>${v.group?`<p class="d-group">${esc(v.group.startsWith("Greene King-owned")?v.group:v.group+" pub")}</p>`:""}${favBtn(v)}</div>
-  <div class="links"><a href="${esc(mapsLink(v))}" target="_blank" rel="noopener">Directions ↗</a>${v.website?`<a href="${esc(v.website)}" target="_blank" rel="noopener">Website ↗</a>`:""}${v.eventsUrl&&v.eventsUrl!==v.website?`<a href="${esc(v.eventsUrl)}" target="_blank" rel="noopener">What's on ↗</a>`:""}</div>`;
+  ${statusHtml(v,true)}
+  <div class="links">${crawlBtn(v)}<a href="${esc(mapsLink(v))}" target="_blank" rel="noopener">Directions ↗</a>${v.website?`<a href="${esc(v.website)}" target="_blank" rel="noopener">Website ↗</a>`:""}${v.eventsUrl&&v.eventsUrl!==v.website?`<a href="${esc(v.eventsUrl)}" target="_blank" rel="noopener">What's on ↗</a>`:""}</div>`;
   if(closedNote(v)) h+=`<p class="notice"><b>${esc(closedNote(v))}</b>Temporarily closed; due to reopen on or before then.</p>`;
-  if(v.checkSocials) h+=`<p class="notice"><b>Check their socials</b>${esc(v.checkSocials)}. Add anything you spot below and it shows on the map.</p>`;
+  if(v.checkSocials&&!PUBLIC) h+=`<p class="notice"><b>Check their socials</b>${esc(v.checkSocials)}. Add anything you spot below and it shows on the map.</p>`;
   h+=`<div id="d-sections">${sectionsHtml(v)}</div>`;
   if(db&&canWrite) h+=addFormHtml();
   $("pane").innerHTML=h;
@@ -1151,7 +1371,7 @@ function initMap(){
   map.zoomControl.setPosition("topright");
   map.setView([52.2048,0.1250],mob?14.5:15);
   /* own layers: base drawing and labels never catch taps; pins always sit on top */
-  [["base",350],["labels",450],["pins",640]].forEach(([n,z])=>{const pn=map.createPane(n);pn.style.zIndex=z;if(n!=="pins")pn.style.pointerEvents="none"});
+  [["base",350],["labels",450],["pins",640],["crawlnum",660]].forEach(([n,z])=>{const pn=map.createPane(n);pn.style.zIndex=z;if(n!=="pins")pn.style.pointerEvents="none"});
   baseR=L.canvas({padding:.5,pane:"base"});
   drawBase();
   $("legend").innerHTML=CATS.map(([k,l])=>`<div style="--c:${catColor(k)}"><i></i>${l}</div>`).join("")+`<p>Simplified map. Pins are placed by postcode.</p>`;
@@ -1198,6 +1418,7 @@ function drawPins(){
     m.addTo(pinLayer);
   });
   pinLayer.addTo(map);
+  drawExtras();
 }
 const canHover=matchMedia("(hover:hover)").matches;
 function pinClick(v,m){
@@ -1232,32 +1453,16 @@ function cardHtml(v){
   if(L2.offers.length){
     h+=`<div class="c-sec"><div class="c-lab">Offers</div><ul>${L2.offers.slice(0,3).map(o=>`<li>${esc(o.text)}</li>`).join("")}</ul>${L2.offers.length>3?`<span class="c-more">+${L2.offers.length-3} more</span>`:""}</div>`;
   }
+  h+=statusHtml(v,true);
   const th=closedNote(v)?null:todayHours(v.hours);
   if(closedNote(v)) h+=`<p class="c-flag">${esc(closedNote(v))}</p>`;
   if(th) h+=`<div class="c-sec"><div class="c-lab">Open today</div><p>${esc(th)}</p></div>`;
   else if(v.hours) h+=`<div class="c-sec"><div class="c-lab">Opening hours</div><p>${esc(v.hours).replace(/ · /g,"<br>")}</p></div>`;
   if(v.food) h+=`<div class="c-sec"><div class="c-lab">Food</div><p>${esc(v.food)}</p></div>`;
   if(!today.length&&!upcoming.length&&!otherWeekly.length&&!L2.offers.length) h+=`<p class="c-more">No dates or offers listed on their website.</p>`;
-  if(v.checkSocials) h+=`<p class="c-flag">Check socials · ${esc(v.checkSocials)}</p>`;
-  h+=`<div class="c-btns"><button data-open="${esc(v.id)}">Full details</button>${db&&canWrite?`<a href="#" data-fav="${esc(v.id)}" role="button">${isFav(v)?"★ Unfavourite":"☆ Favourite"}</a>`:""}<a href="${esc(mapsLink(v))}" target="_blank" rel="noopener">Directions ↗</a>${v.website?`<a href="${esc(v.website)}" target="_blank" rel="noopener">Website ↗</a>`:""}</div></div>`;
+  if(v.checkSocials&&!PUBLIC) h+=`<p class="c-flag">Check socials · ${esc(v.checkSocials)}</p>`;
+  h+=`<div class="c-btns"><button data-open="${esc(v.id)}">Full details</button>${crawlBtn(v)}${db&&canWrite?`<a href="#" data-fav="${esc(v.id)}" role="button">${isFav(v)?"★ Unfavourite":"☆ Favourite"}</a>`:""}<a href="${esc(mapsLink(v))}" target="_blank" rel="noopener">Directions ↗</a>${v.website?`<a href="${esc(v.website)}" target="_blank" rel="noopener">Website ↗</a>`:""}</div></div>`;
   return h;
-}
-/* "Mon–Thu 12–11pm · Fri–Sat 12pm–12am" -> today's part, or null if it can't tell */
-function todayHours(h){
-  if(!h)return null;
-  const O=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],t=O.indexOf(DAYS[TODAY.getDay()]);
-  const D="(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)",R=D+"(?:\\s*[–-]\\s*"+D+")?";
-  const re=new RegExp("^(Daily|"+R+"(?:\\s*[&,]\\s*"+R+")*)\\s+(.+)$");
-  for(const seg of h.split(" · ")){
-    const m=seg.trim().match(re);if(!m)continue;
-    if(m[1]==="Daily")return m[2];
-    for(const part of m[1].split(/\s*[&,]\s*/)){
-      const r=part.split(/\s*[–-]\s*/),a=O.indexOf(r[0]),b=r[1]?O.indexOf(r[1]):a;
-      if(a<0||b<0)continue;
-      if(a<=b?(t>=a&&t<=b):(t>=a||t<=b))return /^closed/i.test(m[2])?"Closed today":m[2];
-    }
-  }
-  return null;
 }
 function favBtn(v){
   if(db&&canWrite) return `<button class="favbtn" data-fav="${esc(v.id)}" aria-pressed="${isFav(v)}"><span class="star">${isFav(v)?"★":"☆"}</span>${isFav(v)?"Favourite":"Add to favourites"}</button>`;
@@ -1274,6 +1479,7 @@ async function toggleFav(id){
   catch(e){ if(was)FAVS.add(id);else FAVS.delete(id); refreshAll() }
 }
 function refreshAll(){
+  $("tab-crawl").textContent=CRAWL.length?`Crawl (${CRAWL.length})`:"Crawl";
   renderChips();
   if(S.view==="detail"&&S.sel) renderDetail(BYID[S.sel]); else render();
   drawPins();
@@ -1281,6 +1487,8 @@ function refreshAll(){
   if(!$("mcard").hidden&&S.sel){$("mcard").innerHTML=`<button class="x" data-close-card aria-label="Close">&times;</button>`+cardHtml(BYID[S.sel])}
 }
 document.addEventListener("click",e=>{
+  const ca=e.target.closest("[data-crawladd]");
+  if(ca){e.preventDefault();toggleCrawl(ca.dataset.crawladd);return}
   const fb=e.target.closest("[data-fav]");
   if(fb){e.preventDefault();toggleFav(fb.dataset.fav);return}
   const o=e.target.closest("[data-open]");
