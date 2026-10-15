@@ -836,6 +836,25 @@ form.add .status{font-size:.82rem;color:var(--muted);min-height:1.2em;margin:0}
 .mlabel{font-size:11px;color:var(--label);white-space:nowrap;font-weight:600;letter-spacing:.02em;text-shadow:0 0 3px var(--land),0 0 3px var(--land)}
 .mlabel.green{font-style:italic;font-weight:500}
 .mlabel.water{color:var(--water);font-style:italic}
+/* street map tiles: muted so pins stand out; inverted for dark mode */
+.leaflet-tile-pane{filter:saturate(.45) brightness(1.04) contrast(.96)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.82) contrast(.92) saturate(.35)}}
+:root[data-theme="dark"] .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.82) contrast(.92) saturate(.35)}
+/* venue names beside pins */
+.plabel{font:600 12px/16px var(--body);height:16px;box-sizing:border-box;padding:0 5px;border-radius:4px;white-space:nowrap;overflow:hidden;color:var(--ink);background:color-mix(in srgb,var(--panel) 90%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--ink) 14%,transparent);cursor:pointer}
+.plabel.fav{box-shadow:0 0 0 1.5px var(--fav)}
+.plabel.sel{background:var(--ink);color:var(--panel);box-shadow:none}
+/* walking rings */
+.ring-l{width:0!important;height:0!important}
+.ring-l span{position:absolute;transform:translate(-50%,-50%);font:600 10.5px/15px var(--body);white-space:nowrap;padding:0 5px;border-radius:4px;color:var(--ink);background:color-mix(in srgb,var(--panel) 88%,transparent)}
+.legend .ring-key{width:10px;height:10px;border:1.5px dashed var(--ink);border-radius:50%;opacity:.7;display:block;box-sizing:border-box}
+.leaflet-control-scale-line{background:color-mix(in srgb,var(--panel) 85%,transparent);color:var(--ink);border-color:var(--ink);font-family:var(--body)}
+.leaflet-control-attribution{background:color-mix(in srgb,var(--panel) 85%,transparent)!important;color:var(--muted);font-family:var(--body)}
+.leaflet-control-attribution a{color:var(--accent)}
+.linkbtn{all:unset;cursor:pointer;color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.linkbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.c-near{margin:0;padding:0;list-style:none}
+.c-near li{padding:2px 0}
 .leaflet-tooltip.vt{background:var(--panel);color:var(--ink);border:1px solid var(--line);font-family:var(--body);font-weight:600;box-shadow:0 2px 8px rgb(0 0 0/.12)}
 .leaflet-tooltip.vt::before{display:none}
 .leaflet-bar a,.leaflet-bar a:hover{background:var(--panel);color:var(--ink);border-bottom-color:var(--line)}
@@ -1102,7 +1121,7 @@ function setView(v){
   app.classList.toggle("show-map",v==="map");
   $("tab-crawl").textContent=CRAWL.length?`Crawl (${CRAWL.length})`:"Crawl";
   [["whatson","tab-whatson"],["venues","tab-venues"],["crawl","tab-crawl"],["map","tab-map"]].forEach(([k,id])=>$(id).setAttribute("aria-current",String(S.view===k||(S.view==="detail"&&S.prev===k&&!isMobile()))));
-  if(v==="map"&&map)setTimeout(()=>{map.invalidateSize();if(PENDING_CENTER&&LOC){PENDING_CENTER=false;map.setView([LOC.lat,LOC.lng],Math.max(map.getZoom(),15.5))}},0);
+  if(v==="map"&&map)setTimeout(()=>{map.invalidateSize();if(PENDING_CENTER&&LOC){PENDING_CENTER=false;map.setView([LOC.lat,LOC.lng],Math.max(map.getZoom(),15.5))}placeLabels()},0);
   if(v!=="map")$("mcard").hidden=true;
 }
 $("tab-whatson").onclick=()=>{setView("whatson");S.sel=null;render();drawPins()};
@@ -1165,6 +1184,8 @@ function statusHtml(v,block){const st=openStatus(v);const d=distLabel(v);if(!st&
 function distBetween(a,b){const R=6371000,toR=Math.PI/180;const dLa=(b.lat-a.lat)*toR,dLo=(b.lng-a.lng)*toR;const x=Math.sin(dLa/2)**2+Math.cos(a.lat*toR)*Math.cos(b.lat*toR)*Math.sin(dLo/2)**2;return 2*R*Math.asin(Math.sqrt(x))}
 function distM(v){return LOC?distBetween(LOC,v):0}
 function walkLabel(m){const real=m*1.3;const min=Math.max(1,Math.round(real/80));return (real<1000?Math.round(real/10)*10+" m":(real/1000).toFixed(1)+" km")+" · "+min+" min walk"}
+function walkMin(m){return Math.max(1,Math.round(m*1.3/80))}
+function nearby(v,n){const pool=visible().length>n?visible():V;return pool.filter(x=>x.id!==v.id&&!closedNote(x)).map(x=>[x,distBetween(v,x)]).sort((a,b)=>a[1]-b[1]).slice(0,n)}
 function distLabel(v){return LOC&&S.near?walkLabel(distBetween(LOC,v)):""}
 function note(t){const n=$("note");n.textContent=t;n.hidden=!t}
 function locate(turnOn){
@@ -1251,6 +1272,16 @@ function drawExtras(){
   if(!map)return;
   if(extraLayer)extraLayer.remove();
   extraLayer=L.layerGroup();
+  /* walking-time rings around the picked place, or around you with Near me on */
+  const ctr=S.sel&&BYID[S.sel]?BYID[S.sel]:(LOC&&S.near?LOC:null);
+  if(ctr){
+    const ink=css("--ink"),acc=css("--accent");
+    [5,10,15].forEach(min=>{
+      const r=min*80/1.3;
+      L.circle([ctr.lat,ctr.lng],{pane:"rings",radius:r,interactive:false,color:ink,weight:1.3,opacity:.5,dashArray:"5 6",fill:min===5,fillColor:acc,fillOpacity:.07}).addTo(extraLayer);
+      L.marker([ctr.lat+r/111320,ctr.lng],{pane:"labels",interactive:false,keyboard:false,icon:L.divIcon({className:"ring-l",html:`<span>${min} min walk</span>`,iconSize:[0,0]})}).addTo(extraLayer);
+    });
+  }
   if(LOC){L.circleMarker([LOC.lat,LOC.lng],{renderer:pinR,pane:"pins",interactive:false,radius:8,color:"#ffffff",weight:3,fillColor:"#2F7FD8",fillOpacity:1}).addTo(extraLayer)}
   const stops=CRAWL.map(id=>BYID[id]).filter(Boolean);
   if(stops.length){
@@ -1332,7 +1363,7 @@ function renderVenues(p){
   p.innerHTML=out;
 }
 function footer(){
-  return `<p class="foot">Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}. Map is a simplified drawing: pins placed by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright).</p>${PUBLIC?`<p class="foot fb" style="border:0;padding-top:0">Spotted something wrong, or know a gig or quiz that's missing? <a href="${esc(mailHref("Smiff's Cambridge Compass"))}">Email Smiff</a>.</p><p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers are counted anonymously, without cookies. Your pub crawl is saved on your device.</p>`:""}`;
+  return `<p class="foot">Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}. ${USE_TILES?"Street map © OpenStreetMap contributors. ":"Map is a simplified drawing. "}Pin positions from CAMRA, Songkick and DesignMyNight, otherwise by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright). Walking times are estimates.</p>${PUBLIC?`<p class="foot fb" style="border:0;padding-top:0">Spotted something wrong, or know a gig or quiz that's missing? <a href="${esc(mailHref("Smiff's Cambridge Compass"))}">Email Smiff</a>.</p><p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers are counted anonymously, without cookies. Your pub crawl is saved on your device. The street map is loaded from OpenStreetMap.</p>`:""}`;
 }
 $("pane").addEventListener("click",e=>{
   const k=e.target.closest("[data-kind]");if(k){S.kind=(k.classList.contains("tn")&&S.kind===k.dataset.kind)?"all":k.dataset.kind;render();announce();const again=$("pane").querySelector((k.classList.contains("tn")?".tn":".kinds .chip")+'[data-kind="'+k.dataset.kind+'"]');if(again)again.focus({preventScroll:true});return}
@@ -1365,6 +1396,7 @@ function sectionsHtml(v){
   {const am=AMEN.filter(([k])=>hasAm(v,k)).map(([,l,i])=>ICO(i)+" "+esc(l));const fe=(v.features||[]).filter(f=>!/garden|real fire|sports tv|dog/i.test(f)).map(esc);const all=am.concat(fe);
   if(all.length) h+=`<div class="sec"><h3>Features</h3><div class="feat">${all.map(f=>`<span>${f}</span>`).join("")}</div></div>`;}
   h+=accessHtml(v);
+  {const nb=nearby(v,5);if(nb.length)h+=`<div class="sec"><h3>Close by</h3><ul>${nb.map(([x,m])=>`<li><span class="when">${walkMin(m)} min walk</span><span class="what"><button class="linkbtn" data-v="${esc(x.id)}">${esc(x.name)}</button></span></li>`).join("")}</ul></div>`}
   h+=`<p class="src">Details from <a href="${esc(v.src)}" target="_blank" rel="noopener">${esc(hostOf(v.src))}</a>${v.eventsUrl?` · listings from <a href="${esc(v.eventsUrl)}" target="_blank" rel="noopener">${esc(hostOf(v.eventsUrl))}</a>`:""} · checked ${esc(META.checkedLabel||"")}${PUBLIC?` · <a href="${esc(mailHref("Smiff's Compass: "+v.name))}">Something wrong? Tell Smiff</a>`:""}</p>`;
   return h;
 }
@@ -1431,22 +1463,43 @@ async function removeUpdate(id,btn){
 }
 
 /* ---------- map ---------- */
-let map=null,pinLayer=null,baseLayers=[],labelLayer=null,baseR=null;
+let map=null,pinLayer=null,baseLayers=[],labelLayer=null,baseR=null,tileLayer=null,tilesOK=false;
+/* The public site shows a real street map (OpenStreetMap); inside Claude, external map images are blocked, so it draws its own. */
+const USE_TILES=PUBLIC;
 function initMap(){
   if(!window.L){$("legend").innerHTML="<p>The map couldn't load. The lists still work.</p>";return}
   const mob=isMobile();
-  map=L.map("map",{zoomControl:true,attributionControl:false,preferCanvas:true,minZoom:13,maxZoom:18,zoomSnap:.5,maxBounds:[[52.165,0.055],[52.242,0.195]]});
+  map=L.map("map",{zoomControl:true,attributionControl:USE_TILES,preferCanvas:true,minZoom:13,maxZoom:19,zoomSnap:.5,maxBounds:[[52.165,0.055],[52.242,0.195]]});
   map.zoomControl.setPosition("topright");
   map.setView([52.2048,0.1250],mob?14.5:15);
-  /* own layers: base drawing and labels never catch taps; pins always sit on top */
-  [["base",350],["labels",450],["pins",640],["crawlnum",660]].forEach(([n,z])=>{const pn=map.createPane(n);pn.style.zIndex=z;if(n!=="pins")pn.style.pointerEvents="none"});
+  /* own layers: base drawing, rings and labels never catch taps; pins always sit on top */
+  [["base",350],["rings",420],["labels",450],["plabels",630],["pins",640],["crawlnum",660]].forEach(([n,z])=>{const pn=map.createPane(n);pn.style.zIndex=z;if(n!=="pins"&&n!=="plabels")pn.style.pointerEvents="none"});
   baseR=L.canvas({padding:.5,pane:"base"});
-  drawBase();
-  $("legend").innerHTML=CATS.map(([k,l])=>`<div style="--c:${catColor(k)}"><i></i>${l}</div>`).join("")+`<p>Simplified map. Pins are placed by postcode.</p>`;
+  L.control.scale({imperial:false,position:"bottomright",maxWidth:110}).addTo(map);
+  if(USE_TILES){
+    map.attributionControl.setPrefix(false);
+    tileLayer=L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'}).addTo(map);
+    let errs=0;
+    tileLayer.on("tileload",()=>{tilesOK=true});
+    tileLayer.on("tileerror",()=>{errs++;if(!tilesOK&&errs>=4)useDrawnMap()});
+    setTimeout(()=>{if(!tilesOK)useDrawnMap()},8000);
+  } else drawBase();
+  legend();
   map.on("click",()=>{if(!$("mcard").hidden){$("mcard").hidden=true;if(S.view!=="detail"){S.sel=null;drawPins()}}});
   map.on("popupclose",()=>{if(S.view!=="detail"&&S.sel){S.sel=null;drawPins()}});
+  map.on("zoomend moveend",placeLabels);
+}
+function useDrawnMap(){
+  if(!tileLayer)return;
+  tileLayer.remove();tileLayer=null;
+  if(map.attributionControl)map.attributionControl.remove();
+  drawBase();legend();
+}
+function legend(){
+  $("legend").innerHTML=CATS.map(([k,l])=>`<div style="--c:${catColor(k)}"><i></i>${l}</div>`).join("")+`<div><span class="ring-key"></span>5, 10, 15 min walk</div><p>${tileLayer?"":"Simplified map. "}Tap a pin or a name for details. The rings show walking time from the place you pick.</p>`;
 }
 function drawBase(){
+  if(tileLayer)return;
   baseLayers.forEach(l=>l.remove());baseLayers=[];
   const land=css("--land"),dots=css("--dots"),road=css("--road"),edge=css("--road-edge"),green=css("--green"),water=css("--water");
   const r=baseR;
@@ -1475,18 +1528,49 @@ function drawPins(){
   pinLayer=L.layerGroup();
   const panel=css("--panel");
   const vs=visible().slice().sort((a,b)=>(a.id===S.sel)-(b.id===S.sel));
+  for(const k in PINS)delete PINS[k];
   vs.forEach(v=>{
     const sel=v.id===S.sel, col=css(CATVAR[primary(v)]);
     const on=onDay(v,TODAY).length>0;
     const fv=isFav(v);
     const big=isMobile()?2:0;
-    const m=L.circleMarker([v.lat,v.lng],{renderer:pinR,pane:"pins",bubblingMouseEvents:false,radius:(sel?10:fv?9:on?8:6.5)+big,color:sel?css("--ink"):fv?css("--fav"):panel,weight:sel||fv?3:2,fillColor:col,fillOpacity:1});
+    const m=L.circleMarker([v.lat,v.lng],{renderer:pinR,pane:"pins",bubblingMouseEvents:false,radius:(sel?10:fv?9:on?8:7)+big,color:sel?css("--ink"):fv?css("--fav"):panel,weight:sel||fv?3:2,fillColor:col,fillOpacity:1});
     if(canHover) m.bindTooltip(v.name+(on?" · on tonight":""),{className:"vt",direction:"top",offset:[0,-8]});
     m.on("click",ev=>{L.DomEvent.stopPropagation(ev);pinClick(v,m)});
-    m.addTo(pinLayer);
+    m.addTo(pinLayer);PINS[v.id]=m;
   });
   pinLayer.addTo(map);
   drawExtras();
+  placeLabels();
+}
+/* names beside pins: most important first, skipping any that would overlap */
+const PINS={};let plLayer=null,mctx=null;
+function textW(t){if(!mctx)mctx=document.createElement("canvas").getContext("2d");mctx.font="600 12px "+getComputedStyle(document.body).fontFamily;return Math.ceil(mctx.measureText(t).width)}
+function labelPrio(v){return (v.id===S.sel?100:0)+(isFav(v)?20:0)+(CRAWL.includes(v.id)?15:0)+(onDay(v,TODAY).length?10:0)+((v.cats||[]).includes("pub")?3:0)}
+function placeLabels(){
+  if(!map)return;
+  if(plLayer){plLayer.remove();plLayer=null}
+  if(!V.length||map.getZoom()<14||!map.getContainer().offsetWidth)return;
+  const sz=map.getSize(),H=16;
+  const items=visible().map(v=>{const p=map.latLngToContainerPoint([v.lat,v.lng]);const r=PINS[v.id]?PINS[v.id].getRadius()+2:9;return{v,p,r,box:[p.x-r,p.y-r,p.x+r,p.y+r]}}).filter(o=>o.p.x>-120&&o.p.x<sz.x+120&&o.p.y>-30&&o.p.y<sz.y+30);
+  items.sort((a,b)=>labelPrio(b.v)-labelPrio(a.v)||a.v.name.localeCompare(b.v.name));
+  const placed=[],ov=(a,b)=>a[0]<b[2]&&a[2]>b[0]&&a[1]<b[3]&&a[3]>b[1];
+  {const mr=map.getContainer().getBoundingClientRect();document.querySelectorAll(".mapwrap .legend,.leaflet-control-zoom,.leaflet-control-scale,.leaflet-control-attribution").forEach(el=>{const r=el.getBoundingClientRect();if(r.width&&r.height)placed.push([r.left-mr.left-4,r.top-mr.top-4,r.right-mr.left+4,r.bottom-mr.top+4])})}
+  plLayer=L.layerGroup();
+  for(const o of items){
+    const t=o.v.name.replace(/^The /,""),w=textW(t)+11,g=o.r+1;
+    for(const [dx,dy] of [[g,-H/2],[-g-w,-H/2],[-w/2,-g-H],[-w/2,g]]){
+      const b=[o.p.x+dx,o.p.y+dy,o.p.x+dx+w,o.p.y+dy+H];
+      if(b[0]<4||b[1]<4||b[2]>sz.x-4||b[3]>sz.y-4)continue;
+      if(placed.some(q=>ov(q,b))||items.some(q=>q!==o&&ov(q.box,b)))continue;
+      placed.push(b);
+      const m=L.marker([o.v.lat,o.v.lng],{pane:"plabels",keyboard:false,bubblingMouseEvents:false,icon:L.divIcon({className:"plabel"+(o.v.id===S.sel?" sel":"")+(isFav(o.v)?" fav":""),html:esc(t),iconSize:[w,H],iconAnchor:[-dx,-dy]})});
+      m.on("click",ev=>{L.DomEvent.stopPropagation(ev);pinClick(o.v,PINS[o.v.id])});
+      m.addTo(plLayer);break;
+    }
+  }
+  plLayer.addTo(map);
+  plLayer.eachLayer(m=>{const el=m.getElement();if(el)el.setAttribute("aria-hidden","true")});
 }
 const canHover=matchMedia("(hover:hover)").matches;
 function pinClick(v,m){
@@ -1528,6 +1612,7 @@ function cardHtml(v){
   else if(v.hours) h+=`<div class="c-sec"><div class="c-lab">Opening hours</div><p>${esc(v.hours).replace(/ · /g,"<br>")}</p></div>`;
   if(v.food) h+=`<div class="c-sec"><div class="c-lab">Food</div><p>${esc(v.food)}</p></div>`;
   h+=accessShort(v);
+  {const nb=nearby(v,3);if(nb.length)h+=`<div class="c-sec"><div class="c-lab">Close by</div><ul class="c-near">${nb.map(([x,m])=>`<li><button class="linkbtn" data-hop="${esc(x.id)}">${esc(x.name)}</button> · ${walkMin(m)} min walk</li>`).join("")}</ul></div>`}
   if(!today.length&&!upcoming.length&&!otherWeekly.length&&!L2.offers.length) h+=`<p class="c-more">No dates or offers listed on their website.</p>`;
   if(v.checkSocials&&!PUBLIC) h+=`<p class="c-flag">Check socials · ${esc(v.checkSocials)}</p>`;
   h+=`<div class="c-btns"><button data-open="${esc(v.id)}">Full details</button>${crawlBtn(v)}${db&&canWrite?`<a href="#" data-fav="${esc(v.id)}" role="button">${isFav(v)?"★ Unfavourite":"☆ Favourite"}</a>`:""}<a href="${esc(mapsLink(v))}" target="_blank" rel="noopener">Directions ↗</a>${v.website?`<a href="${esc(v.website)}" target="_blank" rel="noopener">Website ↗</a>`:""}</div></div>`;
@@ -1560,6 +1645,8 @@ document.addEventListener("click",e=>{
   if(ca){e.preventDefault();toggleCrawl(ca.dataset.crawladd);return}
   const fb=e.target.closest("[data-fav]");
   if(fb){e.preventDefault();toggleFav(fb.dataset.fav);return}
+  const hp=e.target.closest("[data-hop]");
+  if(hp){e.preventDefault();const x=BYID[hp.dataset.hop];if(x&&map){if(isMobile())moveMap([x.lat,x.lng],Math.max(map.getZoom(),15.5));pinClick(x,PINS[x.id])}return}
   const o=e.target.closest("[data-open]");
   if(o){e.preventDefault();const id=o.dataset.open;if(map)map.closePopup();$("mcard").hidden=true;openVenue(id,false);return}
   if(e.target.closest("[data-close-card]")){$("mcard").hidden=true;S.sel=null;drawPins()}
@@ -1573,7 +1660,7 @@ function retheme(){if(map){drawBase();drawPins()}renderChips();if(V.length)rende
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change",retheme);
 new MutationObserver(retheme).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
 let wasMobile=isMobile();
-addEventListener("resize",()=>{const m=isMobile();if(m!==wasMobile){wasMobile=m;if(!m&&S.view==="map")setView(S.prev);if(map)map.invalidateSize()}});
+addEventListener("resize",()=>{const m=isMobile();if(m!==wasMobile){wasMobile=m;if(!m&&S.view==="map")setView(S.prev);if(map)map.invalidateSize()}placeLabels()});
 
 /* ---------- boot ---------- */
 function boot(data){
