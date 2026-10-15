@@ -1,0 +1,1335 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Pubs, gigs, quiz nights and deals across Cambridge, on one map.">
+<meta property="og:title" content="Smiff's Cambridge Compass">
+<meta property="og:description" content="Pubs, gigs, quiz nights and deals across Cambridge, on one map.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#15211D">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%2315211D'/%3E%3Cpath d='M32 10l7 22-7 22-7-22z' fill='%23E3A04E'/%3E%3Cpath d='M32 32l7 0-7 22-7-22z' fill='%23FAFBF9'/%3E%3C/svg%3E">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}*{box-sizing:border-box}</style>
+<!--ANALYTICS-->
+<title>Smiff's Cambridge Compass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Young+Serif&display=swap">
+</head>
+<body>
+<style>
+/* Layout: an app shell. Header with search and filters, a reading panel (What's on / Venues / one venue) on the left, the map filling the rest. On phones the panel and the map become tabs. */
+:root{
+  --bg:#EDF1EE; --panel:#FAFBF9; --ink:#15211D; --muted:#5B6A64; --line:#D6DED9; --soft:#E4EAE6;
+  --accent:#A95A12;
+  --c-pub:#A95A12; --c-music:#B02E66; --c-food:#24766A; --c-late:#5747B0;
+  --ok:#24766A; --warn:#9A5B00; --warn-bg:#FBEBD3; --fav:#C08A00;
+  --land:#E7ECE8; --dots:#C6D0CA; --road:#FFFFFF; --road-edge:#CDD6D1; --green:#CBDFCC; --water:#93BDD0; --label:#6B7A74;
+  --display:"Young Serif", Georgia, "Times New Roman", serif;
+  --body:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0E1513; --panel:#141D1A; --ink:#E6EDE9; --muted:#9BABA4; --line:#26322E; --soft:#1B2623;
+  --accent:#E3A04E;
+  --c-pub:#E3A04E; --c-music:#EE6FA4; --c-food:#53BCA7; --c-late:#A093F2;
+  --ok:#53BCA7; --warn:#F0B866; --warn-bg:#3A2A12; --fav:#F2C94C;
+  --land:#18221F; --dots:#2A3833; --road:#3A4A44; --road-edge:#111916; --green:#1E3529; --water:#234A5C; --label:#7F918A;
+  color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0E1513; --panel:#141D1A; --ink:#E6EDE9; --muted:#9BABA4; --line:#26322E; --soft:#1B2623;
+  --accent:#E3A04E;
+  --c-pub:#E3A04E; --c-music:#EE6FA4; --c-food:#53BCA7; --c-late:#A093F2;
+  --ok:#53BCA7; --warn:#F0B866; --warn-bg:#3A2A12; --fav:#F2C94C;
+  --land:#18221F; --dots:#2A3833; --road:#3A4A44; --road-edge:#111916; --green:#1E3529; --water:#234A5C; --label:#7F918A;
+  color-scheme:dark }
+
+
+
+.leaflet-pane,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-tile-container,
+.leaflet-pane > svg,
+.leaflet-pane > canvas,
+.leaflet-zoom-box,
+.leaflet-image-layer,
+.leaflet-layer {
+	position: absolute;
+	left: 0;
+	top: 0;
+	}
+.leaflet-container {
+	overflow: hidden;
+	}
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	        user-select: none;
+	  -webkit-user-drag: none;
+	}
+
+.leaflet-tile::selection {
+	background: transparent;
+}
+
+.leaflet-safari .leaflet-tile {
+	image-rendering: -webkit-optimize-contrast;
+	}
+
+.leaflet-safari .leaflet-tile-container {
+	width: 1600px;
+	height: 1600px;
+	-webkit-transform-origin: 0 0;
+	}
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	display: block;
+	}
+
+
+.leaflet-container .leaflet-overlay-pane svg {
+	max-width: none !important;
+	max-height: none !important;
+	}
+.leaflet-container .leaflet-marker-pane img,
+.leaflet-container .leaflet-shadow-pane img,
+.leaflet-container .leaflet-tile-pane img,
+.leaflet-container img.leaflet-image-layer,
+.leaflet-container .leaflet-tile {
+	max-width: none !important;
+	max-height: none !important;
+	width: auto;
+	padding: 0;
+	}
+
+.leaflet-container img.leaflet-tile {
+	
+	mix-blend-mode: plus-lighter;
+}
+
+.leaflet-container.leaflet-touch-zoom {
+	-ms-touch-action: pan-x pan-y;
+	touch-action: pan-x pan-y;
+	}
+.leaflet-container.leaflet-touch-drag {
+	-ms-touch-action: pinch-zoom;
+	
+	touch-action: none;
+	touch-action: pinch-zoom;
+}
+.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
+	-ms-touch-action: none;
+	touch-action: none;
+}
+.leaflet-container {
+	-webkit-tap-highlight-color: transparent;
+}
+.leaflet-container a {
+	-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);
+}
+.leaflet-tile {
+	filter: inherit;
+	visibility: hidden;
+	}
+.leaflet-tile-loaded {
+	visibility: inherit;
+	}
+.leaflet-zoom-box {
+	width: 0;
+	height: 0;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	z-index: 800;
+	}
+
+.leaflet-overlay-pane svg {
+	-moz-user-select: none;
+	}
+
+.leaflet-pane         { z-index: 400; }
+
+.leaflet-tile-pane    { z-index: 200; }
+.leaflet-overlay-pane { z-index: 400; }
+.leaflet-shadow-pane  { z-index: 500; }
+.leaflet-marker-pane  { z-index: 600; }
+.leaflet-tooltip-pane   { z-index: 650; }
+.leaflet-popup-pane   { z-index: 700; }
+
+.leaflet-map-pane canvas { z-index: 100; }
+.leaflet-map-pane svg    { z-index: 200; }
+
+.leaflet-vml-shape {
+	width: 1px;
+	height: 1px;
+	}
+.lvml {
+	display: inline-block;
+	position: absolute;
+	}
+
+
+
+
+.leaflet-control {
+	position: relative;
+	z-index: 800;
+	pointer-events: visiblePainted; 
+	pointer-events: auto;
+	}
+.leaflet-top,
+.leaflet-bottom {
+	position: absolute;
+	z-index: 1000;
+	pointer-events: none;
+	}
+.leaflet-top {
+	top: 0;
+	}
+.leaflet-right {
+	right: 0;
+	}
+.leaflet-bottom {
+	bottom: 0;
+	}
+.leaflet-left {
+	left: 0;
+	}
+.leaflet-control {
+	float: left;
+	clear: both;
+	}
+.leaflet-right .leaflet-control {
+	float: right;
+	}
+.leaflet-top .leaflet-control {
+	margin-top: 10px;
+	}
+.leaflet-bottom .leaflet-control {
+	margin-bottom: 10px;
+	}
+.leaflet-left .leaflet-control {
+	margin-left: 10px;
+	}
+.leaflet-right .leaflet-control {
+	margin-right: 10px;
+	}
+
+
+
+
+.leaflet-fade-anim .leaflet-popup {
+	opacity: 0;
+	-webkit-transition: opacity 0.2s linear;
+	   -moz-transition: opacity 0.2s linear;
+	        transition: opacity 0.2s linear;
+	}
+.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
+	opacity: 1;
+	}
+.leaflet-zoom-animated {
+	-webkit-transform-origin: 0 0;
+	    -ms-transform-origin: 0 0;
+	        transform-origin: 0 0;
+	}
+svg.leaflet-zoom-animated {
+	will-change: transform;
+}
+
+.leaflet-zoom-anim .leaflet-zoom-animated {
+	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);
+	   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);
+	        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);
+	}
+.leaflet-zoom-anim .leaflet-tile,
+.leaflet-pan-anim .leaflet-tile {
+	-webkit-transition: none;
+	   -moz-transition: none;
+	        transition: none;
+	}
+
+.leaflet-zoom-anim .leaflet-zoom-hide {
+	visibility: hidden;
+	}
+
+
+
+
+.leaflet-interactive {
+	cursor: pointer;
+	}
+.leaflet-grab {
+	cursor: -webkit-grab;
+	cursor:    -moz-grab;
+	cursor:         grab;
+	}
+.leaflet-crosshair,
+.leaflet-crosshair .leaflet-interactive {
+	cursor: crosshair;
+	}
+.leaflet-popup-pane,
+.leaflet-control {
+	cursor: auto;
+	}
+.leaflet-dragging .leaflet-grab,
+.leaflet-dragging .leaflet-grab .leaflet-interactive,
+.leaflet-dragging .leaflet-marker-draggable {
+	cursor: move;
+	cursor: -webkit-grabbing;
+	cursor:    -moz-grabbing;
+	cursor:         grabbing;
+	}
+
+
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-image-layer,
+.leaflet-pane > svg path,
+.leaflet-tile-container {
+	pointer-events: none;
+	}
+
+.leaflet-marker-icon.leaflet-interactive,
+.leaflet-image-layer.leaflet-interactive,
+.leaflet-pane > svg path.leaflet-interactive,
+svg.leaflet-image-layer.leaflet-interactive path {
+	pointer-events: visiblePainted; 
+	pointer-events: auto;
+	}
+
+
+
+.leaflet-container {
+	background: #ddd;
+	outline-offset: 1px;
+	}
+.leaflet-container a {
+	color: #0078A8;
+	}
+.leaflet-zoom-box {
+	border: 2px dotted #38f;
+	background: rgba(255,255,255,0.5);
+	}
+
+
+
+.leaflet-container {
+	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-size: 0.75rem;
+	line-height: 1.5;
+	}
+
+
+
+
+.leaflet-bar {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+	border-radius: 4px;
+	}
+.leaflet-bar a {
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
+	width: 26px;
+	height: 26px;
+	line-height: 26px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	color: black;
+	}
+.leaflet-bar a,
+.leaflet-control-layers-toggle {
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	display: block;
+	}
+.leaflet-bar a:hover,
+.leaflet-bar a:focus {
+	background-color: #f4f4f4;
+	}
+.leaflet-bar a:first-child {
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	}
+.leaflet-bar a:last-child {
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom: none;
+	}
+.leaflet-bar a.leaflet-disabled {
+	cursor: default;
+	background-color: #f4f4f4;
+	color: #bbb;
+	}
+
+.leaflet-touch .leaflet-bar a {
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	}
+.leaflet-touch .leaflet-bar a:first-child {
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+	}
+.leaflet-touch .leaflet-bar a:last-child {
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	}
+
+
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+	font: bold 18px 'Lucida Console', Monaco, monospace;
+	text-indent: 1px;
+	}
+
+.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {
+	font-size: 22px;
+	}
+
+
+
+
+.leaflet-control-layers {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+	background: #fff;
+	border-radius: 5px;
+	}
+.leaflet-control-layers-toggle {
+	width: 36px;
+	height: 36px;
+	}
+.leaflet-retina .leaflet-control-layers-toggle {
+	background-size: 26px 26px;
+	}
+.leaflet-touch .leaflet-control-layers-toggle {
+	width: 44px;
+	height: 44px;
+	}
+.leaflet-control-layers .leaflet-control-layers-list,
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+	display: none;
+	}
+.leaflet-control-layers-expanded .leaflet-control-layers-list {
+	display: block;
+	position: relative;
+	}
+.leaflet-control-layers-expanded {
+	padding: 6px 10px 6px 6px;
+	color: #333;
+	background: #fff;
+	}
+.leaflet-control-layers-scrollbar {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding-right: 5px;
+	}
+.leaflet-control-layers-selector {
+	margin-top: 2px;
+	position: relative;
+	top: 1px;
+	}
+.leaflet-control-layers label {
+	display: block;
+	font-size: 13px;
+	font-size: 1.08333em;
+	}
+.leaflet-control-layers-separator {
+	height: 0;
+	border-top: 1px solid #ddd;
+	margin: 5px -10px 5px -6px;
+	}
+
+
+.leaflet-default-icon-path { 
+	}
+
+
+
+
+.leaflet-container .leaflet-control-attribution {
+	background: #fff;
+	background: rgba(255, 255, 255, 0.8);
+	margin: 0;
+	}
+.leaflet-control-attribution,
+.leaflet-control-scale-line {
+	padding: 0 5px;
+	color: #333;
+	line-height: 1.4;
+	}
+.leaflet-control-attribution a {
+	text-decoration: none;
+	}
+.leaflet-control-attribution a:hover,
+.leaflet-control-attribution a:focus {
+	text-decoration: underline;
+	}
+.leaflet-attribution-flag {
+	display: inline !important;
+	vertical-align: baseline !important;
+	width: 1em;
+	height: 0.6669em;
+	}
+.leaflet-left .leaflet-control-scale {
+	margin-left: 5px;
+	}
+.leaflet-bottom .leaflet-control-scale {
+	margin-bottom: 5px;
+	}
+.leaflet-control-scale-line {
+	border: 2px solid #777;
+	border-top: none;
+	line-height: 1.1;
+	padding: 2px 5px 1px;
+	white-space: nowrap;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	background: rgba(255, 255, 255, 0.8);
+	text-shadow: 1px 1px #fff;
+	}
+.leaflet-control-scale-line:not(:first-child) {
+	border-top: 2px solid #777;
+	border-bottom: none;
+	margin-top: -2px;
+	}
+.leaflet-control-scale-line:not(:first-child):not(:last-child) {
+	border-bottom: 2px solid #777;
+	}
+
+.leaflet-touch .leaflet-control-attribution,
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	box-shadow: none;
+	}
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	border: 2px solid rgba(0,0,0,0.2);
+	background-clip: padding-box;
+	}
+
+
+
+
+.leaflet-popup {
+	position: absolute;
+	text-align: center;
+	margin-bottom: 20px;
+	}
+.leaflet-popup-content-wrapper {
+	padding: 1px;
+	text-align: left;
+	border-radius: 12px;
+	}
+.leaflet-popup-content {
+	margin: 13px 24px 13px 20px;
+	line-height: 1.3;
+	font-size: 13px;
+	font-size: 1.08333em;
+	min-height: 1px;
+	}
+.leaflet-popup-content p {
+	margin: 17px 0;
+	margin: 1.3em 0;
+	}
+.leaflet-popup-tip-container {
+	width: 40px;
+	height: 20px;
+	position: absolute;
+	left: 50%;
+	margin-top: -1px;
+	margin-left: -20px;
+	overflow: hidden;
+	pointer-events: none;
+	}
+.leaflet-popup-tip {
+	width: 17px;
+	height: 17px;
+	padding: 1px;
+
+	margin: -10px auto 0;
+	pointer-events: auto;
+
+	-webkit-transform: rotate(45deg);
+	   -moz-transform: rotate(45deg);
+	    -ms-transform: rotate(45deg);
+	        transform: rotate(45deg);
+	}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+	background: white;
+	color: #333;
+	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+	}
+.leaflet-container a.leaflet-popup-close-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: none;
+	text-align: center;
+	width: 24px;
+	height: 24px;
+	font: 16px/24px Tahoma, Verdana, sans-serif;
+	color: #757575;
+	text-decoration: none;
+	background: transparent;
+	}
+.leaflet-container a.leaflet-popup-close-button:hover,
+.leaflet-container a.leaflet-popup-close-button:focus {
+	color: #585858;
+	}
+.leaflet-popup-scrolled {
+	overflow: auto;
+	}
+
+.leaflet-oldie .leaflet-popup-content-wrapper {
+	-ms-zoom: 1;
+	}
+.leaflet-oldie .leaflet-popup-tip {
+	width: 24px;
+	margin: 0 auto;
+
+	-ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
+	filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
+	}
+
+.leaflet-oldie .leaflet-control-zoom,
+.leaflet-oldie .leaflet-control-layers,
+.leaflet-oldie .leaflet-popup-content-wrapper,
+.leaflet-oldie .leaflet-popup-tip {
+	border: 1px solid #999;
+	}
+
+
+
+
+.leaflet-div-icon {
+	background: #fff;
+	border: 1px solid #666;
+	}
+
+
+
+
+.leaflet-tooltip {
+	position: absolute;
+	padding: 6px;
+	background-color: #fff;
+	border: 1px solid #fff;
+	border-radius: 3px;
+	color: #222;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+	}
+.leaflet-tooltip.leaflet-interactive {
+	cursor: pointer;
+	pointer-events: auto;
+	}
+.leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	position: absolute;
+	pointer-events: none;
+	border: 6px solid transparent;
+	background: transparent;
+	content: "";
+	}
+
+
+
+.leaflet-tooltip-bottom {
+	margin-top: 6px;
+}
+.leaflet-tooltip-top {
+	margin-top: -6px;
+}
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-top:before {
+	left: 50%;
+	margin-left: -6px;
+	}
+.leaflet-tooltip-top:before {
+	bottom: 0;
+	margin-bottom: -12px;
+	border-top-color: #fff;
+	}
+.leaflet-tooltip-bottom:before {
+	top: 0;
+	margin-top: -12px;
+	margin-left: -6px;
+	border-bottom-color: #fff;
+	}
+.leaflet-tooltip-left {
+	margin-left: -6px;
+}
+.leaflet-tooltip-right {
+	margin-left: 6px;
+}
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	top: 50%;
+	margin-top: -6px;
+	}
+.leaflet-tooltip-left:before {
+	right: 0;
+	margin-right: -12px;
+	border-left-color: #fff;
+	}
+.leaflet-tooltip-right:before {
+	left: 0;
+	margin-left: -12px;
+	border-right-color: #fff;
+	}
+
+
+
+@media print {
+	
+	.leaflet-control {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+		}
+	}
+
+html,body{height:100%}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45}
+*{box-sizing:border-box}
+button,input,select{font:inherit;color:inherit}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app{height:100%;display:flex;flex-direction:column;min-height:0}
+
+/* Header */
+.top{background:var(--panel);border-bottom:1px solid var(--line);padding-block:12px 10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;grid-template-columns:auto 1fr;gap:10px 20px;align-items:center}
+.brand h1{font-family:var(--display);font-weight:400;font-size:1.45rem;line-height:1.1;margin:0;letter-spacing:-.01em;text-wrap:balance}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:.8rem}
+.search{justify-self:end;width:min(420px,100%)}
+.search input{width:100%;padding:9px 12px 9px 34px;border:1px solid var(--line);border-radius:10px;background:var(--bg) no-repeat 11px 50%/16px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237d8c86' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E")}
+.chips{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:5px 11px;font-size:.84rem;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.chip .dot{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.chip.socials{border-style:dashed}
+.chip.socials[aria-pressed="true"]{background:var(--warn-bg);color:var(--warn);border-color:var(--warn);border-style:solid}
+.tabs{grid-column:1/-1;display:flex;gap:4px;border-top:1px solid var(--soft);padding-top:8px;margin-top:2px}
+.tab{background:none;border:0;padding:6px 12px;border-radius:8px;cursor:pointer;font-weight:600;color:var(--muted);font-size:.9rem}
+.tab[aria-selected="true"]{background:var(--soft);color:var(--ink)}
+.tab.only-mobile{display:none}
+
+/* Body */
+.body{flex:1;min-height:0;display:grid;grid-template-columns:minmax(340px,440px) 1fr}
+.panel{min-height:0;overflow:auto;background:var(--panel);border-right:1px solid var(--line)}
+.pane{padding-block:14px 32px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:16px}
+.mapwrap{position:relative;min-height:0;min-width:0}
+#map{position:absolute;inset:0;background:var(--land)}
+.leaflet-container{font-family:var(--body);background:var(--land)}
+
+/* What's on */
+.kinds{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.kinds .chip{font-size:.8rem;padding:4px 10px}
+.day{margin:0 0 18px}
+.day h2{font-family:var(--display);font-weight:400;font-size:1.15rem;margin:0 0 6px;display:flex;align-items:baseline;gap:8px}
+.day h2 small{font-family:var(--body);font-size:.78rem;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.items{list-style:none;margin:0;padding:0;border-top:1px solid var(--soft)}
+.item{border-bottom:1px solid var(--soft)}
+.item button{all:unset;box-sizing:border-box;display:grid;grid-template-columns:4px 1fr auto;gap:10px;width:100%;padding:9px 4px;cursor:pointer;align-items:start}
+.item button:hover{background:var(--soft)}
+.item button:focus-visible{outline:2px solid var(--accent)}
+.bar{align-self:stretch;border-radius:2px;background:var(--c)}
+.item .t{font-weight:600;min-width:0;overflow-wrap:anywhere}
+.item .v{color:var(--muted);font-size:.86rem}
+.tag{font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;font-weight:700;color:var(--c);white-space:nowrap;padding-top:3px}
+.badge{display:inline-block;font-size:.7rem;font-weight:600;padding:1px 6px;border-radius:4px;background:var(--soft);color:var(--muted);margin-left:6px;vertical-align:1px}
+.badge.you{background:var(--warn-bg);color:var(--warn)}
+.empty{color:var(--muted);padding:12px 0}
+
+/* Venue list */
+.vlist{list-style:none;margin:0;padding:0}
+.vrow button{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:12px 1fr auto;gap:10px;padding:11px 4px;border-bottom:1px solid var(--soft);cursor:pointer}
+.vrow button:hover{background:var(--soft)}
+.vrow button:focus-visible{outline:2px solid var(--accent)}
+.pin{width:12px;height:12px;border-radius:50%;background:var(--c);margin-top:5px;box-shadow:0 0 0 2px var(--panel),0 0 0 3px var(--c)}
+.vrow .n{font-weight:600}
+.star{color:var(--fav)}
+.chip.favc[aria-pressed="false"] .star{color:var(--fav)}
+.favbtn{all:unset;cursor:pointer;font-size:.85rem;font-weight:600;border:1px solid var(--line);border-radius:999px;padding:4px 11px;margin-bottom:10px;display:inline-flex;gap:6px;align-items:center}
+.favbtn[aria-pressed="true"]{border-color:var(--fav);color:var(--ink);background:color-mix(in srgb,var(--fav) 16%,transparent)}
+.favbtn .star{font-size:1rem}
+.favbtn:focus-visible{outline:2px solid var(--accent)}
+.d-group{color:var(--muted);font-size:.82rem;margin:-6px 0 10px}
+.c-group{color:var(--muted);font-size:.78rem}
+.vrow .a{color:var(--muted);font-size:.85rem}
+.vrow .now{font-size:.86rem;margin-top:2px}
+.vrow .now b{color:var(--c-music)}
+.vrow .flag{font-size:.75rem;color:var(--warn);margin-top:2px}
+.vrow .cats{display:flex;gap:4px;padding-top:6px}
+.vrow .cats i{width:7px;height:7px;border-radius:50%;background:var(--c);display:block}
+.count{color:var(--muted);font-size:.85rem;margin:0 0 8px}
+
+/* Detail */
+.back{all:unset;cursor:pointer;color:var(--muted);font-size:.88rem;display:inline-flex;gap:6px;align-items:center;margin-bottom:10px}
+.back:hover{color:var(--ink)}
+.back:focus-visible{outline:2px solid var(--accent)}
+.d-head h2{font-family:var(--display);font-weight:400;font-size:1.7rem;line-height:1.1;margin:0 0 6px;text-wrap:balance}
+.d-cats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.d-cats span{font-size:.75rem;font-weight:600;border-radius:999px;padding:2px 9px;border:1px solid var(--c);color:var(--c)}
+.d-addr{color:var(--muted);margin:0 0 10px}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.links a{display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-weight:600;font-size:.88rem;border:1px solid var(--line);border-radius:8px;padding:6px 10px;color:var(--ink);background:var(--bg)}
+.links a:hover{border-color:var(--ink)}
+.notice{background:var(--warn-bg);color:var(--warn);border-radius:10px;padding:10px 12px;font-size:.88rem;margin:0 0 16px}
+.notice b{display:block;margin-bottom:2px}
+.sec{margin:0 0 18px}
+.sec h3{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 6px;font-weight:700}
+.sec ul{list-style:none;margin:0;padding:0}
+.sec li{padding:6px 0;border-bottom:1px solid var(--soft);display:flex;gap:10px;align-items:baseline;justify-content:space-between}
+.sec li .when{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.85rem;white-space:nowrap;min-width:6.5em}
+.sec li .what{flex:1;min-width:0;overflow-wrap:anywhere}
+.sec p{margin:0}
+.del{all:unset;cursor:pointer;color:var(--muted);font-size:.8rem;padding:2px 6px;border-radius:4px}
+.del:hover{color:var(--ink);background:var(--soft)}
+.del:focus-visible{outline:2px solid var(--accent)}
+.feat{display:flex;flex-wrap:wrap;gap:6px}
+.feat span{font-size:.8rem;background:var(--soft);border-radius:6px;padding:2px 8px}
+.src{color:var(--muted);font-size:.8rem}
+form.add{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:10px;background:var(--bg);margin:0 0 18px}
+form.add h3{margin:0;font-size:.95rem;font-weight:700}
+form.add .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+form.add label{display:grid;gap:3px;font-size:.8rem;color:var(--muted);font-weight:600}
+form.add input,form.add select{border:1px solid var(--line);border-radius:8px;padding:8px 9px;background:var(--panel);color:var(--ink);min-width:0;width:100%}
+form.add button{justify-self:start;background:var(--ink);color:var(--panel);border:0;border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer}
+form.add .status{font-size:.82rem;color:var(--muted);min-height:1.2em;margin:0}
+
+/* Map extras */
+.legend{position:absolute;left:max(12px,env(safe-area-inset-left,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:500;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:.78rem;display:grid;gap:3px;box-shadow:0 2px 10px rgb(0 0 0/.08)}
+.legend div{display:flex;gap:7px;align-items:center}
+.legend i{width:10px;height:10px;border-radius:50%;background:var(--c);display:block}
+.legend p{margin:4px 0 0;color:var(--muted);font-size:.72rem;max-width:200px}
+.mlabel{font-size:11px;color:var(--label);white-space:nowrap;font-weight:600;letter-spacing:.02em;text-shadow:0 0 3px var(--land),0 0 3px var(--land)}
+.mlabel.green{font-style:italic;font-weight:500}
+.mlabel.water{color:var(--water);font-style:italic}
+.leaflet-tooltip.vt{background:var(--panel);color:var(--ink);border:1px solid var(--line);font-family:var(--body);font-weight:600;box-shadow:0 2px 8px rgb(0 0 0/.12)}
+.leaflet-tooltip.vt::before{display:none}
+.leaflet-bar a,.leaflet-bar a:hover{background:var(--panel);color:var(--ink);border-bottom-color:var(--line)}
+.leaflet-bar{border:1px solid var(--line)!important;box-shadow:none!important}
+.leaflet-top.leaflet-right{top:env(safe-area-inset-top,0px);right:env(safe-area-inset-right,0px)}
+.mcard{position:absolute;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:600;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:0 6px 24px rgb(0 0 0/.18);max-height:62%;overflow:auto;overscroll-behavior:contain}
+.mcard .x{position:absolute;top:6px;right:8px;background:none;border:0;color:var(--muted);padding:2px 8px;font-size:1.3rem;line-height:1;cursor:pointer;border-radius:6px}
+.mcard .x:hover{background:var(--soft);color:var(--ink)}
+
+/* Pin card: shared by the desktop pop-up and the phone sheet */
+.card{font-family:var(--body);color:var(--ink);font-size:.88rem;line-height:1.4;display:grid;gap:9px}
+.c-head{display:grid;grid-template-columns:12px 1fr;gap:10px;align-items:start;padding-right:22px}
+.c-head .pin{margin-top:7px}
+.c-name{font-family:var(--display);font-size:1.2rem;line-height:1.15}
+.c-addr{color:var(--muted);font-size:.8rem}
+.c-cats{display:flex;flex-wrap:wrap;gap:5px}
+.c-cats span{font-size:.7rem;font-weight:600;border-radius:999px;padding:1px 8px;border:1px solid var(--c);color:var(--c)}
+.c-sec{display:grid;gap:3px}
+.c-lab{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.c-sec ul{list-style:none;margin:0;padding:0;display:grid;gap:3px}
+.c-sec li{overflow-wrap:anywhere}
+.c-sec li.on{font-weight:600}
+.c-sec li .k{font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;font-weight:700;color:var(--c);margin-right:5px}
+.c-sec p{margin:0}
+.c-more{color:var(--muted);font-size:.8rem}
+.c-flag{margin:0;font-size:.78rem;color:var(--warn);background:var(--warn-bg);border-radius:6px;padding:5px 8px}
+.c-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+.c-btns button,.c-btns a{font:inherit;font-size:.84rem;font-weight:700;border-radius:8px;padding:7px 12px;cursor:pointer;text-decoration:none;line-height:1.2}
+.c-btns button{background:var(--ink);color:var(--panel);border:0}
+.c-btns a{border:1px solid var(--line);color:var(--ink);background:var(--bg)}
+.leaflet-popup-content-wrapper{background:var(--panel);color:var(--ink);border-radius:14px;border:1px solid var(--line);box-shadow:0 6px 24px rgb(0 0 0/.18)}
+.leaflet-popup-content{margin:14px 16px;width:280px!important;max-height:340px;overflow:auto}
+.leaflet-popup-tip{background:var(--panel);border:1px solid var(--line)}
+.leaflet-container a.leaflet-popup-close-button{color:var(--muted);top:6px;right:6px;font-size:20px}
+.leaflet-container .c-btns a{color:var(--ink)}
+.today{font-weight:600;margin-bottom:4px}
+
+.foot{color:var(--muted);font-size:.74rem;margin-top:22px;border-top:1px solid var(--soft);padding-top:10px}
+
+@media (max-width:860px){
+  .top{grid-template-columns:1fr}
+  .search{justify-self:stretch;width:100%}
+  .brand h1{font-size:1.25rem}
+  .tab.only-mobile{display:inline-block}
+  .body{grid-template-columns:1fr}
+  .panel{border-right:0}
+  .mapwrap{display:none}
+  .app.show-map .mapwrap{display:block}
+  .app.show-map .panel{display:none}
+  .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-right:calc(-1 * max(16px,env(safe-area-inset-right,0px)));padding-right:16px}
+  .chips::-webkit-scrollbar{display:none}
+  .legend{display:none}
+}
+@media (min-width:861px){ .mcard{display:none!important} }
+@media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important} }
+</style>
+
+<div class="app" id="app">
+  <header class="top">
+    <div class="brand">
+      <h1>Smiff&rsquo;s Cambridge Compass</h1>
+      <p id="updated">Loading venues…</p>
+    </div>
+    <div class="search"><input id="q" type="search" placeholder="Search pubs, bands, streets" aria-label="Search venues and listings" autocomplete="off"></div>
+    <div class="chips" id="cats" role="group" aria-label="Filter by type"></div>
+    <div class="tabs" role="tablist" aria-label="Views">
+      <button class="tab" role="tab" id="tab-whatson" aria-selected="true">What's on</button>
+      <button class="tab" role="tab" id="tab-venues" aria-selected="false">Venues</button>
+      <button class="tab only-mobile" role="tab" id="tab-map" aria-selected="false">Map</button>
+    </div>
+  </header>
+  <main class="body">
+    <section class="panel" id="panel" aria-live="polite">
+      <div class="pane" id="pane"></div>
+    </section>
+    <section class="mapwrap" aria-label="Map of venues">
+      <div id="map"></div>
+      <div class="legend" id="legend"></div>
+      <div class="mcard" id="mcard" hidden></div>
+    </section>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>const BASE={"dots":[5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5220484,11925,5220484,11925,5220484,11925,5220484,11925,5220484,11925,5220484,11925,5220484,11925,5220484,11925,5220484,11925,5220484,11925,5220484,11925,5220484,11925,5220484,11925,5220484,11925,5220484,11925,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5220936,14826,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5220936,14826,5220936,14826,5220744,12314,5220549,13209,5220766,13593,5220769,13569,5220609,12976,5220778,13590,5220765,12562,5220783,13416,5220514,13109,5220378,13202,5220247,13278,5220356,13258,5220456,13313,5220349,13179,5220490,13458,5220530,13477,5220571,13541,5220591,13574,5220682,13684,5220741,13777,5220547,13506,5220776,13782,5220736,13726,5220571,13425,5220600,13311,5220573,13305,5220570,13092,5220553,13231,5220519,13192,5220480,13166,5220493,13012,5220411,13208,5220437,13233,5220446,13307,5220456,13140,5219227,13721,5220401,13078,5220389,13016,5220443,13063,5220445,12854,5220575,12849,5220588,13009,5220439,12927,5220692,13049,5220561,13019,5220661,13049,5220630,12926,5220621,12803,5220691,12853,5220737,12944,5220704,13108,5220769,13442,5220296,13106,5220765,13401,5220323,13143,5220724,13298,5220777,13483,5220755,13223,5220781,13523,5220642,13259,5220377,12874,5220298,13084,5220326,13049,5220348,12652,5220405,12703,5220453,12678,5220490,12665,5220501,12711,5220530,12725,5220572,12764,5220523,12879,5220486,12812,5220552,12641,5220494,12785,5220577,12890,5220575,12950,5220730,12833,5220741,12738,5220749,12595,5220747,12427,5220718,12585,5220716,12548,5220744,12288,5220768,12425,5220798,12223,5220731,12407,5220804,12353,5220722,12632,5220759,12304,5219987,12876,5220121,13039,5220066,12982,5220436,12330,5220703,12160,5220514,12304,5220673,12108,5220339,12960,5220529,12901,5220695,13330,5220340,13461,5220704,12114,5220528,13673,5220625,13731,5220618,13689,5220612,13651,5220583,13746,5220574,13702,5220541,13758,5220533,13716,5220573,13662,5219243,13452,5220156,13382,5220115,13381,5219746,13876,5220242,13477,5220120,13771,5220181,13490,5220164,13520,5220229,13342,5220048,13582,5219721,13886,5220055,13654,5220138,13620,5220124,13672,5219934,13970,5219671,13852,5219965,13768,5219799,13855,5219646,13716,5219278,13413,5219894,13962,5219760,13659,5219870,13727,5219733,13724,5219668,13721,5219862,13810,5219864,13606,5219702,13571,5219680,13573,5219623,13485,5220046,13737,5219872,13559,5219639,13360,5219662,13370,5219882,13517,5219898,13484,5220027,12973,5219935,13483,5219923,13562,5219801,13612,5219961,13052,5220151,13224,5219948,13005,5219904,12989,5219880,12830,5220075,13325,5219772,13033,5219944,12933,5219812,13081,5219279,13562,5219485,13505,5219694,13568,5220821,14004,5219262,13387,5219363,13568,5219331,13546,5219298,13522,5219266,13499,5219342,13605,5219308,13630,5219225,13583,5219270,13610,5219318,13640,5219220,13516,5219220,13516,5219193,13478,5219530,13576,5219549,13626,5219598,13358,5219483,13658,5219374,13628,5220814,14040,5219406,13628,5220008,14098,5219970,14062,5220044,14073,5219981,14140,5220054,14189,5219933,14071,5220731,13837,5219743,13126,5219701,13100,5219864,13368,5219903,13368,5219939,13461,5219746,13260,5219705,13419,5220032,13516,5219995,13490,5220033,13411,5220010,13425,5220003,13416,5219959,13463,5219520,13158,5219444,13398,5219510,13322,5219436,13532,5220798,13877,5219374,13722,5219500,13406,5220814,13910,5220458,13651,5220442,13813,5220461,13797,5220299,13894,5220143,13867,5220045,13846,5220276,13953,5220409,13971,5220780,13879,5220478,13915,5220507,13854,5220494,13796,5220526,13916,5220053,13907,5220570,13894,5220638,13872,5220665,13840,5220574,13619,5220614,13604,5220518,13553,5220497,13609,5220401,13700,5220413,13564,5220402,13549,5220318,13368,5220426,13663,5220588,13828,5220388,14415,5220029,14005,5220337,14310,5220129,14096,5220269,14182,5220165,13988,5220252,14231,5220257,14197,5220225,14320,5220750,14144,5220717,14182,5220306,14296,5220306,14349,5220322,14149,5220451,14109,5220600,14264,5220639,14225,5220368,14358,5220354,14155,5220551,14160,5220504,14155,5220245,14106,5220396,14059,5220486,14024,5220265,14057,5220525,13978,5220591,14036,5220814,13978,5220340,14043,5220766,13894,5220538,14088,5220763,13944,5220201,14146,5220789,14151,5220858,14235,5219567,13389,5220601,13938,5220277,14361,5220179,14033,5220782,13844,5219989,13792,5219578,13619,5219612,13626,5219834,14266,5219936,14249,5219930,14290,5219980,14358,5219933,14381,5220012,14480,5219803,14366,5219864,14505,5220023,14602,5219748,14584,5220030,14661,5219960,14460,5220017,14698,5219823,14677,5220019,14758,5220086,14804,5219858,14552,5220032,14812,5220218,14796,5220228,14916,5220639,14850,5220162,14704,5220192,14895,5219732,14816,5220079,14540,5219473,15693,5220245,15186,5219829,14641,5219825,14734,5219782,14504,5220152,14971,5220208,15100,5219971,14876,5220068,15207,5219812,14779,5219899,14905,5219855,14929,5219851,15057,5219823,15081,5219919,15078,5219792,14999,5219700,15138,5219718,15061,5219858,15418,5219868,15480,5219675,15302,5219801,15149,5219782,15186,5219829,15424,5220165,15386,5220237,15293,5220009,15285,5220464,14688,5220110,15265,5220803,14745,5219766,14303,5220791,14728,5220223,14661,5220444,14766,5220128,14673,5220344,14743,5219638,15507,5220489,14709,5220664,14985,5220864,14364,5220520,14873,5220593,14543,5219238,17707,5220500,14454,5220855,14894,5219496,17602,5219691,14972,5220853,14768,5220548,14763,5220599,14783,5219122,13961,5219208,13995,5219703,17048,5219637,16998,5220234,14577,5220346,14547,5220282,14513,5220250,14493,5219523,18289,5219590,18115,5220160,14519,5219514,18202,5219682,18234,5219746,18285,5219705,18372,5219849,14397,5219648,14749,5219646,14775,5219123,14415,5219613,17494,5220144,15158,5219934,14589,5220737,14385,5220830,14412,5219513,17428,5220092,15495,5220185,15710,5220491,15044,5220364,14921,5220388,14887,5220221,15375,5219784,15695,5219648,17112,5219841,15613,5219880,15915,5219406,15702,5220061,16124,5220064,15630,5220158,16204,5220240,15439,5220455,15308,5220403,15324,5220422,15167,5219969,15524,5219993,15590,5219290,17303,5219314,17395,5219583,17105,5219807,15509,5219367,17429,5219357,17672,5219195,17424,5219290,17273,5219211,17662,5219284,17750,5219540,17265,5219178,17460,5219316,17990,5219385,17922,5219401,18106,5219496,17851,5219494,17724,5219390,17716,5219567,17660,5219612,17756,5219596,16753,5219468,17933,5219452,18038,5219698,17353,5219799,14284,5219636,17157,5219744,14185,5219635,14415,5219760,14374,5219778,14129,5219483,14920,5219756,14112,5219684,14152,5219639,14212,5219691,14447,5219717,14341,5219744,14252,5219796,14260,5219725,14538,5219501,14167,5219647,14651,5219693,14999,5219646,15295,5219600,15411,5219689,14757,5219536,15330,5219528,15482,5219361,15471,5219653,14836,5219610,15515,5219367,15540,5219507,15658,5219593,15679,5219521,15775,5219610,14582,5219659,14600,5219467,14088,5219403,14010,5219512,14786,5219473,14712,5219416,14583,5219239,14688,5219460,14521,5218975,14528,5219385,14856,5219437,15124,5219592,15210,5218905,14577,5219609,15141,5219569,15004,5219628,14922,5219634,14981,5219617,15062,5219431,14979,5219590,14098,5219652,14139,5219454,14146,5219550,14439,5219581,14455,5219338,14159,5219450,14258,5219494,14418,5219080,13993,5219011,14024,5218995,14119,5219370,14406,5219081,14302,5219123,14263,5219013,14294,5218992,14453,5219436,14417,5219437,14028,5219476,13996,5219510,14015,5219356,17192,5219277,14986,5219277,15180,5219250,14857,5219157,14869,5219161,14772,5219539,14030,5219057,15430,5219209,15171,5218834,15346,5218718,15326,5219059,14733,5218852,15289,5219021,15113,5219128,14970,5219047,15144,5219118,15384,5219098,15172,5219130,15189,5219098,15522,5218960,15483,5218796,15186,5218884,15235,5218860,14859,5218870,14816,5218998,14776,5218925,14984,5218974,15088,5218970,14798,5219119,15752,5219104,15690,5218836,14946,5218900,15610,5218951,15822,5218966,15597,5218982,15729,5219005,16124,5219054,16248,5218981,16078,5218949,16080,5218789,15989,5218791,16215,5218778,16264,5218575,16144,5218665,16213,5218916,15128,5218819,16017,5218810,15104,5219302,15758,5219226,15693,5219344,15598,5218733,16166,5219263,15708,5219341,15725,5219036,16565,5218906,16425,5218959,16523,5219017,16398,5218992,16456,5218904,16573,5219645,15435,5219364,15741,5219432,15757,5219416,15764,5219444,15764,5220388,14662,5220416,14734,5219901,14782,5219912,14798,5219967,14816,5219943,14803,5219263,13996,5219227,13721,5219873,14937,5220058,14920,5219236,15404,5218877,13880,5218794,13915,5218769,13927,5218768,14059,5218851,14071,5218803,14289,5218790,14400,5218766,14554,5217969,14814,5218556,14986,5218601,14943,5218538,15064,5218703,14979,5218738,14739,5217968,14775,5218633,15111,5218897,13759,5218810,14027,5218827,14214,5218862,13738,5218933,13825,5218172,14577,5218881,14112,5218921,14281,5217956,14413,5218821,14485,5218865,14730,5218775,14782,5218726,15097,5218002,14879,5219016,13715,5218941,13703,5219091,13865,5219201,13803,5219287,13927,5219367,13998,5219319,14073,5219075,13653,5218713,15437,5217960,14611,5217895,14796,5217877,14598,5219227,13721,5217772,14654,5217784,14776,5217811,14552,5218527,15311,5218472,15188,5218146,15029,5218052,14902,5218048,14608,5218025,14377,5217952,14348,5218090,14598,5218185,14976,5218256,14758,5218200,14270,5218181,14319,5218252,14337,5218299,14782,5218476,15123,5218147,14453,5218272,14389,5218588,14028,5218568,14138,5218650,14644,5218658,14501,5218616,14007,5218676,13854,5218704,13991,5218712,14385,5218664,13986,5218733,14142,5218692,14206,5218510,14194,5218557,14704,5218463,14219,5218520,14712,5218485,14522,5218490,14018,5218334,14506,5218398,14231,5218442,14713,5218358,14296,5218405,14755,5218399,14939,5218318,14050,5218092,15128,5218033,15366,5218380,17077,5218129,16665,5217372,15657,5217403,15608,5218636,14810,5218693,14786,5218649,15333,5218601,15667,5218679,15586,5218533,15526,5218794,15827,5218614,15840,5218456,16539,5218470,16540,5218462,16592,5218776,15512,5218605,15966,5218743,15722,5218461,16994,5218285,16652,5218347,16654,5218415,16520,5218633,16539,5218388,16884,5218711,15806,5218696,15877,5218528,16072,5218695,15483,5218506,16237,5218458,16204,5218453,16087,5218474,16071,5218414,16766,5218520,15932,5218202,16565,5218193,16671,5218080,16471,5218180,15963,5218012,16726,5218204,15987,5217927,15909,5217906,15755,5217805,15765,5217996,15907,5217854,15659,5217838,15883,5217696,15538,5217698,15449,5218637,16011,5218705,16007,5217978,15037,5218016,15633,5217972,15621,5218147,15844,5218118,15806,5218045,16029,5217853,16089,5217935,15187,5217639,15749,5217817,16015,5217678,15725,5217712,15738,5218079,15332,5218424,15327,5218106,15197,5218394,15376,5218138,15294,5218167,15446,5218295,15854,5218284,15446,5218270,16058,5218248,16104,5218224,15662,5218295,15967,5218390,15982,5218434,15580,5218354,15895,5218404,15530,5218312,15679,5218053,15301,5218358,15525,5218419,16289,5217404,15159,5217355,15249,5217380,14937,5217519,15243,5218396,16441,5217297,15249,5217498,15108,5217565,15048,5217683,15086,5217691,15331,5217748,15298,5217801,15298,5217888,15337,5217869,15082,5218228,15155,5218497,15700,5219227,13721,5220431,18798,5218662,18194,5220400,18635,5220300,18630,5218294,17640,5218732,17644,5218759,17664,5218732,17590,5218759,17664,5218821,17520,5218740,17430,5218691,17860,5218655,17894,5218727,17780,5218544,18112,5218520,18060,5218571,17864,5218565,17932,5218560,17806,5218477,17943,5218683,18038,5218446,17898,5218518,18013,5218413,17901,5218447,17600,5219269,18504,5219167,18571,5219112,18716,5219034,18654,5219033,18535,5219314,18226,5218933,18539,5219430,18430,5219436,18352,5219354,18372,5219435,18280,5218370,17907,5218524,17728,5218451,17421,5218447,17564,5219093,17792,5218916,17655,5218761,17831,5218798,17950,5218789,18008,5218750,17755,5218670,17212,5218779,17442,5218785,17373,5218738,17976,5218662,17306,5218497,17208,5218575,17302,5218563,16976,5218533,16956,5218492,16952,5218478,17128,5218474,17333,5218876,17704,5218825,17821,5218637,17400,5218363,17468,5218314,17467,5218685,17122,5218809,17740,5218840,17148,5218754,17227,5218279,17341,5218270,17516,5218638,17065,5219020,17382,5219020,17499,5218962,17320,5218822,17069,5218780,16941,5218896,17137,5218973,17056,5218965,16980,5218640,16964,5218825,18548,5219095,17518,5219104,17715,5219112,17850,5218895,17033,5218815,18634,5218912,17567,5219138,17636,5218870,17314,5218967,17171,5218974,17278,5218817,17230,5219100,17583,5219014,18224,5219025,18131,5218924,18189,5218328,16984,5218177,17891,5218543,17394,5219103,17128,5219112,17042,5218722,17214,5218725,17322,5218781,18274,5218819,18175,5218741,18180,5219310,18429,5218604,14633,5219504,18384,5219539,18478,5219399,18487,5219427,18654,5219387,18608,5219089,18149,5219131,18209,5219305,18612,5219180,18150,5219187,17971,5219239,18084,5219233,18272,5219133,18063,5219132,18348,5219063,18263,5219276,18708,5218957,18005,5218914,18055,5218980,18101,5219039,18004,5218954,18148,5219068,17924,5218357,18359,5218452,18422,5218421,18239,5218520,18415,5218598,18447,5218983,17905,5218659,18264,5218746,18392,5218559,18360,5218525,18237,5219266,18292,5219225,18379,5218733,18453,5217446,13514,5217754,13837,5217757,13796,5217762,13740,5217766,13696,5217633,14003,5217640,14268,5217261,14555,5217231,14715,5217294,14507,5217238,14246,5217322,13634,5217679,13668,5217352,13604,5217308,13421,5217507,14175,5217446,13884,5219005,13510,5218924,13482,5217735,14095,5217333,14231,5217786,14285,5217654,14175,5217566,14535,5217434,14296,5217740,14198,5217500,14065,5217542,14203,5217759,14410,5217560,14733,5217464,14449,5217398,14489,5217516,14568,5217294,14908,5217216,15106,5217690,13558,5217594,13893,5217589,13916,5217613,13890,5217621,13939,5217629,13903,5217652,13919,5217692,13922,5217500,14065,5217573,13776,5217591,14201,5217659,13884,5217319,14372,5217500,14065,5217385,13915,5217326,14182,5217665,14054,5217640,14268,5217698,14222,5220046,12692,5220120,12581,5220218,12538,5219992,12183,5219227,13721,5219227,13721,5219474,13121,5219706,12965,5220059,12641,5220020,12676,5220212,12430,5220174,12484,5220019,12641,5220143,12519,5219870,12578,5219838,12448,5219819,12282,5219781,12350,5219837,12635,5219796,12512,5219768,12658,5219227,13721,5219886,12272,5219842,12878,5220249,12508,5219610,12751,5219787,12777,5219689,12526,5219702,12642,5219769,12794,5219668,12710,5219630,12512,5219769,12345,5219722,12435,5219728,12624,5219574,12470,5219645,12878,5219655,12920,5219617,12607,5219614,12444,5219730,12386,5219640,12545,5219681,12368,5219725,12336,5219659,12372,5219614,12298,5219614,12298,5219731,12760,5219724,12684,5219589,12456,5219627,12397,5219773,12832,5219735,12283,5219843,12733,5219686,12926,5219394,13417,5219346,13444,5219352,13374,5219553,12657,5219539,13054,5219529,12828,5219498,12521,5219534,12581,5219557,12818,5219573,12754,5219592,12761,5219638,13043,5219787,12922,5219501,12786,5219766,13109,5219529,13126,5219715,12951,5219595,13125,5219623,13093,5219627,13226,5219549,13154,5219869,12282,5219325,13333,5219474,13121,5219272,13272,5219168,13370,5219841,12155,5219837,12070,5219895,12184,5220120,11822,5220041,12092,5220095,12138,5219847,12294,5220130,12292,5219888,12103,5219924,12235,5220078,12008,5220130,12292,5220118,12084,5220056,11988,5220029,12019,5219925,12019,5220066,11816,5219168,13370,5220161,11851,5220246,11813,5220289,11784,5220253,11761,5220289,11751,5220193,11788,5220122,11750,5220090,11628,5220025,11659,5220113,11641,5220152,11648,5220202,11698,5220179,11593,5220426,11786,5220485,11792,5220434,11727,5220608,11822,5220561,11818,5220591,11797,5220667,11812,5220569,11618,5220510,11561,5220512,11621,5220778,11783,5220694,11752,5220817,11843,5220531,11710,5220531,11710,5220813,11834,5220694,11831,5220816,11908,5220853,11955,5220887,11826,5220902,11869,5220531,11710,5220961,11715,5220809,11878,5220947,11650,5220444,12013,5220271,12448,5220362,12378,5220300,12375,5220440,12248,5220414,12152,5220528,12201,5220471,12289,5220363,12269,5220343,12169,5220290,12155,5220290,12155,5220290,12155,5220290,12155,5220290,12155,5220290,12155,5220290,12155,5220298,12320,5220290,12155,5220290,12155,5220273,12198,5220470,12127,5220621,12106,5220590,12131,5220714,12005,5220674,12048,5220670,12010,5220678,11926,5220658,11912,5220620,11866,5220596,11912,5220624,11906,5220779,11890,5220480,12101,5220528,12033,5220553,12078,5220513,12064,5220468,12014,5220543,11959,5220571,11872,5220582,11974,5220609,11991,5220600,11953,5220631,12006,5220467,11815,5220437,11873,5220504,11830,5220398,11850,5220389,11850,5220430,11940,5220461,12054,5220421,11956,5220405,12080,5220480,11930,5220412,11831,5220220,11866,5220359,12038,5220230,11864,5220330,11934,5220371,11908,5220292,12049,5220444,12288,5220461,12054,5219227,13721,5219411,12225,5219701,12182,5219300,11988,5219112,12198,5219250,11940,5219032,11878,5219089,12105,5219150,11647,5219185,11836,5219108,11901,5219112,12287,5219078,12227,5219074,11946,5219094,11970,5219106,12013,5219052,12138,5219024,12124,5218958,13133,5219226,12440,5219061,12201,5219004,12396,5218853,12257,5218661,12209,5218726,12020,5218798,12543,5219013,12543,5218481,12276,5218553,12065,5218326,12591,5218422,12342,5218482,12563,5218621,12594,5218586,12344,5219062,12409,5219102,12439,5218736,12340,5217831,14006,5219190,13194,5218853,12872,5218964,12962,5218867,12934,5219233,13042,5219128,13208,5218993,12962,5218978,12734,5219023,13170,5219220,12810,5218692,13015,5218866,12761,5219151,12690,5219058,13094,5219055,12998,5218790,12872,5218955,12842,5218827,12770,5219066,13338,5218988,13384,5219165,12907,5219154,12765,5218925,13349,5219028,12899,5219000,12794,5219098,12804,5218867,12934,5218928,13243,5218980,13274,5218867,12934,5219096,12763,5219133,12931,5218962,13156,5218882,12870,5218832,13207,5218630,13379,5218599,13360,5219138,13279,5218593,13252,5219021,12722,5218232,11995,5218298,12055,5218352,12176,5218306,12296,5218974,12775,5218734,12148,5218122,11782,5218646,11861,5219214,12646,5219089,13282,5217975,11952,5218066,12145,5218028,11888,5218149,12022,5218112,12475,5218089,11746,5218716,13300,5218770,13342,5218924,13522,5218866,13443,5218896,13516,5219101,13431,5218903,13575,5218804,13570,5218666,13404,5218528,13741,5218377,13578,5218276,13567,5218158,13427,5217938,13728,5218659,13729,5217965,13350,5217846,13966,5218181,13347,5217859,13282,5218713,13504,5218179,14022,5218109,13894,5218881,13666,5218808,13775,5218813,13702,5218680,13792,5218620,13835,5218049,14192,5218376,13996,5218395,14029,5217207,10772,5217831,12013,5217903,12025,5217796,12179,5217815,12240,5217960,12082,5217936,12249,5217847,12258,5217785,12243,5217760,12202,5217923,12149,5217903,12347,5217899,12452,5217778,12402,5217778,12312,5217237,10598,5217266,10658,5217216,10518,5217345,12137,5217277,12023,5217286,12074,5217262,12184,5217267,12174,5217293,12177,5217502,12244,5217508,12183,5217232,12442,5217637,12126,5217655,12206,5217623,12344,5217327,11193,5217417,12091,5217378,12202,5217428,12181,5217349,12260,5217713,11839,5217327,11380,5217421,12330,5217379,12332,5217378,12388,5217352,12356,5217910,11564,5217944,11758,5217816,11638,5217412,11215,5217992,11697,5217750,11390,5217686,11535,5217661,11611,5217558,11388,5217757,11683,5217559,11464,5217621,11504,5217541,11290,5217402,11388,5217200,11308,5217334,11335,5217445,11516,5217488,11819,5217461,11729,5217420,11708,5217230,11796,5217288,11934,5217451,12006,5217498,11378,5217258,11421,5217582,11603,5217302,11879,5217580,11356,5217543,11319,5217258,11324,5217445,11111,5217349,11073,5217287,11222,5217322,11115,5217331,10809,5217427,10869,5217390,10272,5217470,10964,5217290,10987,5217685,11276,5217391,11228,5217631,11205,5217599,11866,5217572,11724,5217538,11725,5217491,11251,5218290,18635,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5219227,13721,5218666,7065,5219062,7572,5219287,7909,5221472,7272,5219655,7016,5219227,13721,5223040,10985,5223402,10402,5221055,11215,5221028,11339,5221134,11273,5221027,11557,5221046,11580,5221245,11285,5221214,11383,5221108,11283,5221391,11222,5221303,11412,5221095,11448,5220812,8570,5221378,11144,5221392,11393,5221367,11174,5221242,10483,5221229,11264,5221187,11272,5221136,11315,5221079,11329,5221179,11203,5221130,11134,5221262,11068,5221248,10950,5221235,11219,5221128,11180,5221287,11123,5221326,11172,5221116,11016,5221301,11102,5221297,11160,5221219,11166,5221253,11101,5221405,11012,5221378,10924,5221424,9896,5221464,10665,5221427,10499,5221913,9994,5222133,9538,5221165,10416,5221660,10140,5221762,10300,5221338,10514,5221299,10317,5221675,10069,5221456,11286,5221441,9105,5221460,10239,5221186,9279,5221492,10307,5221776,10052,5221134,10779,5221354,7953,5221106,10438,5220906,10319,5220824,10352,5221176,9659,5221077,9898,5221312,8850,5220980,9989,5221072,8846,5221299,8002,5221433,8737,5221106,9745,5221364,8786,5221427,8971,5221497,9235,5220885,9046,5221096,9175,5220983,9352,5221275,10587,5221058,8582,5220914,8934,5221559,9298,5223119,8809,5220903,8883,5220997,8964,5222889,9124,5222951,9196,5223006,8881,5223052,9027,5222315,9494,5220881,8989,5222255,9484,5222348,9679,5222344,9563,5222350,9610,5221457,9533,5221118,8003,5220985,10436,5220909,9289,5220827,10525,5221534,10850,5221752,10459,5221881,10427,5221958,10420,5221980,10205,5222135,10319,5222144,10265,5222102,10166,5221910,10282,5222204,10476,5222070,10424,5222090,10384,5221793,10377,5221870,10224,5221669,10619,5221683,10741,5222841,8372,5222983,7859,5223002,7771,5222014,9941,5222210,9754,5222633,9893,5222387,9045,5222672,8417,5222654,8776,5222864,8726,5223056,8655,5222494,8968,5223327,8568,5222688,9009,5222590,8924,5223322,8641,5222411,9188,5222527,8670,5222795,8902,5223160,8670,5222585,9186,5222518,9183,5222720,9524,5222687,9556,5222669,9320,5222779,9454,5222835,9464,5222770,9106,5222933,8845,5222572,9369,5222795,9139,5222556,9126,5222903,8820,5222462,9235,5223466,8400,5223408,8047,5223484,8066,5223534,8109,5223524,7899,5223547,8692,5223458,8583,5220891,7927,5221995,8866,5221422,11349,5221118,9354,5221423,11266,5220861,9478,5220990,9549,5222503,9843,5222456,9785,5221360,11307,5221192,10564,5221510,9557,5221074,11103,5221639,9411,5222430,9874,5222367,9961,5222298,9870,5222260,9957,5222483,9985,5222547,10120,5222481,10044,5222351,9901,5223413,8266,5221036,8985,5221085,9605,5222195,9619,5222932,10862,5222954,10746,5221000,10142,5221032,10261,5222924,10917,5222882,10947,5222946,10679,5222850,10675,5223329,8345,5222826,10753,5222982,10788,5222157,9867,5222153,10000,5222260,10064,5222232,10085,5222551,10211,5222550,10148,5222629,10250,5221909,8848,5221773,8622,5221698,8653,5221706,8608,5221757,8497,5221928,8637,5221934,8514,5221822,8612,5221863,8732,5221846,8578,5221783,8469,5222183,8763,5222113,8878,5222215,8814,5222167,8787,5222091,8692,5222133,8834,5222250,8640,5222053,8690,5222016,8739,5222022,8696,5222038,8647,5221780,8842,5221809,8866,5221620,8684,5221662,8578,5221710,8485,5222062,8596,5222086,8583,5222373,8711,5222285,8649,5222287,8579,5222195,8521,5222246,8486,5221967,8752,5221850,8737,5221673,8772,5221694,8784,5221771,8706,5220941,10598,5220972,10586,5220672,10154,5220545,10212,5220444,10139,5220225,11193,5220502,11029,5220400,10450,5220476,10551,5220044,10400,5220973,11209,5220053,10314,5219870,10430,5219891,10456,5220005,10460,5219842,10648,5219990,10264,5219948,10297,5219944,10354,5219852,9952,5220095,10405,5220104,10320,5220093,10260,5220063,10206,5220148,10118,5220209,10163,5220281,10537,5220044,10249,5220493,10759,5219718,10860,5219652,10594,5220575,9868,5220084,11082,5220113,10848,5220101,10849,5220018,10921,5220188,10571,5220328,10602,5220533,10669,5220388,10782,5220376,10688,5220247,10866,5220099,10564,5220507,10757,5220260,11060,5219788,10522,5220378,10978,5219604,10446,5220177,10971,5219565,10249,5219594,10246,5219591,10022,5219547,9860,5220199,10861,5219620,9764,5220210,11625,5220208,11628,5220246,11526,5220239,11628,5220068,11374,5220008,11358,5219913,11339,5219893,11379,5219397,10666,5219837,11220,5219847,11361,5219835,11113,5219935,11289,5219995,11137,5219852,11010,5219911,11165,5219760,10865,5219494,10611,5219937,11169,5219614,10977,5219929,11053,5220013,11140,5219458,10621,5219591,11125,5219580,11056,5219402,11052,5219579,10878,5219494,10883,5219502,10923,5219564,10967,5219528,11098,5219420,10950,5219418,11109,5219435,11207,5219342,10983,5219313,10743,5219352,10615,5219412,10898,5219396,10579,5219506,10822,5219640,10950,5219614,10484,5219402,10747,5219632,10991,5219691,10729,5219652,10692,5219664,10514,5219730,10679,5219725,10299,5219687,10234,5219881,9595,5219784,9779,5220000,9565,5220179,9619,5219803,10307,5219940,9873,5219956,9928,5219934,9728,5220080,9534,5219656,10320,5220142,9594,5219893,9907,5217754,9526,5217756,9646,5217919,9627,5217992,9448,5217986,9276,5218085,9186,5218024,9202,5218031,9063,5218085,8976,5217915,8954,5218296,9393,5217918,9118,5218054,9108,5218174,8809,5218183,9041,5218011,8926,5218446,8540,5218061,8588,5218176,9131,5219606,11246,5219638,10407,5222486,15718,5223068,14826,5223448,15464,5222917,15781,5222901,15602,5223426,15185,5223059,15202,5223227,14459,5223079,14657,5223191,14649,5223196,14335,5223104,14547,5223216,14248,5223244,14967,5223252,14869,5223377,14611,5223254,14806,5223320,14795,5223316,14904,5223372,14802,5223314,14646,5223396,14907,5223484,14650,5223117,14890,5223484,13654,5223182,15163,5223580,13735,5223492,14396,5223512,14208,5223558,14295,5223562,14077,5223432,13986,5223542,13852,5223396,14234,5223491,15343,5223024,14990,5222936,15674,5223408,13766,5222936,15674,5223154,15132,5222882,15172,5222961,15066,5223424,14122,5221456,12585,5221501,12741,5221543,12658,5221605,12687,5221489,12702,5221602,12732,5221514,12821,5221636,12866,5221626,12895,5221541,12964,5221682,13058,5221626,12786,5221628,13072,5221583,13171,5221676,13184,5221761,13283,5221666,13002,5221716,13281,5221850,13330,5221888,13496,5221893,13437,5221794,13477,5221910,13393,5221739,13121,5222123,14107,5221612,13320,5221658,13580,5221197,13808,5221287,14004,5221214,13717,5221462,13061,5221839,13280,5221968,15229,5221666,13403,5221449,13456,5221453,12992,5221422,13419,5221531,13123,5221577,13352,5221513,13555,5221386,13628,5221300,13599,5221386,13680,5222464,13911,5221415,13906,5222214,14429,5221317,13839,5221567,14035,5221635,14065,5221685,14173,5221609,14305,5221441,12723,5221681,14079,5221316,12723,5221595,14113,5221703,14119,5221740,14035,5221674,13982,5221094,13447,5221656,13875,5221505,13610,5221632,13936,5221393,12594,5221384,12546,5221575,14169,5222566,13730,5221426,12635,5221456,12743,5221343,13931,5221492,12919,5221749,14107,5221377,12646,5221390,12714,5222068,14157,5221344,13613,5222683,13847,5222715,13909,5222578,15394,5221129,13524,5222346,13379,5222003,14245,5222732,13870,5222385,15246,5222345,15213,5222314,15155,5221935,15019,5222296,15193,5222258,15291,5222335,15327,5221829,14238,5222366,15116,5222318,13431,5222436,13417,5222546,13791,5221665,12263,5222447,14183,5221818,13955,5221543,14227,5221486,13049,5221904,14684,5222608,16172,5222521,15286,5222497,13644,5221662,12349,5219227,13721,5221390,13725,5221436,13790,5221526,14090,5221783,13939,5221251,12774,5221381,12772,5221359,12839,5221356,12904,5221293,13056,5221368,12988,5221366,13045,5221213,13005,5221224,13520,5221482,13154,5221221,13099,5221233,12958,5221487,13216,5221402,13206,5221322,13188,5221210,13165,5221372,13124,5221213,12917,5221584,12669,5221542,13378,5221132,13156,5221580,13336,5221364,13419,5221339,13273,5221325,13464,5221333,13415,5221190,13259,5221230,13316,5221148,13366,5221098,13351,5221165,13498,5221298,13271,5221107,13286,5221230,13413,5221276,13542,5221281,13458,5221145,13527,5221251,13559,5221531,12593,5221631,12652,5221668,12709,5221712,12814,5221744,12886,5221837,13094,5221945,13312,5222034,13412,5222375,13958,5222384,14127,5222284,14178,5222339,14290,5222440,14591,5222184,13611,5222415,14546,5222384,14499,5222405,14387,5222286,14655,5222496,14178,5222271,14501,5222538,14893,5221694,13917,5221633,14391,5221919,14431,5221622,13632,5221778,14080,5221721,13890,5221911,14883,5221795,14045,5221815,14315,5221922,14590,5221725,14286,5221742,13771,5221753,14388,5221798,14377,5221805,14439,5221778,14438,5221766,14247,5221869,14544,5221876,14677,5221814,14605,5221828,14740,5221898,14975,5222054,14874,5222099,15031,5221959,14908,5222051,15010,5222600,14496,5221928,14032,5222092,13589,5221683,14276,5221769,13786,5222832,16222,5222096,14333,5222080,13645,5221940,13592,5221817,13740,5221756,13677,5222051,13524,5221940,13658,5221838,13559,5221833,13897,5221882,14147,5221901,14342,5221969,14475,5222031,14454,5221959,14244,5221946,14083,5222005,14520,5222062,13995,5222042,13950,5221905,14064,5221954,13762,5221870,14007,5221921,13907,5222019,13806,5222118,13927,5222060,13912,5222031,14081,5222000,13927,5221932,14164,5222078,15779,5221964,14110,5221895,14312,5221985,14652,5222007,14693,5222120,14728,5222279,14923,5221860,14361,5222201,15016,5222361,14829,5222520,14665,5222586,14692,5222150,14687,5222692,14656,5222554,14813,5222119,14513,5222145,14343,5222177,14398,5222174,14212,5222115,14189,5222049,14320,5222082,14359,5222398,14734,5222606,14586,5222810,14599,5222067,14803,5222848,14646,5222779,15233,5222804,14686,5222637,14428,5222211,14892,5222726,14792,5222767,14780,5222879,14640,5222692,15028,5222630,15047,5222614,14971,5222574,14962,5222742,15246,5222903,14887,5222718,16312,5222436,14963,5222245,15075,5222289,15127,5222812,14959,5221276,13542,5222686,15193,5221768,13892,5222522,16295,5221999,15426,5222020,15164,5222140,15142,5222098,15280,5222033,15296,5222141,15473,5222132,15405,5222294,15420,5222226,15518,5222182,15626,5222339,15630,5221475,12663,5222323,16042,5222157,14621,5222229,15594,5222147,15666,5222065,15465,5221919,14542,5221501,12499,5221587,12550,5221510,14180,5221541,12523,5221292,13561,5221507,14130,5219227,13721,5221623,12306,5221739,12764,5221845,12940,5221904,13073,5222047,13344,5222243,13595,5222696,14410,5222258,13532,5222230,13413,5222479,14028,5222318,13606,5222399,13765,5222193,13518,5222392,13284,5221861,14702,5222724,14663,5222616,13621,5222527,13642,5221615,12392,5222556,14122,5222232,15861,5219227,13721,5222552,13939,5222559,14005,5222388,13570,5222436,13740,5222480,13495,5221124,13604,5222644,13866,5222002,12813,5222158,12605,5223509,11800,5222002,12889,5222177,12659,5221882,12964,5222180,12861,5222282,12709,5222265,12769,5222306,12926,5222173,13012,5222211,12833,5222235,13127,5222112,13209,5222198,13143,5222140,13020,5222321,12969,5222207,13221,5222031,13227,5223037,12611,5221848,12791,5221866,12890,5222018,13108,5222545,12100,5222762,14333,5222708,14053,5222715,14117,5222038,13009,5223355,12009,5223351,11855,5223392,11947,5222124,11911,5222182,11850,5222184,11958,5222241,11921,5222088,12186,5222124,12232,5222357,12069,5222376,12024,5222484,12155,5222466,12267,5222381,12186,5222384,12290,5222447,12376,5222290,12462,5222423,12270,5222323,12618,5223446,12498,5222441,12641,5222375,12640,5222356,12287,5222165,12067,5221828,12613,5221955,12392,5223443,11951,5222484,12650,5222559,12340,5222509,12356,5223466,12123,5222506,12011,5222546,12082,5222432,12497,5222544,12140,5222582,12136,5222538,12641,5222573,12744,5222530,12049,5223418,12141,5223466,11893,5223382,12151,5223531,11921,5223355,11725,5223584,12616,5222374,13226,5223354,12258,5223452,12387,5223344,11581,5223254,11464,5223250,12042,5223463,12157,5223349,11685,5223216,11796,5223282,11757,5223081,13502,5222646,11528,5222586,11945,5222623,11462,5222566,11843,5222768,11757,5222815,11836,5222829,11924,5222777,12051,5222679,12081,5222881,12110,5222777,12190,5222702,11898,5222725,12192,5222724,11973,5222637,12002,5223242,12982,5222806,12204,5222256,13374,5223482,12953,5223139,12703,5222241,13292,5222159,13311,5222356,13072,5222268,13250,5222431,13053,5222587,12809,5222694,12547,5222909,12196,5222751,12282,5222664,12275,5222457,12833,5222638,12370,5222671,12400,5222660,12489,5222592,12503,5222696,12154,5223075,12062,5222323,13268,5223086,11879,5223350,12939,5222978,12841,5222628,12861,5222698,13025,5222827,12955,5222966,12774,5222818,13123,5222982,13213,5222966,13132,5222933,13102,5222988,13065,5222835,12995,5223014,13088,5223039,13135,5222919,13261,5223063,13184,5222959,13045,5223100,13036,5223010,12981,5222878,13023,5222840,13250,5222945,13371,5222988,13518,5222999,13678,5222884,13939,5223015,13961,5222946,13990,5222878,14103,5222798,13857,5222913,13508,5222949,14140,5223039,13381,5223104,13252,5223151,13171,5222934,12862,5222832,13913,5223234,11698,5222922,14326,5223210,13886,5223206,14000,5223250,13618,5223286,13481,5223213,13797,5223067,13885,5223070,13677,5223053,13600,5223118,13586,5223144,13629,5223139,13832,5222972,13841,5223202,13696,5223142,13738,5223075,13758,5223008,13709,5223078,13835,5223038,14069,5222893,14282,5222796,14427,5223292,13774,5223328,13612,5222918,14456,5223106,14234,5222948,14472,5223529,13437,5222822,13434,5223065,14230,5222794,13407,5222863,13510,5222808,13560,5222683,13349,5222716,13574,5222618,13553,5222729,13722,5222792,13775,5222828,12787,5222686,12688,5222850,13682,5222746,12774,5222803,12869,5222738,12605,5222831,12615,5222771,12715,5222786,12556,5222873,12638,5222910,12703,5222860,12677,5222850,12411,5222838,12497,5222919,12541,5222899,12471,5222956,12654,5223026,12717,5223079,12709,5223078,12643,5223132,12794,5222901,12379,5222997,12587,5222938,12402,5222959,12475,5223052,12546,5223150,12642,5223178,12729,5222980,12388,5223029,12312,5222957,12207,5223050,12172,5223227,12637,5223219,12833,5223274,12845,5223251,12732,5223345,12781,5223217,12693,5223284,12743,5223309,12757,5223276,12690,5223230,12791,5223166,12854,5223326,12860,5223358,12726,5223278,12602,5223409,12781,5223320,12591,5223375,12560,5223403,13166,5223416,13008,5223456,13074,5223355,13291,5223289,13077,5223323,13133,5223382,13212,5223302,12308,5223445,13231,5223324,12380,5223283,12401,5223359,12449,5223335,12470,5223267,12349,5223298,12486,5223249,12501,5223203,12481,5223494,12512,5223508,12848,5223484,12638,5223588,12794,5223433,12359,5223521,12293,5223568,12859,5223180,12423,5223251,12382,5223574,12912,5223196,12286,5223222,12340,5223169,12210,5223193,12167,5223141,12316,5223384,12074,5223326,12122,5223304,12032,5223409,12314,5223303,11493,5223303,11371,5223237,11914,5222812,13328,5223474,11850,5223523,12725,5223261,13686,5222947,12806,5222886,13708,5223585,12712,5223261,12236,5222796,11984,5222791,12062,5222763,11971,5221206,11592,5221197,11763,5221225,11731,5221286,11650,5221389,11509,5221318,11662,5221303,11535,5221271,11775,5221248,11802,5221306,11951,5221375,12154,5221406,11542,5221398,12275,5221386,12440,5221447,12460,5221365,12458,5221263,12115,5221433,12167,5221441,11053,5221535,10973,5221395,11458,5221411,12293,5221496,11927,5221367,12082,5221522,11732,5221552,11484,5221474,12092,5221520,11388,5221466,11375,5221481,11438,5221485,11493,5221474,11669,5221526,11473,5221486,11550,5221368,11704,5221407,11694,5221453,11809,5221464,11843,5221381,11948,5221368,11638,5221439,12009,5221559,11714,5221492,12127,5221504,11453,5221511,12293,5221583,11640,5221505,12368,5221787,11888,5221494,12317,5221567,12144,5221589,12063,5221620,11919,5221613,12007,5221693,11856,5221754,11747,5221991,11788,5221762,11699,5221842,11668,5221728,11605,5221711,11814,5221707,11546,5221851,11163,5221852,11610,5221415,12393,5222409,11793,5221890,11629,5222584,11031,5219227,13721,5221224,11751,5222611,11075,5223060,11752,5223069,11816,5221891,11057,5222064,11336,5222142,11167,5221477,11058,5221967,11482,5221906,11911,5221929,11467,5222019,11499,5222082,11228,5222076,11159,5222160,10961,5222249,11252,5222050,11518,5222326,11259,5222581,11226,5222717,11231,5222450,11240,5222135,11030,5221837,11266,5221535,11074,5221792,11087,5222681,11093,5221900,11123,5222034,10948,5222200,10625,5222218,10681,5221887,11161,5221880,11113,5221840,11552,5221762,11300,5222074,10960,5221670,11313,5221672,11355,5221732,11437,5221684,11482,5221810,11517,5221638,11367,5221549,11117,5221508,11242,5221546,11269,5221700,11172,5221650,11146,5221683,11204,5221646,11225,5222377,10955,5221690,11129,5222433,10961,5222293,11105,5222369,10993,5222425,11053,5221642,11347,5222299,10709,5222352,10688,5222438,10831,5222386,10600,5222506,10859,5222370,10763,5222486,10969,5222639,11152,5222759,11076,5222894,11077,5222960,11103,5221569,11222,5222245,11185,5221881,11453,5222810,11080,5221475,11104,5222171,11697,5222394,11180,5221798,12374,5221793,12078,5221980,12055,5222131,11537,5222173,11540,5222028,12072,5221845,12415,5221736,12571,5221910,10538,5222044,10722,5221986,10707,5221915,10650,5221834,10583,5221963,10934,5221961,10762,5221925,10774,5221800,10603,5221861,10536,5221759,10696,5221839,10709,5221795,10746,5221756,10721,5221774,10656,5221748,10847,5221648,10911,5221707,10820,5221638,10815,5221571,10935,5221630,11039,5221518,11000,5221723,10976,5221574,11026,5221611,10782,5221662,10980,5221743,10736,5221537,11031,5221582,10903,5222412,11979,5222331,11870,5222347,11928,5222484,12003,5222509,11773,5222522,11568,5222495,11456,5222534,11496,5222548,11305,5222442,11404,5222454,11505,5222327,11344,5222219,11747,5222384,11795,5222475,11880,5222288,11480,5222348,11787,5222396,11888,5222460,11915,5222273,11785,5222311,11784,5222316,11521,5222367,11593,5222498,11645,5222452,11682,5222884,11286,5222786,11520,5222419,11512,5222727,11470,5222787,11256,5222838,11547,5222678,10942,5222635,10886,5222718,11020,5222039,11728,5223040,11516,5222909,11607,5222967,11505,5222894,11441,5222934,11669,5222857,11627,5222958,11683,5223078,11678,5223150,11393,5223161,11448,5223127,11738,5222877,11742,5223124,11619,5221652,10700,5219227,13721,5221148,18111,5220994,11754,5220871,11913,5221335,16340,5220936,11865,5221114,11815,5221079,11834,5221061,11951,5221070,11855,5221000,11891,5221011,11806,5220983,12043,5220910,12014,5221031,11887,5221337,15728,5221031,11926,5220866,14069,5220966,14261,5220821,11994,5220909,14077,5221231,18004,5221031,12273,5220848,12181,5220841,12272,5220872,12115,5220786,12562,5220844,12232,5221214,17940,5220757,12822,5220778,13080,5220809,13074,5220865,13054,5220863,12958,5220923,13057,5220922,13233,5220892,13190,5220866,13403,5220848,13004,5220889,13285,5220928,13344,5220808,13388,5220875,13371,5220820,13588,5220904,13489,5221550,15520,5221371,17936,5220722,16120,5220835,13353,5221463,15621,5221515,15786,5220884,13707,5220906,13270,5221174,17846,5221477,15698,5220869,13649,5221459,14460,5221255,17882,5221210,17904,5221168,17778,5219227,13721,5221457,14774,5220930,13687,5221005,14358,5221081,14227,5220886,13934,5220875,13870,5220841,13890,5221328,14454,5220978,13762,5221144,14144,5221083,13896,5221243,14289,5221025,14211,5221007,13796,5220960,14146,5221042,14014,5221022,13877,5220976,14064,5221358,14830,5221004,14058,5221489,14910,5220934,14087,5221352,14366,5221320,14341,5221023,14490,5221186,14253,5221148,14715,5221147,14903,5221307,14977,5221034,14633,5221419,17802,5221023,13684,5221395,14391,5221585,15863,5221478,18011,5220915,13547,5220963,13528,5221427,15056,5221354,15071,5221326,14695,5221220,14532,5221543,18079,5221314,14645,5221363,15363,5221600,17992,5221410,14676,5221272,15672,5221286,15405,5221223,16096,5221536,17980,5221209,15938,5221194,15983,5221199,15787,5220923,15702,5221349,14760,5221039,15633,5220780,15827,5221169,15639,5221118,15902,5221136,15731,5220807,16089,5220862,15935,5220892,15895,5220966,15915,5221012,15850,5221082,15840,5221018,16036,5221126,16154,5221012,16195,5220950,15798,5221222,16043,5221419,14615,5220964,15580,5221212,16072,5221094,16193,5220973,13594,5220983,13659,5221299,15757,5221292,16466,5221721,15692,5221488,16229,5221359,16334,5221562,16619,5221668,16565,5221681,16462,5221496,16520,5221673,16211,5221460,16535,5221364,16567,5221428,16388,5221363,16474,5221709,16649,5221756,15975,5221693,15738,5221345,15686,5221511,15553,5221534,15653,5221565,15811,5221523,15714,5221515,16157,5221391,16015,5221500,15926,5221368,15760,5221757,16488,5221514,15842,5221642,16750,5221676,16273,5221764,16763,5221763,16197,5221361,16146,5221781,16719,5221765,16951,5221586,16279,5221326,16139,5221791,16539,5220518,16389,5220659,16484,5221118,16340,5220836,16529,5221046,16769,5221104,16400,5220975,16609,5220855,16381,5220798,16492,5221172,16726,5221090,17253,5221062,16458,5221025,16537,5221019,17523,5221046,17153,5221009,17133,5221063,16997,5220953,16844,5220973,16796,5220831,16773,5220618,16469,5220415,16358,5221756,15944,5221397,16725,5221143,17358,5221618,16866,5221898,17208,5222077,17070,5222240,16936,5220677,16469,5222602,16930,5222595,17053,5222303,17561,5223054,17324,5223386,17654,5222444,17728,5221962,17629,5221042,17646,5220905,13601,5220878,13556,5221702,17236,5221630,17164,5221700,17070,5222193,17017,5221666,17234,5221660,17274,5221558,17232,5221595,17039,5221641,17006,5221484,17118,5221472,17055,5221531,17026,5221564,17029,5221482,17247,5221571,16957,5221479,17170,5221442,17229,5221504,17185,5221411,17324,5221457,17321,5221693,17518,5221631,17474,5222286,17024,5221372,17293,5221803,16349,5221196,17162,5221302,17219,5220738,16721,5221238,18056,5220733,16665,5220716,16602,5220698,16546,5221276,16349,5220937,14665,5221557,15580,5221194,18063,5220762,16436,5221627,18089,5221246,15646,5221680,17857,5221884,17579,5221676,17932,5221655,18036,5221708,18084,5221684,17976,5221497,17822,5221459,17814,5221404,17879,5221654,18138,5221657,17734,5221614,18255,5221589,18318,5221580,18404,5221652,18355,5221691,18328,5221673,18401,5221652,18446,5222069,17415,5221400,15438,5220856,16677,5221424,16641,5221051,16622,5219227,13721],"roads":{"Regent St":[[52.1999,0.1266],[52.201,0.126],[52.2022,0.125],[52.2033,0.1238]],"St Andrew's St":[[52.2033,0.1238],[52.2045,0.1226],[52.2056,0.1214]],"Sidney St":[[52.2056,0.1214],[52.2068,0.1203],[52.208,0.119]],"Bridge St":[[52.208,0.119],[52.209,0.118],[52.2099,0.1167]],"Trumpington St":[[52.1996,0.1197],[52.201,0.1191],[52.2025,0.1184]],"King's Parade":[[52.2025,0.1184],[52.204,0.1181],[52.2052,0.118]],"Trinity St":[[52.2052,0.118],[52.2066,0.118],[52.2078,0.1177],[52.2088,0.1175]],"St John's St":[[52.2088,0.1175],[52.2094,0.1177],[52.2099,0.1167]],"Trumpington Rd":[[52.1996,0.1197],[52.1975,0.1205],[52.195,0.1215],[52.191,0.1225]],"Lensfield Rd":[[52.1996,0.1197],[52.1997,0.123],[52.1999,0.1266]],"Hills Rd":[[52.1999,0.1266],[52.1985,0.128],[52.1972,0.1295],[52.1945,0.1322],[52.191,0.1352],[52.1875,0.1385]],"Gonville Pl":[[52.1999,0.1266],[52.2006,0.1286],[52.2013,0.1305]],"Mill Rd":[[52.2013,0.1305],[52.2005,0.1335],[52.1996,0.137],[52.199,0.14],[52.1981,0.1435],[52.197,0.148],[52.1958,0.1525]],"East Rd":[[52.2013,0.1305],[52.2035,0.1312],[52.206,0.1312],[52.2082,0.131]],"Newmarket Rd":[[52.2082,0.131],[52.2084,0.135],[52.209,0.14],[52.2098,0.146],[52.2106,0.152]],"Maids Causeway":[[52.2087,0.1258],[52.2085,0.1285],[52.2082,0.131]],"Jesus Ln":[[52.2083,0.1188],[52.2085,0.1225],[52.2087,0.1258]],"Victoria Ave":[[52.2087,0.1258],[52.211,0.1254],[52.2145,0.1246]],"Chesterton Rd":[[52.2148,0.1215],[52.2145,0.1246],[52.2142,0.129],[52.2148,0.134],[52.2156,0.139]],"Castle St":[[52.2099,0.1167],[52.211,0.1155],[52.2124,0.1138],[52.215,0.1108],[52.2185,0.106]],"Queen's Rd":[[52.2005,0.113],[52.204,0.1127],[52.2075,0.1133],[52.2108,0.115]],"Madingley Rd":[[52.2108,0.115],[52.2117,0.108],[52.2128,0.1],[52.214,0.092]],"Silver St":[[52.2022,0.118],[52.2018,0.116],[52.2008,0.113]],"Barton Rd":[[52.2005,0.113],[52.1992,0.107],[52.1978,0.101]],"Station Rd":[[52.1966,0.1307],[52.1957,0.1337],[52.1948,0.1365]],"Milton Rd":[[52.2148,0.1215],[52.2175,0.1255],[52.2205,0.1305],[52.224,0.138],[52.227,0.144],[52.23,0.1495]],"Cherry Hinton Rd":[[52.1888,0.1368],[52.1878,0.144],[52.1866,0.153],[52.1852,0.162],[52.184,0.17],[52.1834,0.176]],"Huntingdon Rd":[[52.2124,0.1138],[52.216,0.106],[52.22,0.099]]},"river":[[52.187,0.1085],[52.1905,0.11],[52.1935,0.112],[52.1965,0.114],[52.1993,0.115],[52.201,0.1155],[52.203,0.1152],[52.205,0.115],[52.207,0.1155],[52.2088,0.1161],[52.2099,0.1169],[52.2108,0.1185],[52.2118,0.1205],[52.2127,0.1225],[52.2133,0.1245],[52.2134,0.1268],[52.2133,0.1292],[52.2137,0.132],[52.2146,0.135],[52.2158,0.139],[52.2168,0.144],[52.2178,0.15],[52.2192,0.156]],"greens":{"Parker's Piece":[[52.2038,0.1266],[52.204,0.1303],[52.2015,0.1302],[52.2008,0.127]],"Christ's Pieces":[[52.2067,0.1224],[52.2066,0.1262],[52.2055,0.1258],[52.2057,0.1226]],"Jesus Green":[[52.2104,0.1192],[52.2124,0.121],[52.2132,0.1244],[52.21,0.1252],[52.2096,0.1212]],"Midsummer Common":[[52.2132,0.1262],[52.2135,0.1322],[52.212,0.1345],[52.2096,0.133],[52.2092,0.1268]],"The Backs":[[52.2092,0.1157],[52.202,0.1149],[52.2015,0.1133],[52.209,0.1142]],"Coe Fen":[[52.2006,0.1157],[52.1996,0.1192],[52.1968,0.1202],[52.1955,0.116],[52.1985,0.1148]],"Botanic Garden":[[52.1953,0.1222],[52.195,0.1285],[52.1918,0.13],[52.1915,0.1226]],"Stourbridge Common":[[52.2166,0.142],[52.2177,0.1495],[52.216,0.1505],[52.215,0.1432]]},"labels":[["Parker's Piece",52.203,0.127,"green"],["Jesus Green",52.212,0.1205,"green"],["Midsummer Common",52.2118,0.1282,"green"],["Christ's Pieces",52.2065,0.1228,"green"],["Coe Fen",52.1985,0.1158,"green"],["Botanic Garden",52.194,0.1236,"green"],["Stourbridge Common",52.217,0.144,"green"],["River Cam",52.2158,0.136,"water"],["River Cam",52.194,0.1088,"water"],["Mill Road",52.1986,0.141,""],["Hills Road",52.1925,0.1342,""],["Chesterton Road",52.2153,0.13,""],["Newmarket Road",52.2097,0.143,""],["Castle Street",52.2142,0.1118,""],["Trumpington Street",52.201,0.1195,""],["Station",52.1942,0.137,""],["Newnham",52.1985,0.108,""],["Chesterton",52.2175,0.13,""],["Romsey",52.1962,0.149,""],["Petersfield",52.2042,0.1392,""],["City centre",52.206,0.115,""],["Milton Road",52.2238,0.1365,""],["Cherry Hinton Road",52.1866,0.1505,""],["Cherry Hinton",52.185,0.172,""]]};</script>
+<script>
+(function(){
+"use strict";
+const CATS=[["pub","Pubs & bars"],["music","Live music"],["food","Food"],["late","Late night"]];
+const CATVAR={pub:"--c-pub",music:"--c-music",food:"--c-food",late:"--c-late"};
+const KINDS=[["all","Everything"],["music","Live music"],["club","Club nights"],["quiz","Quizzes"],["offer","Offers"],["event","Other events"]];
+const KIND_LABEL={music:"Live music",club:"Club night",quiz:"Quiz",offer:"Offer",comedy:"Comedy",event:"Event",note:"Note"};
+const KIND_CAT={music:"music",club:"late",quiz:"pub",offer:"food",comedy:"late",event:"pub",note:"pub"};
+const DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const DAYLONG={Sun:"Sundays",Mon:"Mondays",Tue:"Tuesdays",Wed:"Wednesdays",Thu:"Thursdays",Fri:"Fridays",Sat:"Saturdays"};
+const UPD_COLL="data/updates/items";
+
+const S={view:"whatson",prev:"whatson",cat:"all",kind:"all",socials:false,fav:false,q:"",sel:null};
+let FAVS=null;const FAV_COLL="data/updates/favs";
+function isFav(v){return FAVS?FAVS.has(v.id):!!v.fav}
+let V=[], BYID={}, META={}, UPD=null, db=null, canWrite=false;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const isMobile=()=>matchMedia("(max-width:860px)").matches;
+function ymd(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function addDays(d,n){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()+n);return x}
+function pd(s){const p=String(s).split("-").map(Number);return new Date(p[0],p[1]-1,p[2])}
+function fmt(d,o){return d.toLocaleDateString("en-GB",o||{weekday:"short",day:"numeric",month:"short"})}
+const TODAY=new Date(), T0=ymd(TODAY);
+
+function primary(v){const c=v.cats||[];return c.includes("music")?"music":c.includes("late")?"late":c.includes("pub")?"pub":"food"}
+function catColor(c){return "var("+CATVAR[c]+")"}
+
+/* ---------- merged listings for a venue ---------- */
+function manualFor(v){
+  if(UPD) return UPD.filter(u=>u.venueId===v.id);
+  return (v.manual||[]);
+}
+function listings(v){
+  const dated=[],weekly=[],offers=[],notes=[];
+  (v.events||[]).forEach(e=>{if(e.date>=T0) dated.push({date:e.date,title:e.title,kind:e.kind||"event"})});
+  (v.weekly||[]).forEach(w=>weekly.push({day:w.day,title:w.title,kind:w.kind||"event",by:w.by}));
+  (v.offers||[]).forEach(o=>offers.push({text:o}));
+  (v.notes||[]).forEach(n=>notes.push({text:n}));
+  manualFor(v).forEach(u=>{
+    const m={manual:true,id:u.id,text:u.text};
+    if(u.type==="gig"&&u.date){if(u.date>=T0) dated.push({date:u.date,title:u.text,kind:"music",manual:true,id:u.id})}
+    else if(u.type==="weekly"&&u.day) weekly.push({day:u.day,title:u.text,kind:"music",manual:true,id:u.id});
+    else if(u.type==="offer") offers.push(m);
+    else notes.push(m);
+  });
+  dated.sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
+  weekly.sort((a,b)=>((DAYS.indexOf(a.day)+6)%7)-((DAYS.indexOf(b.day)+6)%7));
+  return {dated,weekly,offers,notes};
+}
+function closedNote(v){return v.closedUntil&&T0<v.closedUntil?"Closed until "+fmt(pd(v.closedUntil),{weekday:"short",day:"numeric",month:"short"}):""}
+function onDay(v,d){
+  const key=ymd(d),dn=DAYS[d.getDay()],L=listings(v),out=[];
+  if(v.closedUntil&&key<v.closedUntil)return out;
+  L.dated.forEach(e=>{if(e.date===key) out.push(e)});
+  L.weekly.forEach(w=>{if(w.day===dn) out.push(Object.assign({weekly:true},w))});
+  return out;
+}
+
+/* ---------- filtering ---------- */
+function venueText(v){
+  const L=listings(v);
+  return [v.name,v.address,v.postcode,v.food,v.group,(v.features||[]).join(" "),L.dated.map(e=>e.title).join(" "),L.weekly.map(w=>w.title).join(" "),L.offers.map(o=>o.text).join(" ")].join(" ").toLowerCase();
+}
+function venuePass(v){
+  if(S.cat!=="all"&&!(v.cats||[]).includes(S.cat)) return false;
+  if(S.socials&&!v.checkSocials) return false;
+  if(S.fav&&!isFav(v)) return false;
+  if(S.q){const words=S.q.toLowerCase().split(/\s+/).filter(Boolean);const t=venueText(v);if(!words.every(w=>t.includes(w)))return false}
+  return true;
+}
+function visible(){return V.filter(venuePass)}
+
+/* ---------- header chips ---------- */
+function renderChips(){
+  const n=V.filter(v=>v.checkSocials).length;
+  const nf=V.filter(isFav).length;
+  const html=[`<button class="chip" data-cat="all" aria-pressed="${S.cat==="all"}">All</button>`,`<button class="chip favc" id="favchip" aria-pressed="${S.fav}"><span class="star">★</span>Favourites (${nf})</button>`]
+    .concat(CATS.map(([k,l])=>`<button class="chip" data-cat="${k}" aria-pressed="${S.cat===k}" style="--c:${catColor(k)}"><span class="dot"></span>${l}</button>`))
+    .concat([`<button class="chip socials" id="socials" aria-pressed="${S.socials}" title="Venues whose gigs or offers are mostly posted on Instagram or Facebook">Check socials (${n})</button>`]);
+  $("cats").innerHTML=html.join("");
+}
+$("cats").addEventListener("click",e=>{
+  const b=e.target.closest(".chip");if(!b)return;
+  if(b.id==="socials"){S.socials=!S.socials;if(S.socials&&S.view==="whatson")setView("venues")}
+  else if(b.id==="favchip"){S.fav=!S.fav}
+  else S.cat=b.dataset.cat;
+  renderChips();render();drawPins();
+});
+let qt;$("q").addEventListener("input",e=>{clearTimeout(qt);qt=setTimeout(()=>{S.q=e.target.value.trim();if(S.view==="detail")setView(S.prev);render();drawPins()},120)});
+
+/* ---------- tabs ---------- */
+function setView(v){
+  if(v!=="detail"&&v!=="map")S.prev=v;
+  S.view=v;
+  const app=$("app");
+  app.classList.toggle("show-map",v==="map");
+  [["whatson","tab-whatson"],["venues","tab-venues"],["map","tab-map"]].forEach(([k,id])=>$(id).setAttribute("aria-selected",String(S.view===k||(S.view==="detail"&&S.prev===k&&!isMobile()))));
+  if(v==="map"&&map)setTimeout(()=>map.invalidateSize(),0);
+  if(v!=="map")$("mcard").hidden=true;
+}
+$("tab-whatson").onclick=()=>{setView("whatson");S.sel=null;render();drawPins()};
+$("tab-venues").onclick=()=>{setView("venues");S.sel=null;render();drawPins()};
+$("tab-map").onclick=()=>{setView("map");render()};
+
+/* ---------- views ---------- */
+function render(){
+  const p=$("pane");
+  if(!V.length){return}
+  if(S.view==="detail"&&S.sel) return renderDetail(BYID[S.sel]);
+  if(S.view==="venues"||(S.view==="map"&&S.prev==="venues")) return renderVenues(p);
+  return renderWhatson(p);
+}
+function itemRow(v,e,showDay){
+  const k=e.kind||"event";const c=catColor(KIND_CAT[k]||"pub");
+  const extra=(e.weekly?`<span class="badge">${showDay?"Every "+esc(e.day):"Weekly"}</span>`:"")+(e.manual?`<span class="badge you">Added by you</span>`:e.by==="J"?`<span class="badge you">From you</span>`:"");
+  return `<li class="item"><button data-v="${esc(v.id)}" style="--c:${c}"><span class="bar"></span><span><span class="t">${esc(e.title)}</span>${extra}<br><span class="v">${esc(v.name)} · ${esc(v.address)}</span></span><span class="tag">${esc(KIND_LABEL[k]||"Event")}</span></button></li>`;
+}
+function kindPass(e){return S.kind==="all"||e.kind===S.kind||(S.kind==="event"&&(e.kind==="event"||e.kind==="comedy"))}
+function renderWhatson(p){
+  const vs=visible();let out=`<div class="kinds" role="group" aria-label="Filter listings">${KINDS.map(([k,l])=>`<button class="chip" data-kind="${k}" aria-pressed="${S.kind===k}">${l}</button>`).join("")}</div>`;
+  let any=false;
+  for(let i=0;i<14;i++){
+    const d=addDays(TODAY,i);const rows=[];
+    vs.forEach(v=>onDay(v,d).forEach(e=>{if(i>6&&e.weekly)return;if(kindPass(e))rows.push([v,e])}));
+    if(!rows.length)continue;any=true;
+    const ord={music:0,club:1,comedy:2,event:3,quiz:4,offer:5};
+    rows.sort((a,b)=>(ord[a[1].kind]??9)-(ord[b[1].kind]??9)||(a[1].weekly?1:0)-(b[1].weekly?1:0)||a[0].name.localeCompare(b[0].name));
+    const title=i===0?"Tonight":i===1?"Tomorrow":fmt(d,{weekday:"long"});
+    out+=`<section class="day"><h2>${title} <small>${fmt(d,{day:"numeric",month:"short"})}</small></h2><ul class="items">${rows.map(([v,e])=>itemRow(v,e)).join("")}</ul></section>`;
+  }
+  const later=[];const lim=ymd(addDays(TODAY,14));
+  vs.forEach(v=>listings(v).dated.forEach(e=>{if(e.date>=lim&&kindPass(e))later.push([v,e])}));
+  later.sort((a,b)=>a[1].date<b[1].date?-1:1);
+  if(later.length){any=true;out+=`<section class="day"><h2>Further ahead</h2><ul class="items">${later.slice(0,40).map(([v,e])=>itemRow(v,Object.assign({},e,{title:fmt(pd(e.date),{day:"numeric",month:"short"})+" · "+e.title}))).join("")}</ul></section>`}
+  if(!any) out+=`<p class="empty">Nothing listed for this filter. Try “Everything” or clear the search.</p>`;
+  out+=footer();
+  p.innerHTML=out;
+}
+function nextUp(v){
+  if(closedNote(v))return `<b>${esc(closedNote(v))}</b>`;
+  const t=onDay(v,TODAY);
+  if(t.length) return `<b>Tonight:</b> ${esc(t[0].title)}${t.length>1?` +${t.length-1} more`:""}`;
+  const L=listings(v);
+  if(L.dated.length) return `Next: ${fmt(pd(L.dated[0].date),{weekday:"short",day:"numeric",month:"short"})} · ${esc(L.dated[0].title)}`;
+  if(L.weekly.length) return `${esc(DAYLONG[L.weekly[0].day]||L.weekly[0].day)}: ${esc(L.weekly[0].title)}`;
+  if(L.offers.length) return `Offer: ${esc(L.offers[0].text)}`;
+  return "";
+}
+function renderVenues(p){
+  const vs=visible().slice().sort((a,b)=>(isFav(b)?1:0)-(isFav(a)?1:0)||(onDay(b,TODAY).length?1:0)-(onDay(a,TODAY).length?1:0)||a.name.localeCompare(b.name));
+  let out=`<p class="count">${vs.length} venue${vs.length===1?"":"s"}${S.socials?" to check on Instagram or Facebook":""} · favourites, then on tonight, first</p><ul class="vlist">`;
+  out+=vs.map(v=>{const pc=primary(v);const nu=nextUp(v);
+    return `<li class="vrow"><button data-v="${esc(v.id)}" style="--c:${catColor(pc)}"><span class="pin"></span><span><span class="n">${isFav(v)?'<span class="star" title="Favourite">★</span> ':""}${esc(v.name)}</span><br><span class="a">${esc(v.address)}</span>${nu?`<div class="now">${nu}</div>`:""}${v.checkSocials?`<div class="flag">Check socials · ${esc(v.checkSocials)}</div>`:""}</span><span class="cats">${(v.cats||[]).map(c=>`<i style="--c:${catColor(c)}" title="${esc(CATS.find(x=>x[0]===c)?.[1]||c)}"></i>`).join("")}</span></button></li>`}).join("");
+  out+=`</ul>`;
+  if(!vs.length) out+=`<p class="empty">No venues match. Clear the search or pick “All”.</p>`;
+  out+=footer();
+  p.innerHTML=out;
+}
+function footer(){
+  return `<p class="foot">Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; weekly nights marked “From you” come from you. Checked ${esc(META.checkedLabel||"")}. Map is a simplified drawing: pins placed by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright).</p>`;
+}
+$("pane").addEventListener("click",e=>{
+  const k=e.target.closest("[data-kind]");if(k){S.kind=k.dataset.kind;render();return}
+  const b=e.target.closest("[data-v]");if(b){openVenue(b.dataset.v,true);return}
+  if(e.target.closest(".back")){S.sel=null;setView(S.prev);render();drawPins();return}
+  const d=e.target.closest(".del");if(d){removeUpdate(d.dataset.id,d);return}
+});
+
+function openVenue(id,fly){
+  const v=BYID[id];if(!v)return;
+  S.sel=id;setView("detail");$("mcard").hidden=true;
+  renderDetail(v);drawPins();
+  if(fly&&map&&!isMobile()) map.flyTo([v.lat,v.lng],Math.max(map.getZoom(),16),{duration:.6});
+  $("panel").scrollTop=0;
+}
+function mapsLink(v){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(v.name+", "+v.address+", Cambridge "+v.postcode)}
+function sectionsHtml(v){
+  const L=listings(v);let h="";
+  const tonight=onDay(v,TODAY);
+  if(L.dated.length) h+=`<div class="sec"><h3>Coming up</h3><ul>${L.dated.slice(0,15).map(e=>`<li><span class="when">${e.date===T0?"Tonight":fmt(pd(e.date))}</span><span class="what">${esc(e.title)}${e.manual?' <span class="badge you">Added by you</span>':""}</span>${e.manual&&canWrite?`<button class="del" data-id="${esc(e.id)}" aria-label="Remove">Remove</button>`:""}</li>`).join("")}</ul></div>`;
+  if(L.weekly.length) h+=`<div class="sec"><h3>Regular nights</h3><ul>${L.weekly.map(w=>`<li><span class="when">${esc(DAYLONG[w.day]||w.day)}</span><span class="what">${esc(w.title)}${w.manual?' <span class="badge you">Added by you</span>':w.by==="J"?' <span class="badge you">From you</span>':""}</span>${w.manual&&canWrite?`<button class="del" data-id="${esc(w.id)}" aria-label="Remove">Remove</button>`:""}</li>`).join("")}</ul></div>`;
+  if(L.offers.length) h+=`<div class="sec"><h3>Offers</h3><ul>${L.offers.map(o=>`<li><span class="what">${esc(o.text)}${o.manual?' <span class="badge you">Added by you</span>':""}</span>${o.manual&&canWrite?`<button class="del" data-id="${esc(o.id)}" aria-label="Remove">Remove</button>`:""}</li>`).join("")}</ul></div>`;
+  if(!L.dated.length&&!L.weekly.length&&!L.offers.length) h+=`<div class="sec"><h3>Coming up</h3><p class="empty">No dates or offers found on their website.</p></div>`;
+  if(v.hours){const th=todayHours(v.hours);h+=`<div class="sec"><h3>Opening hours</h3>${th?`<p class="today">Today: ${esc(th)}</p>`:""}<p>${esc(v.hours).replace(/ · /g,"<br>")}</p></div>`}
+  if(v.food) h+=`<div class="sec"><h3>Food</h3><p>${esc(v.food)}</p></div>`;
+  if(L.notes.length) h+=`<div class="sec"><h3>Good to know</h3><ul>${L.notes.map(n=>`<li><span class="what">${esc(n.text)}${n.manual?' <span class="badge you">Added by you</span>':""}</span>${n.manual&&canWrite?`<button class="del" data-id="${esc(n.id)}" aria-label="Remove">Remove</button>`:""}</li>`).join("")}</ul></div>`;
+  if((v.features||[]).length) h+=`<div class="sec"><h3>Features</h3><div class="feat">${v.features.map(f=>`<span>${esc(f)}</span>`).join("")}</div></div>`;
+  h+=`<p class="src">Details from <a href="${esc(v.src)}" target="_blank" rel="noopener">${esc(hostOf(v.src))}</a>${v.eventsUrl?` · listings from <a href="${esc(v.eventsUrl)}" target="_blank" rel="noopener">${esc(hostOf(v.eventsUrl))}</a>`:""} · checked ${esc(META.checkedLabel||"")}</p>`;
+  return h;
+}
+function hostOf(u){try{return new URL(u).hostname.replace(/^www\./,"")}catch(e){return "source"}}
+function renderDetail(v){
+  if(!v)return;
+  const cats=(v.cats||[]).map(c=>`<span style="--c:${catColor(c)}">${esc(CATS.find(x=>x[0]===c)?.[1]||c)}</span>`).join("");
+  let h=`<button class="back">← ${S.prev==="venues"?"All venues":"What's on"}</button>
+  <div class="d-head"><h2>${esc(v.name)}</h2><div class="d-cats">${cats}</div><p class="d-addr">${esc(v.address)}, ${esc(v.postcode)}</p>${v.group?`<p class="d-group">${esc(v.group.startsWith("Greene King-owned")?v.group:v.group+" pub")}</p>`:""}${favBtn(v)}</div>
+  <div class="links"><a href="${esc(mapsLink(v))}" target="_blank" rel="noopener">Directions ↗</a>${v.website?`<a href="${esc(v.website)}" target="_blank" rel="noopener">Website ↗</a>`:""}${v.eventsUrl&&v.eventsUrl!==v.website?`<a href="${esc(v.eventsUrl)}" target="_blank" rel="noopener">What's on ↗</a>`:""}</div>`;
+  if(closedNote(v)) h+=`<p class="notice"><b>${esc(closedNote(v))}</b>Temporarily closed; due to reopen on or before then.</p>`;
+  if(v.checkSocials) h+=`<p class="notice"><b>Check their socials</b>${esc(v.checkSocials)}. Add anything you spot below and it shows on the map.</p>`;
+  h+=`<div id="d-sections">${sectionsHtml(v)}</div>`;
+  if(db&&canWrite) h+=addFormHtml();
+  $("pane").innerHTML=h;
+  if(db&&canWrite) wireForm(v);
+}
+function addFormHtml(){
+  const dayOpts=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d=>`<option value="${d}">${DAYLONG[d]}</option>`).join("");
+  return `<form class="add" id="add-form"><h3>Add an update</h3>
+  <div class="row"><label>Type<select id="add-type"><option value="gig">Gig on a date</option><option value="weekly">Weekly night</option><option value="offer">Offer</option><option value="note">Note</option></select></label>
+  <label id="add-date-wrap">Date<input type="date" id="add-date" value="${T0}" min="${T0}"></label>
+  <label id="add-day-wrap" hidden>Day<select id="add-day">${dayOpts}</select></label></div>
+  <label>Details<input id="add-text" maxlength="140" required placeholder="e.g. The Surfisticats, 8pm, free entry"></label>
+  <button type="submit">Add to map</button><p class="status" id="add-status" role="status"></p></form>`;
+}
+function wireForm(v){
+  const f=$("add-form"),t=$("add-type");
+  const sync=()=>{const ty=t.value;$("add-date-wrap").hidden=ty!=="gig";$("add-day-wrap").hidden=ty!=="weekly"};
+  t.addEventListener("change",sync);sync();
+  f.addEventListener("submit",async e=>{
+    e.preventDefault();
+    const text=$("add-text").value.trim();if(!text){$("add-status").textContent="Add a few words about it first.";return}
+    const ty=t.value;const doc={venueId:v.id,type:ty,text:text,createdAt:new Date().toISOString()};
+    if(ty==="gig"){const d=$("add-date").value;if(!d){$("add-status").textContent="Pick a date for the gig.";return}doc.date=d}
+    if(ty==="weekly")doc.day=$("add-day").value;
+    const btn=f.querySelector("button");btn.disabled=true;$("add-status").textContent="Saving…";
+    try{await db.collection(UPD_COLL).add(doc);$("add-text").value="";$("add-status").textContent="Added. It now shows on the map and in What's on."}
+    catch(err){$("add-status").textContent=err&&err.code==="quota_exceeded"?"The update store is full. Remove some old updates, then try again.":err&&err.code==="invalid_argument"?"This account can't add updates to this map.":"Couldn't save just now. Try again in a moment."}
+    finally{btn.disabled=false}
+  });
+}
+async function removeUpdate(id,btn){
+  if(!db)return;
+  if(btn.dataset.confirm!=="1"){btn.dataset.confirm="1";btn.textContent="Tap again to remove";setTimeout(()=>{if(btn.isConnected){btn.dataset.confirm="";btn.textContent="Remove"}},3000);return}
+  btn.textContent="Removing…";
+  try{await db.collection(UPD_COLL).doc(id).delete()}catch(e){btn.textContent="Couldn't remove"}
+}
+
+/* ---------- map ---------- */
+let map=null,pinLayer=null,baseLayers=[],labelLayer=null,baseR=null;
+function initMap(){
+  if(!window.L){$("legend").innerHTML="<p>The map couldn't load. The lists still work.</p>";return}
+  const mob=isMobile();
+  map=L.map("map",{zoomControl:true,attributionControl:false,preferCanvas:true,minZoom:13,maxZoom:18,zoomSnap:.5,maxBounds:[[52.165,0.055],[52.242,0.195]]});
+  map.zoomControl.setPosition("topright");
+  map.setView([52.2048,0.1250],mob?14.5:15);
+  /* own layers: base drawing and labels never catch taps; pins always sit on top */
+  [["base",350],["labels",450],["pins",640]].forEach(([n,z])=>{const pn=map.createPane(n);pn.style.zIndex=z;if(n!=="pins")pn.style.pointerEvents="none"});
+  baseR=L.canvas({padding:.5,pane:"base"});
+  drawBase();
+  $("legend").innerHTML=CATS.map(([k,l])=>`<div style="--c:${catColor(k)}"><i></i>${l}</div>`).join("")+`<p>Simplified map. Pins are placed by postcode.</p>`;
+  map.on("click",()=>{if(!$("mcard").hidden){$("mcard").hidden=true;if(S.view!=="detail"){S.sel=null;drawPins()}}});
+  map.on("popupclose",()=>{if(S.view!=="detail"&&S.sel){S.sel=null;drawPins()}});
+}
+function drawBase(){
+  baseLayers.forEach(l=>l.remove());baseLayers=[];
+  const land=css("--land"),dots=css("--dots"),road=css("--road"),edge=css("--road-edge"),green=css("--green"),water=css("--water");
+  const r=baseR;
+  const dl=L.layerGroup();
+  for(let i=0;i<BASE.dots.length;i+=2){L.circleMarker([BASE.dots[i]/1e5,BASE.dots[i+1]/1e5],{renderer:r,pane:"base",radius:1.3,stroke:false,fillColor:dots,fillOpacity:1,interactive:false}).addTo(dl)}
+  dl.addTo(map);baseLayers.push(dl);
+  const g=L.layerGroup();
+  Object.values(BASE.greens).forEach(p=>L.polygon(p,{renderer:r,pane:"base",stroke:false,fillColor:green,fillOpacity:1,interactive:false,smoothFactor:1}).addTo(g));
+  L.polyline(BASE.river,{renderer:r,pane:"base",color:water,weight:7,opacity:1,lineCap:"round",lineJoin:"round",interactive:false}).addTo(g);
+  Object.values(BASE.roads).forEach(p=>L.polyline(p,{renderer:r,pane:"base",color:edge,weight:7,opacity:1,lineCap:"round",lineJoin:"round",interactive:false}).addTo(g));
+  Object.values(BASE.roads).forEach(p=>L.polyline(p,{renderer:r,pane:"base",color:road,weight:4.5,opacity:1,lineCap:"round",lineJoin:"round",interactive:false}).addTo(g));
+  g.addTo(map);baseLayers.push(g);
+  if(!labelLayer){
+    labelLayer=L.layerGroup();
+    BASE.labels.forEach(([t,lat,lng,cls])=>L.marker([lat,lng],{pane:"labels",interactive:false,keyboard:false,icon:L.divIcon({className:"mlabel "+(cls||""),html:esc(t),iconSize:null,iconAnchor:[0,6]})}).addTo(labelLayer));
+    labelLayer.addTo(map);
+  }
+  map.getContainer().style.background=land;
+}
+const pinRenderer=()=>L.svg({padding:.3,pane:"pins"});
+let pinR=null;
+function drawPins(){
+  if(!map)return;
+  if(!pinR)pinR=pinRenderer();
+  if(pinLayer)pinLayer.remove();
+  pinLayer=L.layerGroup();
+  const panel=css("--panel");
+  const vs=visible().slice().sort((a,b)=>(a.id===S.sel)-(b.id===S.sel));
+  vs.forEach(v=>{
+    const sel=v.id===S.sel, col=css(CATVAR[primary(v)]);
+    const on=onDay(v,TODAY).length>0;
+    const fv=isFav(v);
+    const big=isMobile()?2:0;
+    const m=L.circleMarker([v.lat,v.lng],{renderer:pinR,pane:"pins",bubblingMouseEvents:false,radius:(sel?10:fv?9:on?8:6.5)+big,color:sel?css("--ink"):fv?css("--fav"):panel,weight:sel||fv?3:2,fillColor:col,fillOpacity:1});
+    if(canHover) m.bindTooltip(v.name+(on?" · on tonight":""),{className:"vt",direction:"top",offset:[0,-8]});
+    m.on("click",ev=>{L.DomEvent.stopPropagation(ev);pinClick(v,m)});
+    m.addTo(pinLayer);
+  });
+  pinLayer.addTo(map);
+}
+const canHover=matchMedia("(hover:hover)").matches;
+function pinClick(v,m){
+  if(isMobile()){
+    S.sel=v.id;drawPins();
+    const c=$("mcard");
+    c.innerHTML=`<button class="x" data-close-card aria-label="Close">&times;</button>`+cardHtml(v);
+    c.hidden=false;c.scrollTop=0;
+  } else {
+    map.closePopup();
+    S.sel=v.id;drawPins();
+    L.popup({maxWidth:320,minWidth:280,autoPanPadding:[24,24],className:"vpop"}).setLatLng([v.lat,v.lng]).setContent(cardHtml(v)).openOn(map);
+  }
+}
+/* the information shown when a pin is tapped */
+function cardHtml(v){
+  const L2=listings(v),today=onDay(v,TODAY),pc=primary(v);
+  const cats=(v.cats||[]).map(c=>`<span style="--c:${catColor(c)}">${esc(CATS.find(x=>x[0]===c)?.[1]||c)}</span>`).join("");
+  let h=`<div class="card"><div class="c-head" style="--c:${catColor(pc)}"><span class="pin"></span><div><div class="c-name">${isFav(v)?'<span class="star" title="Favourite">★</span> ':""}${esc(v.name)}</div><div class="c-addr">${esc(v.address)}, ${esc(v.postcode)}</div>${v.group?`<div class="c-group">${esc(v.group.startsWith("Greene King-owned")?v.group:v.group+" pub")}</div>`:""}</div></div><div class="c-cats">${cats}</div>`;
+  const kTag=e=>`<span class="k" style="--c:${catColor(KIND_CAT[e.kind]||"pub")}">${esc(KIND_LABEL[e.kind]||"Event")}</span>`;
+  if(today.length){
+    h+=`<div class="c-sec"><div class="c-lab">Tonight</div><ul>${today.map(e=>`<li class="on">${kTag(e)}${esc(e.title)}</li>`).join("")}</ul></div>`;
+  }
+  const upcoming=L2.dated.filter(e=>e.date!==T0).slice(0,3);
+  if(upcoming.length){
+    h+=`<div class="c-sec"><div class="c-lab">${today.length?"Coming up":"Next up"}</div><ul>${upcoming.map(e=>`<li>${esc(fmt(pd(e.date)))} · ${esc(e.title)}</li>`).join("")}</ul>${L2.dated.length>upcoming.length+(today.filter(e=>!e.weekly).length)?`<span class="c-more">More dates in full details</span>`:""}</div>`;
+  }
+  const otherWeekly=L2.weekly.filter(w=>w.day!==DAYS[TODAY.getDay()]);
+  if(otherWeekly.length){
+    h+=`<div class="c-sec"><div class="c-lab">Regular nights</div><ul>${otherWeekly.slice(0,4).map(w=>`<li>${esc(DAYLONG[w.day]||w.day)}: ${esc(w.title)}</li>`).join("")}</ul>${otherWeekly.length>4?`<span class="c-more">+${otherWeekly.length-4} more</span>`:""}</div>`;
+  }
+  if(L2.offers.length){
+    h+=`<div class="c-sec"><div class="c-lab">Offers</div><ul>${L2.offers.slice(0,3).map(o=>`<li>${esc(o.text)}</li>`).join("")}</ul>${L2.offers.length>3?`<span class="c-more">+${L2.offers.length-3} more</span>`:""}</div>`;
+  }
+  const th=closedNote(v)?null:todayHours(v.hours);
+  if(closedNote(v)) h+=`<p class="c-flag">${esc(closedNote(v))}</p>`;
+  if(th) h+=`<div class="c-sec"><div class="c-lab">Open today</div><p>${esc(th)}</p></div>`;
+  else if(v.hours) h+=`<div class="c-sec"><div class="c-lab">Opening hours</div><p>${esc(v.hours).replace(/ · /g,"<br>")}</p></div>`;
+  if(v.food) h+=`<div class="c-sec"><div class="c-lab">Food</div><p>${esc(v.food)}</p></div>`;
+  if(!today.length&&!upcoming.length&&!otherWeekly.length&&!L2.offers.length) h+=`<p class="c-more">No dates or offers listed on their website.</p>`;
+  if(v.checkSocials) h+=`<p class="c-flag">Check socials · ${esc(v.checkSocials)}</p>`;
+  h+=`<div class="c-btns"><button data-open="${esc(v.id)}">Full details</button>${db&&canWrite?`<a href="#" data-fav="${esc(v.id)}" role="button">${isFav(v)?"★ Unfavourite":"☆ Favourite"}</a>`:""}<a href="${esc(mapsLink(v))}" target="_blank" rel="noopener">Directions ↗</a>${v.website?`<a href="${esc(v.website)}" target="_blank" rel="noopener">Website ↗</a>`:""}</div></div>`;
+  return h;
+}
+/* "Mon–Thu 12–11pm · Fri–Sat 12pm–12am" -> today's part, or null if it can't tell */
+function todayHours(h){
+  if(!h)return null;
+  const O=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],t=O.indexOf(DAYS[TODAY.getDay()]);
+  const D="(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)",R=D+"(?:\\s*[–-]\\s*"+D+")?";
+  const re=new RegExp("^(Daily|"+R+"(?:\\s*[&,]\\s*"+R+")*)\\s+(.+)$");
+  for(const seg of h.split(" · ")){
+    const m=seg.trim().match(re);if(!m)continue;
+    if(m[1]==="Daily")return m[2];
+    for(const part of m[1].split(/\s*[&,]\s*/)){
+      const r=part.split(/\s*[–-]\s*/),a=O.indexOf(r[0]),b=r[1]?O.indexOf(r[1]):a;
+      if(a<0||b<0)continue;
+      if(a<=b?(t>=a&&t<=b):(t>=a||t<=b))return /^closed/i.test(m[2])?"Closed today":m[2];
+    }
+  }
+  return null;
+}
+function favBtn(v){
+  if(db&&canWrite) return `<button class="favbtn" data-fav="${esc(v.id)}" aria-pressed="${isFav(v)}"><span class="star">${isFav(v)?"★":"☆"}</span>${isFav(v)?"Favourite":"Add to favourites"}</button>`;
+  return isFav(v)?`<p class="favbtn" aria-pressed="true" style="cursor:default"><span class="star">★</span>Favourite</p>`:"";
+}
+async function toggleFav(id){
+  if(!db||!canWrite)return;
+  const ref=db.collection(FAV_COLL).doc(id);
+  const was=isFav(BYID[id]);
+  if(!FAVS)FAVS=new Set(V.filter(v=>v.fav).map(v=>v.id));
+  if(was)FAVS.delete(id);else FAVS.add(id);
+  refreshAll();
+  try{ if(was) await ref.delete(); else await ref.set({venueId:id,addedAt:new Date().toISOString()}) }
+  catch(e){ if(was)FAVS.add(id);else FAVS.delete(id); refreshAll() }
+}
+function refreshAll(){
+  renderChips();
+  if(S.view==="detail"&&S.sel) renderDetail(BYID[S.sel]); else render();
+  drawPins();
+  if(map&&map._popup&&S.sel&&!isMobile()){map._popup.setContent(cardHtml(BYID[S.sel]))}
+  if(!$("mcard").hidden&&S.sel){$("mcard").innerHTML=`<button class="x" data-close-card aria-label="Close">&times;</button>`+cardHtml(BYID[S.sel])}
+}
+document.addEventListener("click",e=>{
+  const fb=e.target.closest("[data-fav]");
+  if(fb){e.preventDefault();toggleFav(fb.dataset.fav);return}
+  const o=e.target.closest("[data-open]");
+  if(o){e.preventDefault();const id=o.dataset.open;if(map)map.closePopup();$("mcard").hidden=true;openVenue(id,false);return}
+  if(e.target.closest("[data-close-card]")){$("mcard").hidden=true;S.sel=null;drawPins()}
+});
+function retheme(){if(map){drawBase();drawPins()}renderChips();if(V.length)render()}
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",retheme);
+new MutationObserver(retheme).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+let wasMobile=isMobile();
+addEventListener("resize",()=>{const m=isMobile();if(m!==wasMobile){wasMobile=m;if(!m&&S.view==="map")setView(S.prev);if(map)map.invalidateSize()}});
+
+/* ---------- boot ---------- */
+function boot(data){
+  V=data.venues||[];META=data.meta||{};
+  BYID={};V.forEach(v=>BYID[v.id]=v);
+  $("updated").textContent=V.length+" venues · checked "+(META.checkedLabel||"")+" · rechecked every Monday and Thursday";
+  renderChips();render();drawPins();
+}
+initMap();
+fetch("venues.json",{cache:"no-cache"}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(boot).catch(()=>{
+  $("updated").textContent="Couldn't load the venue list";
+  $("pane").innerHTML=`<p class="empty">The venue list didn't load. Reload the page to try again.</p>`;
+});
+
+/* live updates you add (stored with the page) */
+(async()=>{
+  if(!window.claude||!window.claude.use)return;
+  try{
+    const [d,u]=await Promise.all([claude.use("db"),claude.use("user")]);
+    if(!d)return;
+    db=d;
+    canWrite=u?await u.canEdit():false;
+    db.collection(UPD_COLL).onSnapshot(snap=>{
+      UPD=snap.docs.map(s=>Object.assign({id:s.id},s.data()));
+      if(!V.length)return;
+      if(S.view==="detail"&&S.sel){const box=$("d-sections");if(box){box.innerHTML=sectionsHtml(BYID[S.sel])}else render()}
+      else render();
+      drawPins();
+    },()=>{});
+    db.collection(FAV_COLL).onSnapshot(snap=>{
+      FAVS=new Set(snap.docs.map(s=>s.id));
+      if(V.length)refreshAll();
+    },()=>{});
+    if(V.length)refreshAll();
+  }catch(e){}
+})();
+})();
+</script>
+
+</body>
+</html>
