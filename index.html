@@ -7,11 +7,26 @@
 <meta property="og:title" content="Smiff's Cambridge Compass">
 <meta property="og:description" content="Pubs, gigs, quiz nights and deals across Cambridge, on one map.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://smiffscambridgecompass.github.io/">
+<meta property="og:site_name" content="Smiff's Cambridge Compass">
+<meta property="og:image" content="https://smiffscambridgecompass.github.io/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Smiff's Cambridge Compass: a compass over a map of Cambridge pubs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://smiffscambridgecompass.github.io/preview.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Smiff's Compass">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#15211D">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%2315211D'/%3E%3Cpath d='M32 10l7 22-7 22-7-22z' fill='%23E3A04E'/%3E%3Cpath d='M32 32l7 0-7 22-7-22z' fill='%23FAFBF9'/%3E%3C/svg%3E">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}*{box-sizing:border-box}</style>
 <script>window.SMIFF_PUBLIC=true</script>
-<!--ANALYTICS-->
+<script data-goatcounter="https://smiffscambridgecompass.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 <title>Smiff's Cambridge Compass</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1281,7 +1296,7 @@ function renderVenues(p){
   p.innerHTML=out;
 }
 function footer(){
-  return `<p class="foot">Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}. Map is a simplified drawing: pins placed by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright).</p>`;
+  return `<p class="foot">Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}. Map is a simplified drawing: pins placed by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright).</p>${PUBLIC?`<p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers are counted anonymously, without cookies. Your pub crawl is saved on your device.</p>`:""}`;
 }
 $("pane").addEventListener("click",e=>{
   const k=e.target.closest("[data-kind]");if(k){S.kind=k.dataset.kind;render();return}
