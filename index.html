@@ -990,6 +990,12 @@ ol.crawl .ctrl button:focus-visible{outline:2px solid var(--accent)}
 .keybtn .ic{width:18px;height:18px}
 .legend{bottom:calc(56px + env(safe-area-inset-bottom,0px));animation:pop .16s ease-out}
 .c-next{margin:0;color:var(--muted)}
+.sham{font-size:.9em;margin-left:2px}
+.gnote{font-size:.82rem;color:var(--ok);margin-top:2px}
+.d-guin{margin:-4px 0 10px;font-size:.88rem;font-weight:600;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.d-guin .gsub{font-weight:400;color:var(--muted)}
+.gtoggle{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:3px 10px;font-size:.78rem;cursor:pointer}
+.gtoggle[aria-pressed="true"]{background:var(--ok);border-color:var(--ok);color:var(--panel)}
 .c-sun{margin:0;display:flex;gap:6px;align-items:center;font-weight:600;color:var(--warn)}
 .c-sun .ic{width:16px;height:16px}
 .sunbar{all:unset;box-sizing:border-box;width:100%;display:flex;align-items:center;gap:10px;cursor:pointer;margin:0 0 10px;padding:10px 12px;border-radius:12px;background:var(--warn-bg);color:var(--warn);font-size:.92rem}
@@ -1074,8 +1080,8 @@ const PUBLIC=!!window.SMIFF_PUBLIC;
 const YOU_ADDED=PUBLIC?"Smiff's tip":"Added by you", FROM_YOU=PUBLIC?"Smiff's tip":"From you";
 let LOC=null,PENDING_CENTER=false;
 const AMEN=[["garden","Beer garden","🌳"],["fire","Real fire","🔥"],["sport","Sports on TV","⚽"],["dogs","Dog friendly","🐕"]];
-const QF=AMEN.concat([["step","Step-free","♿"],["sunny","Garden in the sun now","☀"]]);
-function hasAm(v,k){if(k==="sunny")return sunnyNow(v);return k==="step"?!!(v.access&&v.access.step==="yes"):!!(v.amen&&v.amen[k])}
+const QF=AMEN.concat([["guinness","Guinness","☘️"],["step","Step-free","♿"],["sunny","Garden in the sun now","☀"]]);
+function hasAm(v,k){if(k==="sunny")return sunnyNow(v);if(k==="guinness")return !!guinnessOf(v);return k==="step"?!!(v.access&&v.access.step==="yes"):!!(v.amen&&v.amen[k])}
 const ICO=i=>`<span class="ico" aria-hidden="true">${i}</span>`;
 const MAIL=["jmcs1994","gmail.com"].join("@");
 function mailHref(subject){return "mailto:"+MAIL+"?subject="+encodeURIComponent(subject)}
@@ -1084,6 +1090,9 @@ function moveMap(ll,z){if(!map)return;if(RM.matches)map.setView(ll,z);else map.f
 let ANN="";
 function announce(){const s=$("sr");if(!s)return;s.textContent="";setTimeout(()=>{s.textContent=ANN},60)}
 let FAVS=null;const FAV_COLL="data/updates/favs";
+let GUIN=null;const GUIN_COLL="data/updates/guinness";
+function guinnessOf(v){if(GUIN&&GUIN[v.id])return GUIN[v.id].on?Object.assign({note:"Smiff says they pour Guinness"},v.guinness||{},GUIN[v.id]):null;return v.guinness||null}
+const SHAM=v=>guinnessOf(v)?' <span class="sham" role="img" aria-label="Serves Guinness">☘️</span>':"";
 function isFav(v){return FAVS?FAVS.has(v.id):!!v.fav}
 let V=[], BYID={}, META={}, UPD=null, db=null, canWrite=false;
 const $=id=>document.getElementById(id);
@@ -1518,14 +1527,16 @@ function nextUp(v){
 }
 function renderVenues(p){
   const near=S.near&&LOC;
-  const vs=visible().slice().sort((a,b)=>near?distM(a)-distM(b):((isFav(b)?1:0)-(isFav(a)?1:0)||(onDay(b,TODAY).length?1:0)-(onDay(a,TODAY).length?1:0)||a.name.localeCompare(b.name)));
-  const bits=[];if(S.cat!=="all")bits.push((CATS.find(x=>x[0]===S.cat)||["",""])[1].toLowerCase());if(S.fav)bits.push(PUBLIC?"Smiff's favourites":"favourites");if(S.open)bits.push("open now");QF.forEach(([k,l])=>{if(S.am[k])bits.push(l.toLowerCase())});
+  const gl=S.am.guinness&&!near;
+  const vs=visible().slice().sort((a,b)=>gl?((guinnessOf(b).harp?1:0)-(guinnessOf(a).harp?1:0)||a.name.replace(/^The /,"").localeCompare(b.name.replace(/^The /,""))):near?distM(a)-distM(b):((isFav(b)?1:0)-(isFav(a)?1:0)||(onDay(b,TODAY).length?1:0)-(onDay(a,TODAY).length?1:0)||a.name.localeCompare(b.name)));
+  const bits=[];if(S.cat!=="all")bits.push((CATS.find(x=>x[0]===S.cat)||["",""])[1].toLowerCase());if(S.fav)bits.push(PUBLIC?"Smiff's favourites":"favourites");if(S.open)bits.push("open now");QF.forEach(([k,l])=>{if(S.am[k])bits.push(k==="guinness"?"pour Guinness":l.toLowerCase())});
   ANN=`${vs.length} venue${vs.length===1?"":"s"}${bits.length?", "+bits.join(", "):""}`;
-  let out=`<p class="count">${vs.length} venue${vs.length===1?"":"s"}${bits.length?" · "+esc(bits.join(", ")):""}${S.socials?" to check on Instagram or Facebook":""} · ${near?"nearest first":"favourites, then on tonight, first"}</p><ul class="vlist">`;
+  let out=`<p class="count">${vs.length} venue${vs.length===1?"":"s"}${bits.length?" · "+esc(bits.join(", ")):""}${S.socials?" to check on Instagram or Facebook":""} · ${near?"nearest first":gl?"Harp Guide pick first, then A to Z":"favourites, then on tonight, first"}</p><ul class="vlist">`;
   out+=vs.map(v=>{const pc=primary(v);const nu=nextUp(v);
-    return `<li class="vrow"><button data-v="${esc(v.id)}" style="--c:${catColor(pc)}"><span class="pin"></span><span><span class="n">${isFav(v)?'<span class="star" aria-hidden="true">★</span><span class="sr-only">Favourite: </span>':""}${esc(v.name)}</span><br><span class="a">${esc(v.address)}</span>${nu?`<div class="now">${nu}</div>`:""}${statusHtml(v)}${v.checkSocials&&!PUBLIC?`<div class="flag">Check socials · ${esc(v.checkSocials)}</div>`:""}</span><span class="cats">${(v.cats||[]).map(c=>`<i style="--c:${catColor(c)}" title="${esc(CATS.find(x=>x[0]===c)?.[1]||c)}"></i>`).join("")}</span></button></li>`}).join("");
+    return `<li class="vrow"><button data-v="${esc(v.id)}" style="--c:${catColor(pc)}"><span class="pin"></span><span><span class="n">${isFav(v)?'<span class="star" aria-hidden="true">★</span><span class="sr-only">Favourite: </span>':""}${esc(v.name)}${SHAM(v)}</span><br><span class="a">${esc(v.address)}</span>${S.am.guinness&&guinnessOf(v)?`<div class="gnote">${esc(guinnessOf(v).note)}</div>`:""}${nu?`<div class="now">${nu}</div>`:""}${statusHtml(v)}${v.checkSocials&&!PUBLIC?`<div class="flag">Check socials · ${esc(v.checkSocials)}</div>`:""}</span><span class="cats">${(v.cats||[]).map(c=>`<i style="--c:${catColor(c)}" title="${esc(CATS.find(x=>x[0]===c)?.[1]||c)}"></i>`).join("")}</span></button></li>`}).join("");
   out+=`</ul>`;
   if(!vs.length) out+=`<p class="empty">No venues match. Turn off a filter or clear the search.</p>`;
+  if(S.am.guinness) out+=`<p class="acc-sub" style="margin-top:12px">These are the pubs where we've seen Guinness confirmed on their website or menu. Plenty of others pour it too.${PUBLIC?` Know one? <a href="${esc(mailHref("Guinness at "))}">Tell Smiff</a>.`:" Mark others from a pub's page."}</p>`;
   if(S.am.step) out+=`<p class="acc-sub" style="margin-top:12px">Step-free means CAMRA lists a step-free way in. Access details aren't listed for every pub, so others may be fine too. Worth ringing ahead.</p>`;
   out+=footer();
   p.innerHTML=out;
@@ -1569,6 +1580,21 @@ function sectionsHtml(v){
   h+=`<p class="src">Details from <a href="${esc(v.src)}" target="_blank" rel="noopener">${esc(hostOf(v.src))}</a>${v.eventsUrl?` · listings from <a href="${esc(v.eventsUrl)}" target="_blank" rel="noopener">${esc(hostOf(v.eventsUrl))}</a>`:""} · checked ${esc(META.checkedLabel||"")}${PUBLIC?` · <a href="${esc(mailHref("Smiff's Compass: "+v.name))}">Something wrong? Tell Smiff</a>`:""}</p>`;
   return h;
 }
+/* Guinness line on a pub's page, with an on/off switch in Smiff's own version */
+function guinnessHtml(v){
+  const g=guinnessOf(v),edit=db&&canWrite&&(v.cats||[]).includes("pub");
+  if(!g&&!edit)return "";
+  const line=g?`<span aria-hidden="true">☘️</span> ${esc(g.harp?"Guinness Harp Guide 2026":"Serves Guinness")}${g.note&&!g.harp?` <span class="gsub">· ${esc(g.note)}</span>`:""}`:"";
+  const sw=edit?`<button class="gtoggle" data-guin="${esc(v.id)}" aria-pressed="${!!g}">${g?"Pours Guinness ✓":"Pours Guinness?"}</button>`:"";
+  return `<p class="d-guin">${line}${sw}</p>`;
+}
+async function toggleGuinness(id){
+  if(!db||!canWrite)return;
+  const on=!guinnessOf(BYID[id]);
+  const doc={venueId:id,on,by:"J",at:new Date().toISOString()};
+  if(!GUIN)GUIN={};GUIN[id]=doc;refreshAll();
+  try{await db.collection(GUIN_COLL).doc(id).set(doc)}catch(e){}
+}
 /* garden sun section, with a direction picker in Smiff's own version */
 const FACES=[["N",0],["NE",45],["E",90],["SE",135],["S",180],["SW",225],["W",270],["NW",315]];
 function gardenHtml(v){
@@ -1604,7 +1630,7 @@ function renderDetail(v){
   if(!v)return;
   const cats=(v.cats||[]).map(c=>`<span style="--c:${catColor(c)}">${esc(CATS.find(x=>x[0]===c)?.[1]||c)}</span>`).join("");
   let h=`<button class="back">← ${S.prev==="venues"?"All venues":"What's on"}</button>
-  <div class="d-head"><h2>${esc(v.name)}</h2><div class="d-cats">${cats}</div><p class="d-addr">${esc(v.address)}, ${esc(v.postcode)}</p>${v.group?`<p class="d-group">${esc(v.group.startsWith("Greene King-owned")?v.group:v.group+" pub")}</p>`:""}${favBtn(v)}</div>
+  <div class="d-head"><h2>${esc(v.name)}${SHAM(v)}</h2><div class="d-cats">${cats}</div><p class="d-addr">${esc(v.address)}, ${esc(v.postcode)}</p>${guinnessHtml(v)}${v.group?`<p class="d-group">${esc(v.group.startsWith("Greene King-owned")?v.group:v.group+" pub")}</p>`:""}${favBtn(v)}</div>
   ${statusHtml(v,true)}
   <div class="links">${crawlBtn(v)}<a href="${esc(mapsLink(v))}" target="_blank" rel="noopener">Directions ↗</a>${v.website?`<a href="${esc(v.website)}" target="_blank" rel="noopener">Website ↗</a>`:""}${v.eventsUrl&&v.eventsUrl!==v.website?`<a href="${esc(v.eventsUrl)}" target="_blank" rel="noopener">What's on ↗</a>`:""}</div>`;
   if(closedNote(v)) h+=`<p class="notice"><b>${esc(closedNote(v))}</b>Temporarily closed; due to reopen on or before then.</p>`;
@@ -1778,7 +1804,7 @@ function pinClick(v,m){
 function cardHtml(v){
   const L2=listings(v),today=onDay(v,TODAY),pc=primary(v);
   const catL=(CATS.find(x=>x[0]===pc)||["",""])[1];
-  let h=`<div class="card"><div class="c-head" style="--c:${catColor(pc)}"><span class="pin"></span><div><div class="c-name">${isFav(v)?'<span class="star" aria-hidden="true">★</span><span class="sr-only">Favourite: </span>':""}${esc(v.name)}</div><div class="c-addr">${esc(catL)} · ${esc(v.address)}</div></div></div>`;
+  let h=`<div class="card"><div class="c-head" style="--c:${catColor(pc)}"><span class="pin"></span><div><div class="c-name">${isFav(v)?'<span class="star" aria-hidden="true">★</span><span class="sr-only">Favourite: </span>':""}${esc(v.name)}${SHAM(v)}</div><div class="c-addr">${esc(catL)} · ${esc(v.address)}</div></div></div>`;
   if(closedNote(v)) h+=`<p class="c-flag">${esc(closedNote(v))}</p>`;
   else h+=statusHtml(v);
   if(today.length){
@@ -1821,6 +1847,8 @@ document.addEventListener("click",e=>{
   if(fb){e.preventDefault();toggleFav(fb.dataset.fav);return}
   const sb=e.target.closest("[data-sunny]");
   if(sb){S.am.sunny=true;setView("venues");renderChips();render();drawPins();announce();return}
+  const gt=e.target.closest("[data-guin]");
+  if(gt){toggleGuinness(gt.dataset.guin);return}
   const gp=e.target.closest("[data-gface]");
   if(gp){setGarden(gp.dataset.gid,gp.dataset.gface);return}
   const hp=e.target.closest("[data-hop]");
@@ -1872,6 +1900,10 @@ fetch("venues.json",{cache:"no-cache"}).then(r=>{if(!r.ok)throw new Error(r.stat
       if(S.view==="detail"&&S.sel){const box=$("d-sections");if(box){box.innerHTML=sectionsHtml(BYID[S.sel])}else render()}
       else render();
       drawPins();
+    },()=>{});
+    db.collection(GUIN_COLL).onSnapshot(snap=>{
+      GUIN={};snap.docs.forEach(s=>{GUIN[s.id]=s.data()});
+      if(V.length)refreshAll();
     },()=>{});
     db.collection(GARDEN_COLL).onSnapshot(snap=>{
       GARDENS={};snap.docs.forEach(s=>{GARDENS[s.id]=s.data()});
