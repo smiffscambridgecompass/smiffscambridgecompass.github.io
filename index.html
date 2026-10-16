@@ -993,6 +993,9 @@ ol.crawl .ctrl button:focus-visible{outline:2px solid var(--accent)}
 .keybtn .ic{width:18px;height:18px}
 .legend{bottom:calc(56px + env(safe-area-inset-bottom,0px));animation:pop .16s ease-out}
 .c-next{margin:0;color:var(--muted)}
+.mapfilter{position:absolute;top:calc(10px + env(safe-area-inset-top,0px));left:max(12px,env(safe-area-inset-left,0px));z-index:900;display:flex;align-items:center;gap:6px;background:var(--ink);color:var(--panel);border-radius:999px;padding:6px 6px 6px 14px;font-size:.84rem;font-weight:600;box-shadow:0 2px 10px rgb(0 0 0/.2);max-width:calc(100% - 80px)}
+.mapfilter button{all:unset;cursor:pointer;width:24px;height:24px;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--panel) 18%,transparent);font-size:1rem;line-height:1}
+.mapfilter button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .sham{font-size:.9em;margin-left:2px}
 .gnote{font-size:.82rem;color:var(--ok);margin-top:2px}
 .d-guin{margin:-4px 0 10px;font-size:.88rem;font-weight:600;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
@@ -1058,6 +1061,7 @@ ol.crawl .ctrl button:focus-visible{outline:2px solid var(--accent)}
       <button class="keybtn" id="keybtn" aria-expanded="false" aria-controls="legend" aria-label="Map key"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.2M12 7.8h.01"/></svg></button>
       <div class="legend" id="legend" hidden></div>
       <div class="mcard" id="mcard" role="region" aria-label="Selected venue" hidden></div>
+      <div class="mapfilter" id="mapfilter" role="status" hidden></div>
     </section>
   </main>
   <div class="scrim" id="scrim" hidden></div>
@@ -1481,6 +1485,20 @@ function itemRow(v,e,showDay){
   return `<li class="item"><button data-v="${esc(v.id)}" style="--c:${c}"><span class="bar"></span><span><span class="t">${esc(e.title)}</span>${extra}<br><span class="v">${esc(v.name)} · ${esc(v.address)}${distLabel(v)?` <span class="dist">· ${distLabel(v)}</span>`:""}</span></span><span class="tag">${esc(KIND_LABEL[k]||"Event")}</span></button></li>`;
 }
 function kindPass(e){return S.kind==="all"||e.kind===S.kind||(S.kind==="event"&&(e.kind==="event"||e.kind==="comedy"))}
+/* the map follows the What's on filter (Live music, Quizzes...) as well as the venue filters */
+function listView(){return S.view==="detail"||S.view==="map"?S.prev:S.view}
+function kindOnMap(){return listView()==="whatson"&&S.kind!=="all"?S.kind:null}
+function hasKind(v){if(closedNote(v))return false;const L=listings(v);return L.dated.some(kindPass)||L.weekly.some(kindPass)}
+function mapVisible(){const k=kindOnMap();const vs=visible();return k?vs.filter(v=>hasKind(v)||v.id===S.sel):vs}
+const KIND_PLURAL={music:"live music",club:"club nights",quiz:"quizzes",offer:"offers",event:"other events"};
+function mapFilterNote(){
+  const el=$("mapfilter");if(!el)return;
+  const k=kindOnMap();
+  if(!k){el.hidden=true;return}
+  const n=mapVisible().filter(v=>v.id!==S.sel||hasKind(v)).length;
+  el.innerHTML=`<span>Showing ${n} place${n===1?"":"s"} with ${esc(KIND_PLURAL[k]||"events")}</span><button data-clearkind aria-label="Show every place on the map">&times;</button>`;
+  el.hidden=false;
+}
 function renderWhatson(p){
   const vs=visible();let out=sunBar()+tonightHtml(vs)+`<div class="kinds" role="group" aria-label="Filter listings">${KINDS.map(([k,l])=>`<button class="chip" data-kind="${k}" aria-pressed="${S.kind===k}">${l}</button>`).join("")}</div>`;
   let any=false,total=0;
@@ -1548,7 +1566,7 @@ function footer(){
   return `<p class="foot">Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}; rechecked every Monday and Thursday. ${USE_TILES?"Street map © OpenStreetMap contributors. ":"Map is a simplified drawing. "}Pin positions from CAMRA, Songkick and DesignMyNight, otherwise by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright). Walking times are estimates. Garden sun times are worked out from the sun's position${PUBLIC?"; cloud cover from Open-Meteo.com (CC BY 4.0)":""}.</p>${PUBLIC?`<p class="foot fb" style="border:0;padding-top:0">Spotted something wrong, or know a gig or quiz that's missing? <a href="${esc(mailHref("Smiff's Cambridge Compass"))}">Email Smiff</a>.</p><p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers are counted anonymously, without cookies. Your pub crawl is saved on your device. The street map is loaded from OpenStreetMap and cloud cover from Open-Meteo.</p>`:""}`;
 }
 $("pane").addEventListener("click",e=>{
-  const k=e.target.closest("[data-kind]");if(k){S.kind=(k.classList.contains("tn")&&S.kind===k.dataset.kind)?"all":k.dataset.kind;render();announce();const again=$("pane").querySelector((k.classList.contains("tn")?".tn":".kinds .chip")+'[data-kind="'+k.dataset.kind+'"]');if(again)again.focus({preventScroll:true});return}
+  const k=e.target.closest("[data-kind]");if(k){S.kind=(k.classList.contains("tn")&&S.kind===k.dataset.kind)?"all":k.dataset.kind;render();drawPins();announce();const again=$("pane").querySelector((k.classList.contains("tn")?".tn":".kinds .chip")+'[data-kind="'+k.dataset.kind+'"]');if(again)again.focus({preventScroll:true});return}
   const b=e.target.closest("[data-v]");if(b){openVenue(b.dataset.v,true);return}
   if(e.target.closest(".back")){S.sel=null;setView(S.prev);render();drawPins();return}
   const d=e.target.closest(".del");if(d){removeUpdate(d.dataset.id,d);return}
@@ -1740,7 +1758,7 @@ function drawPins(){
   if(pinLayer)pinLayer.remove();
   pinLayer=L.layerGroup();
   const panel=css("--panel");
-  const vs=visible().slice().sort((a,b)=>(a.id===S.sel)-(b.id===S.sel));
+  const vs=mapVisible().slice().sort((a,b)=>(a.id===S.sel)-(b.id===S.sel));
   for(const k in PINS)delete PINS[k];
   vs.forEach(v=>{
     const sel=v.id===S.sel, col=css(CATVAR[primary(v)]);
@@ -1755,6 +1773,7 @@ function drawPins(){
   pinLayer.addTo(map);
   drawExtras();
   placeLabels();
+  mapFilterNote();
 }
 /* names beside pins: most important first, skipping any that would overlap */
 const PINS={};let plLayer=null,mctx=null;
@@ -1765,10 +1784,10 @@ function placeLabels(){
   if(plLayer){plLayer.remove();plLayer=null}
   if(!V.length||!map.getContainer().offsetWidth)return;
   const sz=map.getSize(),H=16,near=map.getZoom()>=15.5;
-  const all=visible().map(v=>{const p=map.latLngToContainerPoint([v.lat,v.lng]);const r=PINS[v.id]?PINS[v.id].getRadius()+2:9;return{v,p,r,box:[p.x-r,p.y-r,p.x+r,p.y+r]}}).filter(o=>o.p.x>-120&&o.p.x<sz.x+120&&o.p.y>-30&&o.p.y<sz.y+30);
+  const all=mapVisible().map(v=>{const p=map.latLngToContainerPoint([v.lat,v.lng]);const r=PINS[v.id]?PINS[v.id].getRadius()+2:9;return{v,p,r,box:[p.x-r,p.y-r,p.x+r,p.y+r]}}).filter(o=>o.p.x>-120&&o.p.x<sz.x+120&&o.p.y>-30&&o.p.y<sz.y+30);
   const items=all.filter(o=>near||o.v.id===S.sel).sort((a,b)=>labelPrio(b.v)-labelPrio(a.v)||a.v.name.localeCompare(b.v.name));
   const placed=[],ov=(a,b)=>a[0]<b[2]&&a[2]>b[0]&&a[1]<b[3]&&a[3]>b[1];
-  {const mr=map.getContainer().getBoundingClientRect();document.querySelectorAll(".mapwrap .legend,.keybtn,.leaflet-control-zoom,.leaflet-control-scale,.leaflet-control-attribution").forEach(el=>{const r=el.getBoundingClientRect();if(r.width&&r.height)placed.push([r.left-mr.left-4,r.top-mr.top-4,r.right-mr.left+4,r.bottom-mr.top+4])})}
+  {const mr=map.getContainer().getBoundingClientRect();document.querySelectorAll(".mapwrap .legend,.keybtn,.mapfilter,.leaflet-control-zoom,.leaflet-control-scale,.leaflet-control-attribution").forEach(el=>{const r=el.getBoundingClientRect();if(r.width&&r.height)placed.push([r.left-mr.left-4,r.top-mr.top-4,r.right-mr.left+4,r.bottom-mr.top+4])})}
   plLayer=L.layerGroup();
   for(const o of items){
     const sel=o.v.id===S.sel,t=o.v.name.replace(/^The /,""),w=textW(t)+11,g=o.r+1;
@@ -1848,6 +1867,7 @@ document.addEventListener("click",e=>{
   if(ca){e.preventDefault();toggleCrawl(ca.dataset.crawladd);return}
   const fb=e.target.closest("[data-fav]");
   if(fb){e.preventDefault();toggleFav(fb.dataset.fav);return}
+  if(e.target.closest("[data-clearkind]")){S.kind="all";render();drawPins();announce();return}
   const sb=e.target.closest("[data-sunny]");
   if(sb){S.am.sunny=true;setView("venues");renderChips();render();drawPins();announce();return}
   const gt=e.target.closest("[data-guin]");
