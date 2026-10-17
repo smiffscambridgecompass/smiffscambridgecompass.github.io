@@ -777,6 +777,22 @@ a{color:var(--accent)}
 .tag{font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;font-weight:700;color:var(--c);white-space:nowrap;padding-top:3px}
 .badge{display:inline-block;font-size:.7rem;font-weight:600;padding:1px 6px;border-radius:4px;background:var(--soft);color:var(--muted);margin-left:6px;vertical-align:1px}
 .badge.you{background:var(--warn-bg);color:var(--warn)}
+/* paid Featured pub ads */
+.adb{display:inline-block;flex:none;font-size:.64rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;line-height:1.35;padding:0 5px;border-radius:4px;border:1px solid var(--muted);color:var(--muted)}
+.fcard{border:1px solid var(--line);border-left:3px solid var(--c);border-radius:12px;padding:10px 12px 12px;margin:0 0 12px;display:grid;gap:3px;background:var(--panel)}
+.fhd{display:flex;gap:8px;align-items:center;font-size:.74rem;color:var(--muted)}
+.fname{font-family:var(--display);font-size:1.18rem;line-height:1.15;margin:3px 0 0}
+.fline{margin:0;font-size:.88rem}
+.fnow{margin:0;font-size:.84rem;color:var(--muted)}
+.fnow b{color:var(--c-music)}
+.fcard .c-btns{margin-top:6px}
+.c-ad{display:flex;gap:7px;align-items:baseline;margin:0;font-size:.84rem}
+.d-ad{display:flex;gap:7px;align-items:baseline;margin:0 0 8px;font-size:.86rem;color:var(--muted)}
+.tip{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:22px 0 0;font-size:.84rem;color:var(--muted)}
+.tip a{font-weight:700;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:6px 13px;color:var(--ink);background:var(--bg)}
+.tip a:hover{border-color:var(--ink)}
+form.add .fbtnrow{display:flex;gap:8px;flex-wrap:wrap}
+form.add button.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
 .empty{color:var(--muted);padding:12px 0}
 
 /* Venue list */
@@ -1100,6 +1116,14 @@ let FAVS=null;const FAV_COLL="data/updates/favs";
 let GUIN=null;const GUIN_COLL="data/updates/guinness";
 function guinnessOf(v){if(GUIN&&GUIN[v.id])return GUIN[v.id].on?Object.assign({note:"Smiff says they pour Guinness"},v.guinness||{},GUIN[v.id]):null;return v.guinness||null}
 const SHAM=v=>guinnessOf(v)?' <span class="sham" role="img" aria-label="Serves Guinness">☘️</span>':"";
+/* paid "Featured pub" ads: always labelled Ad, and they switch off by themselves after the end date */
+let FEAT=null;const FEAT_COLL="data/updates/featured";
+function featOf(v){const f=FEAT&&FEAT[v.id]?(FEAT[v.id].on?FEAT[v.id]:null):v.featured;return f&&f.until&&f.until>=T0&&!closedNote(v)?f:null}
+const AD='<span class="adb">Ad</span>';
+const TIP_URL=""; /* Smiff's Ko-fi or Buy Me a Coffee page; the tip link stays hidden until this is set */
+function httpsUrl(u){u=String(u||"").trim();return /^https:\/\/[^\s"'<>]+$/i.test(u)?u:""}
+/* anonymous counts of taps on each pub (public site only, no cookies) */
+function gc(path){try{if(PUBLIC&&window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:path,title:path,event:true})}catch(e){}}
 function isFav(v){return FAVS?FAVS.has(v.id):!!v.fav}
 let V=[], BYID={}, META={}, UPD=null, db=null, canWrite=false;
 const $=id=>document.getElementById(id);
@@ -1499,8 +1523,17 @@ function mapFilterNote(){
   el.innerHTML=`<span>Showing ${n} place${n===1?"":"s"} with ${esc(KIND_PLURAL[k]||"events")}</span><button data-clearkind aria-label="Show every place on the map">&times;</button>`;
   el.hidden=false;
 }
+/* one or two paid "Featured pub" cards at the top of a list, clearly labelled Ad */
+const FSEED=Math.random();
+function featuredSlot(onlyKind){
+  let fs=V.filter(v=>featOf(v)&&venuePass(v)&&(!onlyKind||S.kind==="all"||hasKind(v)));
+  if(!fs.length)return "";
+  const n=Math.floor(FSEED*fs.length);fs=fs.slice(n).concat(fs.slice(0,n)).slice(0,2);
+  return fs.map(v=>{const f=featOf(v),nu=nextUp(v),bk=httpsUrl(f.book);
+    return `<aside class="fcard" aria-label="Ad: ${esc(v.name)}" style="--c:${catColor(primary(v))}"><div class="fhd">${AD}<span>Featured pub</span></div><p class="fname">${esc(v.name)}${SHAM(v)}</p>${f.blurb?`<p class="fline">${esc(f.blurb)}</p>`:""}${nu?`<p class="fnow">${nu}</p>`:""}<div class="c-btns"><button data-v="${esc(v.id)}" aria-label="Details for ${esc(v.name)}">Details</button>${bk?`<a href="${esc(bk)}" target="_blank" rel="noopener sponsored" data-gc="book/${esc(v.id)}">Book ↗</a>`:""}</div></aside>`}).join("");
+}
 function renderWhatson(p){
-  const vs=visible();let out=sunBar()+tonightHtml(vs)+`<div class="kinds" role="group" aria-label="Filter listings">${KINDS.map(([k,l])=>`<button class="chip" data-kind="${k}" aria-pressed="${S.kind===k}">${l}</button>`).join("")}</div>`;
+  const vs=visible();let out=sunBar()+tonightHtml(vs)+`<div class="kinds" role="group" aria-label="Filter listings">${KINDS.map(([k,l])=>`<button class="chip" data-kind="${k}" aria-pressed="${S.kind===k}">${l}</button>`).join("")}</div>`+featuredSlot(true);
   let any=false,total=0;
   for(let i=0;i<14;i++){
     const d=addDays(TODAY,i);const rows=[];
@@ -1552,7 +1585,7 @@ function renderVenues(p){
   const vs=visible().slice().sort((a,b)=>gl?((guinnessOf(b).harp?1:0)-(guinnessOf(a).harp?1:0)||a.name.replace(/^The /,"").localeCompare(b.name.replace(/^The /,""))):near?distM(a)-distM(b):((isFav(b)?1:0)-(isFav(a)?1:0)||(onDay(b,TODAY).length?1:0)-(onDay(a,TODAY).length?1:0)||a.name.localeCompare(b.name)));
   const bits=[];if(S.cat!=="all")bits.push((CATS.find(x=>x[0]===S.cat)||["",""])[1].toLowerCase());if(S.fav)bits.push(PUBLIC?"Smiff's favourites":"favourites");if(S.open)bits.push("open now");QF.forEach(([k,l])=>{if(S.am[k])bits.push(k==="guinness"?"pour Guinness":l.toLowerCase())});
   ANN=`${vs.length} venue${vs.length===1?"":"s"}${bits.length?", "+bits.join(", "):""}`;
-  let out=`<p class="count">${vs.length} venue${vs.length===1?"":"s"}${bits.length?" · "+esc(bits.join(", ")):""}${S.socials?" to check on Instagram or Facebook":""} · ${near?"nearest first":gl?"Harp Guide pick first, then A to Z":"favourites, then on tonight, first"}</p><ul class="vlist">`;
+  let out=`<p class="count">${vs.length} venue${vs.length===1?"":"s"}${bits.length?" · "+esc(bits.join(", ")):""}${S.socials?" to check on Instagram or Facebook":""} · ${near?"nearest first":gl?"Harp Guide pick first, then A to Z":"favourites, then on tonight, first"}</p>${featuredSlot(false)}<ul class="vlist">`;
   out+=vs.map(v=>{const pc=primary(v);const nu=nextUp(v);
     return `<li class="vrow"><button data-v="${esc(v.id)}" style="--c:${catColor(pc)}"><span class="pin"></span><span><span class="n">${isFav(v)?'<span class="star" aria-hidden="true">★</span><span class="sr-only">Favourite: </span>':""}${esc(v.name)}${SHAM(v)}</span><br><span class="a">${esc(v.address)}</span>${S.am.guinness&&guinnessOf(v)?`<div class="gnote">${esc(guinnessOf(v).note)}</div>`:""}${nu?`<div class="now">${nu}</div>`:""}${closedNote(v)?"":statusHtml(v)}${v.checkSocials&&!PUBLIC?`<div class="flag">Check socials · ${esc(v.checkSocials)}</div>`:""}</span><span class="cats">${(v.cats||[]).map(c=>`<i style="--c:${catColor(c)}" title="${esc(CATS.find(x=>x[0]===c)?.[1]||c)}"></i>`).join("")}</span></button></li>`}).join("");
   out+=`</ul>`;
@@ -1563,7 +1596,9 @@ function renderVenues(p){
   p.innerHTML=out;
 }
 function footer(){
-  return `<p class="foot">Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}; rechecked every Monday and Thursday. ${USE_TILES?"Street map © OpenStreetMap contributors. ":"Map is a simplified drawing. "}Pin positions from CAMRA, Songkick and DesignMyNight, otherwise by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright). Walking times are estimates. Garden sun times are worked out from the sun's position${PUBLIC?"; cloud cover from Open-Meteo.com (CC BY 4.0)":""}.</p>${PUBLIC?`<p class="foot fb" style="border:0;padding-top:0">Spotted something wrong, or know a gig or quiz that's missing? <a href="${esc(mailHref("Smiff's Cambridge Compass"))}">Email Smiff</a>.</p><p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers are counted anonymously, without cookies. Your pub crawl is saved on your device. The street map is loaded from OpenStreetMap and cloud cover from Open-Meteo.</p>`:""}`;
+  const tip=PUBLIC&&TIP_URL?`<p class="tip"><a href="${esc(TIP_URL)}" target="_blank" rel="noopener" data-gc="tip"><span aria-hidden="true">🍺</span> Buy Smiff a pint</a><span>The Compass is free. If it sorted your night out, a pint keeps it going.</span></p>`:"";
+  const ads=V.some(featOf)?`Places marked “Ad” have paid to be featured; Smiff's favourites${PUBLIC?", tips":""} and the Guinness list are never paid for. `:"";
+  return tip+`<p class="foot">${ads}Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}; rechecked every Monday and Thursday. ${USE_TILES?"Street map © OpenStreetMap contributors. ":"Map is a simplified drawing. "}Pin positions from CAMRA, Songkick and DesignMyNight, otherwise by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright). Walking times are estimates. Garden sun times are worked out from the sun's position${PUBLIC?"; cloud cover from Open-Meteo.com (CC BY 4.0)":""}.</p>${PUBLIC?`<p class="foot fb" style="border:0;padding-top:0">Spotted something wrong, or know a gig or quiz that's missing? <a href="${esc(mailHref("Smiff's Cambridge Compass"))}">Email Smiff</a>.</p><p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers, and taps on each pub's card, page and links, are counted anonymously, without cookies. Your pub crawl is saved on your device. The street map is loaded from OpenStreetMap and cloud cover from Open-Meteo.</p>`:""}`;
 }
 $("pane").addEventListener("click",e=>{
   const k=e.target.closest("[data-kind]");if(k){S.kind=(k.classList.contains("tn")&&S.kind===k.dataset.kind)?"all":k.dataset.kind;render();drawPins();announce();const again=$("pane").querySelector((k.classList.contains("tn")?".tn":".kinds .chip")+'[data-kind="'+k.dataset.kind+'"]');if(again)again.focus({preventScroll:true});return}
@@ -1577,7 +1612,7 @@ $("pane").addEventListener("change",e=>{if(e.target.id==="crawl-fromme"){CRAWL_F
 function openVenue(id,fly){
   const v=BYID[id];if(!v)return;
   S.sel=id;setView("detail");$("mcard").hidden=true;
-  renderDetail(v);drawPins();
+  renderDetail(v);drawPins();gc("page/"+id);
   if(fly&&map&&!isMobile()) moveMap([v.lat,v.lng],Math.max(map.getZoom(),16));
   $("panel").scrollTop=0;
   const hd=$("pane").querySelector(".d-head h2");if(hd){hd.tabIndex=-1;hd.focus({preventScroll:true})}
@@ -1651,15 +1686,40 @@ function renderDetail(v){
   if(!v)return;
   const cats=(v.cats||[]).map(c=>`<span style="--c:${catColor(c)}">${esc(CATS.find(x=>x[0]===c)?.[1]||c)}</span>`).join("");
   let h=`<button class="back">← ${S.prev==="venues"?"All venues":"What's on"}</button>
-  <div class="d-head"><h2>${esc(v.name)}${SHAM(v)}</h2><div class="d-cats">${cats}</div><p class="d-addr">${esc(v.address)}, ${esc(v.postcode)}</p>${guinnessHtml(v)}${v.group?`<p class="d-group">${esc(v.group.startsWith("Greene King-owned")?v.group:v.group+" pub")}</p>`:""}${favBtn(v)}</div>
+  <div class="d-head"><h2>${esc(v.name)}${SHAM(v)}</h2>${featOf(v)?`<p class="d-ad">${AD}<span>Featured pub${featOf(v).blurb?" · "+esc(featOf(v).blurb):""}</span></p>`:""}<div class="d-cats">${cats}</div><p class="d-addr">${esc(v.address)}, ${esc(v.postcode)}</p>${guinnessHtml(v)}${v.group?`<p class="d-group">${esc(v.group.startsWith("Greene King-owned")?v.group:v.group+" pub")}</p>`:""}${favBtn(v)}</div>
   ${statusHtml(v,true)}
-  <div class="links">${crawlBtn(v)}<a href="${esc(mapsLink(v))}" target="_blank" rel="noopener">Directions ↗</a>${v.website?`<a href="${esc(v.website)}" target="_blank" rel="noopener">Website ↗</a>`:""}${v.eventsUrl&&v.eventsUrl!==v.website?`<a href="${esc(v.eventsUrl)}" target="_blank" rel="noopener">What's on ↗</a>`:""}</div>`;
+  <div class="links">${crawlBtn(v)}${featOf(v)&&httpsUrl(featOf(v).book)?`<a href="${esc(httpsUrl(featOf(v).book))}" target="_blank" rel="noopener sponsored" data-gc="book/${esc(v.id)}">Book ↗</a>`:""}<a href="${esc(mapsLink(v))}" target="_blank" rel="noopener" data-gc="directions/${esc(v.id)}">Directions ↗</a>${v.website?`<a href="${esc(v.website)}" target="_blank" rel="noopener" data-gc="website/${esc(v.id)}">Website ↗</a>`:""}${v.eventsUrl&&v.eventsUrl!==v.website?`<a href="${esc(v.eventsUrl)}" target="_blank" rel="noopener" data-gc="whatson/${esc(v.id)}">What's on ↗</a>`:""}</div>`;
   if(closedNote(v)) h+=`<p class="notice"><b>${esc(closedNote(v))}</b>Temporarily closed; due to reopen on or before then.</p>`;
   if(v.checkSocials&&!PUBLIC) h+=`<p class="notice"><b>Check their socials</b>${esc(v.checkSocials)}. Add anything you spot below and it shows on the map.</p>`;
   h+=`<div id="d-sections">${sectionsHtml(v)}</div>`;
-  if(db&&canWrite) h+=addFormHtml();
+  if(db&&canWrite) h+=addFormHtml()+featFormHtml(v);
   $("pane").innerHTML=h;
-  if(db&&canWrite) wireForm(v);
+  if(db&&canWrite){wireForm(v);wireFeat(v)}
+}
+/* Smiff's own version: switch a paid Featured pub ad on or off */
+function featFormHtml(v){
+  const f=featOf(v),until=f?f.until:ymd(addDays(TODAY,30));
+  return `<form class="add" id="feat-form"><h3>Featured pub (paid ad)</h3><p class="acc-sub" style="margin:0">${f?`Showing as an ad until ${esc(fmt(pd(f.until)))}.`:"Puts this pub at the top of What's on and Venues with an “Ad” label, until the date you pick."} The public site picks it up at the next Monday or Thursday update.</p>
+  <div class="row"><label>Until<input type="date" id="feat-until" value="${esc(until)}" min="${T0}" required></label><label>Booking link (optional)<input type="url" id="feat-book" value="${esc(f&&f.book||"")}" placeholder="https://"></label></div>
+  <label>Their line (optional)<input id="feat-line" maxlength="90" value="${esc(f&&f.blurb||"")}" placeholder="e.g. 2-for-1 pizzas every Tuesday"></label>
+  <div class="fbtnrow"><button type="submit">${f?"Update the ad":"Feature this pub"}</button>${f?`<button type="button" class="ghost" id="feat-stop">Stop the ad</button>`:""}</div><p class="status" id="feat-status" role="status"></p></form>`;
+}
+function wireFeat(v){
+  const f=$("feat-form");if(!f)return;
+  const say=t=>{const st=$("feat-status");if(st)st.textContent=t};
+  const save=async doc=>{
+    if(!FEAT)FEAT={};FEAT[v.id]=doc;refreshAll();
+    try{await db.collection(FEAT_COLL).doc(v.id).set(doc);say(doc.on?"Saved. The ad shows on this page now, and on the public site after the next update.":"Ad stopped.")}
+    catch(e){say("Couldn't save just now. Try again in a moment.")}
+  };
+  f.addEventListener("submit",e=>{
+    e.preventDefault();
+    const until=$("feat-until").value,bk=$("feat-book").value.trim(),line=$("feat-line").value.trim();
+    if(!until||until<T0){say("Pick an end date from today on.");return}
+    if(bk&&!httpsUrl(bk)){say("The booking link needs to start with https://");return}
+    save({venueId:v.id,on:true,until:until,blurb:line,book:bk,by:"J",at:new Date().toISOString()});
+  });
+  const sp=$("feat-stop");if(sp)sp.addEventListener("click",()=>save({venueId:v.id,on:false,by:"J",at:new Date().toISOString()}));
 }
 function addFormHtml(){
   const dayOpts=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d=>`<option value="${d}">${DAYLONG[d]}</option>`).join("");
@@ -1812,13 +1872,13 @@ function placeLabels(){
 const canHover=matchMedia("(hover:hover)").matches;
 function pinClick(v,m){
   if(isMobile()){
-    S.sel=v.id;drawPins();
+    S.sel=v.id;drawPins();gc("card/"+v.id);
     const c=$("mcard");
     c.innerHTML=`<button class="x" data-close-card aria-label="Close">&times;</button>`+cardHtml(v);
     c.hidden=false;c.scrollTop=0;
   } else {
     map.closePopup();
-    S.sel=v.id;drawPins();
+    S.sel=v.id;drawPins();gc("card/"+v.id);
     L.popup({maxWidth:320,minWidth:280,autoPanPadding:[24,24],className:"vpop"}).setLatLng([v.lat,v.lng]).setContent(cardHtml(v)).openOn(map);
   }
 }
@@ -1827,6 +1887,8 @@ function cardHtml(v){
   const L2=listings(v),today=onDay(v,TODAY),pc=primary(v);
   const catL=(CATS.find(x=>x[0]===pc)||["",""])[1];
   let h=`<div class="card"><div class="c-head" style="--c:${catColor(pc)}"><span class="pin"></span><div><div class="c-name">${isFav(v)?'<span class="star" aria-hidden="true">★</span><span class="sr-only">Favourite: </span>':""}${esc(v.name)}${SHAM(v)}</div><div class="c-addr">${esc(catL)} · ${esc(v.address)}</div></div></div>`;
+  const fe=featOf(v),bk=fe?httpsUrl(fe.book):"";
+  if(fe) h+=`<p class="c-ad">${AD}<span>${esc(fe.blurb||"Featured pub")}</span></p>`;
   if(closedNote(v)) h+=`<p class="c-flag">${esc(closedNote(v))}</p>`;
   else h+=statusHtml(v);
   if(today.length){
@@ -1837,7 +1899,7 @@ function cardHtml(v){
     else if(wk) h+=`<p class="c-next">${esc(DAYLONG[wk.day]||wk.day)}: ${esc(wk.title)}</p>`;
   }
   {const gs=closedNote(v)?null:gardenSun(v);if(gs&&gs.short)h+=`<p class="c-sun">${SUN_ICO}${esc(gs.short)}</p>`}
-  h+=`<div class="c-btns"><button data-open="${esc(v.id)}">Details</button><a href="${esc(mapsLink(v))}" target="_blank" rel="noopener">Directions ↗</a></div></div>`;
+  h+=`<div class="c-btns"><button data-open="${esc(v.id)}">Details</button>${bk?`<a href="${esc(bk)}" target="_blank" rel="noopener sponsored" data-gc="book/${esc(v.id)}">Book ↗</a>`:""}<a href="${esc(mapsLink(v))}" target="_blank" rel="noopener" data-gc="directions/${esc(v.id)}">Directions ↗</a></div></div>`;
   return h;
 }
 function favBtn(v){
@@ -1863,6 +1925,7 @@ function refreshAll(){
   if(!$("mcard").hidden&&S.sel){$("mcard").innerHTML=`<button class="x" data-close-card aria-label="Close">&times;</button>`+cardHtml(BYID[S.sel])}
 }
 document.addEventListener("click",e=>{
+  const tg=e.target.closest("[data-gc]");if(tg)gc(tg.dataset.gc);
   const ca=e.target.closest("[data-crawladd]");
   if(ca){e.preventDefault();toggleCrawl(ca.dataset.crawladd);return}
   const fb=e.target.closest("[data-fav]");
@@ -1931,6 +1994,10 @@ fetch("venues.json",{cache:"no-cache"}).then(r=>{if(!r.ok)throw new Error(r.stat
     db.collection(GARDEN_COLL).onSnapshot(snap=>{
       GARDENS={};snap.docs.forEach(s=>{GARDENS[s.id]=s.data()});
       for(const k in SUNC)delete SUNC[k];
+      if(V.length)refreshAll();
+    },()=>{});
+    db.collection(FEAT_COLL).onSnapshot(snap=>{
+      FEAT={};snap.docs.forEach(s=>{FEAT[s.id]=s.data()});
       if(V.length)refreshAll();
     },()=>{});
     db.collection(FAV_COLL).onSnapshot(snap=>{
