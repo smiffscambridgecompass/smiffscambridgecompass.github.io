@@ -27,7 +27,7 @@
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}*{box-sizing:border-box}</style>
 <script>window.SMIFF_PUBLIC=true</script>
 <script data-goatcounter="https://smiffscambridgecompass.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
-<title>Smiff's Cambridge Compass</title>
+<title>Smiff's Compass: Cambridge pubs, gigs, quizzes and deals</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Young+Serif&display=swap">
@@ -844,6 +844,8 @@ form.add button.ghost{background:none;color:var(--ink);border:1px solid var(--li
 .feat{display:flex;flex-wrap:wrap;gap:6px}
 .feat span{font-size:.8rem;background:var(--soft);border-radius:6px;padding:2px 8px}
 .src{color:var(--muted);font-size:.8rem}
+.d-head h2[tabindex="-1"]:focus{outline:none}
+.ownr{font-size:.86rem;margin:18px 0 8px;padding:10px 12px;border:1px dashed var(--line);border-radius:10px;color:var(--muted)}
 form.add{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:10px;background:var(--bg);margin:0 0 18px}
 form.add h3{margin:0;font-size:.95rem;font-weight:700}
 form.add .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -965,7 +967,9 @@ ol.crawl .ctrl button:focus-visible{outline:2px solid var(--accent)}
   .app.show-map .panel{display:none}
   .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-right:calc(-1 * max(16px,env(safe-area-inset-right,0px)));padding-right:16px}
   .chips::-webkit-scrollbar{display:none}
-  .brand p{display:none}
+  .brand p{margin:1px 0 0 40px;font-size:.74rem;max-height:20px;transition:max-height .22s ease,opacity .18s ease;overflow:hidden}
+  .brand p .upd{display:none}
+  .top.tuck .brand p{max-height:0;opacity:0}
   .top{gap:8px}
   /* bottom tab bar */
   .tabs{position:fixed;left:0;right:0;bottom:0;z-index:900;margin:0;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);background:color-mix(in srgb,var(--panel) 94%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);padding:6px max(6px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px))}
@@ -1123,7 +1127,19 @@ const AD='<span class="adb">Ad</span>';
 const TIP_URL=""; /* Smiff's Ko-fi or Buy Me a Coffee page; the tip link stays hidden until this is set */
 function httpsUrl(u){u=String(u||"").trim();return /^https:\/\/[^\s"'<>]+$/i.test(u)?u:""}
 /* anonymous counts of taps on each pub (public site only, no cookies) */
-function gc(path){try{if(PUBLIC&&window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:path,title:path,event:true})}catch(e){}}
+const GCQ=[];
+function gc(path){
+  if(!PUBLIC)return;
+  const ready=()=>window.goatcounter&&window.goatcounter.count;
+  const send=p=>{try{window.goatcounter.count({path:p,title:p,event:true})}catch(e){}};
+  if(ready()){send(path);return}
+  GCQ.push(path);if(GCQ.length>1)return;
+  let n=0;const t=setInterval(()=>{if(ready()){clearInterval(t);GCQ.splice(0).forEach(send)}else if(++n>40){clearInterval(t);GCQ.length=0}},250);
+}
+/* pub links: ?p=<venue id> opens that pub's page; &s=poster marks a scan of a printed poster */
+const QS=(()=>{try{return new URLSearchParams(location.search)}catch(e){return null}})();
+function syncUrl(){if(!PUBLIC)return;try{const u=S.view==="detail"&&S.sel?location.pathname+"?p="+encodeURIComponent(S.sel):location.pathname;if(location.pathname+location.search!==u)history.replaceState(null,"",u)}catch(e){}}
+function ownerLine(v){return PUBLIC?`<p class="ownr">Run ${esc(v.name)}? <a href="${esc(mailHref("Run "+v.name+": events and Featured spot"))}" data-gc="owner/${esc(v.id)}">Send your events, or ask about a Featured spot</a>. Your listing is free.</p>`:""}
 function isFav(v){return FAVS?FAVS.has(v.id):!!v.fav}
 let V=[], BYID={}, META={}, UPD=null, db=null, canWrite=false;
 const $=id=>document.getElementById(id);
@@ -1267,6 +1283,7 @@ function setView(v){
   if(v!=="detail"&&v!=="map")S.prev=v;
   const changed=S.view!==v;
   S.view=v;
+  if(v!=="map")syncUrl();
   $("top").classList.remove("tuck");
   if(changed&&v!=="map"){const pn=$("pane");pn.classList.remove("enter");void pn.offsetWidth;pn.classList.add("enter")}
   const app=$("app");
@@ -1598,7 +1615,7 @@ function renderVenues(p){
 function footer(){
   const tip=PUBLIC&&TIP_URL?`<p class="tip"><a href="${esc(TIP_URL)}" target="_blank" rel="noopener" data-gc="tip"><span aria-hidden="true">🍺</span> Buy Smiff a pint</a><span>The Compass is free. If it sorted your night out, a pint keeps it going.</span></p>`:"";
   const ads=V.some(featOf)?`Places marked “Ad” have paid to be featured; Smiff's favourites${PUBLIC?", tips":""} and the Guinness list are never paid for. `:"";
-  return tip+`<p class="foot">${ads}Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}; rechecked every Monday and Thursday. ${USE_TILES?"Street map © OpenStreetMap contributors. ":"Map is a simplified drawing. "}Pin positions from CAMRA, Songkick and DesignMyNight, otherwise by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright). Walking times are estimates. Garden sun times are worked out from the sun's position${PUBLIC?"; cloud cover from Open-Meteo.com (CC BY 4.0)":""}.</p>${PUBLIC?`<p class="foot fb" style="border:0;padding-top:0">Spotted something wrong, or know a gig or quiz that's missing? <a href="${esc(mailHref("Smiff's Cambridge Compass"))}">Email Smiff</a>.</p><p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers, and taps on each pub's card, page and links, are counted anonymously, without cookies. Your pub crawl is saved on your device. The street map is loaded from OpenStreetMap and cloud cover from Open-Meteo.</p>`:""}`;
+  return tip+`<p class="foot">${ads}Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}; rechecked every Monday and Thursday. ${USE_TILES?"Street map © OpenStreetMap contributors. ":"Map is a simplified drawing. "}Pin positions from CAMRA, Songkick and DesignMyNight, otherwise by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright). Walking times are estimates. Garden sun times are worked out from the sun's position${PUBLIC?"; cloud cover from Open-Meteo.com (CC BY 4.0)":""}.</p>${PUBLIC?`<p class="foot fb" style="border:0;padding-top:0">Spotted something wrong, or know a gig or quiz that's missing? <a href="${esc(mailHref("Smiff's Cambridge Compass"))}">Email Smiff</a>.</p><p class="foot fb" style="border:0;padding-top:0;margin-top:6px">Run a pub? Your listing is free. <a href="${esc(mailHref("Run a pub: events and Featured spot"))}" data-gc="owner/general">Send your events, or ask about a Featured spot</a>.</p><p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers, and taps on each pub's card, page and links, are counted anonymously, without cookies. Your pub crawl is saved on your device. The street map is loaded from OpenStreetMap and cloud cover from Open-Meteo.</p>`:""}`;
 }
 $("pane").addEventListener("click",e=>{
   const k=e.target.closest("[data-kind]");if(k){S.kind=(k.classList.contains("tn")&&S.kind===k.dataset.kind)?"all":k.dataset.kind;render();drawPins();announce();const again=$("pane").querySelector((k.classList.contains("tn")?".tn":".kinds .chip")+'[data-kind="'+k.dataset.kind+'"]');if(again)again.focus({preventScroll:true});return}
@@ -1633,6 +1650,7 @@ function sectionsHtml(v){
   h+=accessHtml(v);
   h+=gardenHtml(v);
   {const nb=nearby(v,5);if(nb.length)h+=`<div class="sec"><h3>Close by</h3><ul>${nb.map(([x,m])=>`<li><span class="when">${walkMin(m)} min walk</span><span class="what"><button class="linkbtn" data-v="${esc(x.id)}">${esc(x.name)}</button></span></li>`).join("")}</ul></div>`}
+  h+=ownerLine(v);
   h+=`<p class="src">Details from <a href="${esc(v.src)}" target="_blank" rel="noopener">${esc(hostOf(v.src))}</a>${v.eventsUrl?` · listings from <a href="${esc(v.eventsUrl)}" target="_blank" rel="noopener">${esc(hostOf(v.eventsUrl))}</a>`:""} · checked ${esc(META.checkedLabel||"")}${PUBLIC?` · <a href="${esc(mailHref("Smiff's Compass: "+v.name))}">Something wrong? Tell Smiff</a>`:""}</p>`;
   return h;
 }
@@ -1963,8 +1981,14 @@ addEventListener("resize",()=>{const m=isMobile();if(m!==wasMobile){wasMobile=m;
 function boot(data){
   V=data.venues||[];META=data.meta||{};
   BYID={};V.forEach(v=>BYID[v.id]=v);
-  $("updated").textContent="Updated "+(META.checkedLabel||"").replace(/ \d{4}$/,"");
+  $("updated").innerHTML=`<span class="tagl">Cambridge pubs, gigs, quizzes and deals</span><span class="upd"> · updated ${esc((META.checkedLabel||"").replace(/ \d{4}$/,""))}</span>`;
   renderChips();render();drawPins();
+  /* opened from a pub link or a poster's QR code */
+  if(QS){
+    const pid=QS.get("p"),src=QS.get("s");
+    if(src==="poster")gc("poster/"+(pid&&BYID[pid]?pid:"general"));
+    if(pid&&BYID[pid])openVenue(pid,true);else if(src)syncUrl();
+  }
 }
 initMap();
 fetch("venues.json",{cache:"no-cache"}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(boot).catch(()=>{
