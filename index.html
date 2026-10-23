@@ -1110,7 +1110,7 @@ const AMEN=[["garden","Beer garden","🌳"],["fire","Real fire","🔥"],["sport"
 const QF=AMEN.concat([["guinness","Guinness","☘️"],["step","Step-free","♿"],["sunny","Garden in the sun now","☀"]]);
 function hasAm(v,k){if(k==="sunny")return sunnyNow(v);if(k==="guinness")return !!guinnessOf(v);return k==="step"?!!(v.access&&v.access.step==="yes"):!!(v.amen&&v.amen[k])}
 const ICO=i=>`<span class="ico" aria-hidden="true">${i}</span>`;
-const MAIL=["jmcs1994","gmail.com"].join("@");
+const MAIL=["smiffscompass","gmail.com"].join("@");
 function mailHref(subject){return "mailto:"+MAIL+"?subject="+encodeURIComponent(subject)}
 const RM=matchMedia("(prefers-reduced-motion: reduce)");
 function moveMap(ll,z){if(!map)return;if(RM.matches)map.setView(ll,z);else map.flyTo(ll,z,{duration:.6})}
