@@ -1112,11 +1112,11 @@ ol.crawl .ctrl button:focus-visible{outline:2px solid var(--accent)}
 <script>
 (function(){
 "use strict";
-const CATS=[["pub","Pubs & bars"],["music","Live music"],["classical","Classical"],["food","Food"],["late","Late night"]];
+const CATS=[["pub","Pubs & bars"],["music","Live music"],["food","Food"],["late","Late night"]];
 const CATVAR={pub:"--c-pub",music:"--c-music",classical:"--c-classical",food:"--c-food",late:"--c-late"};
-const KINDS=[["all","Everything"],["music","Live music"],["classical","Classical"],["club","Club nights"],["quiz","Quizzes"],["offer","Offers"],["event","Other events"]];
+const KINDS=[["all","Everything"],["music","Live music"],["club","Club nights"],["quiz","Quizzes"],["offer","Offers"],["event","Other events"]];
 const KIND_LABEL={music:"Live music",classical:"Classical",club:"Club night",quiz:"Quiz",offer:"Offer",comedy:"Comedy",event:"Event",note:"Note"};
-const KIND_CAT={music:"music",classical:"classical",club:"late",quiz:"pub",offer:"food",comedy:"late",event:"pub",note:"pub"};
+const KIND_CAT={music:"music",classical:"music",club:"late",quiz:"pub",offer:"food",comedy:"late",event:"pub",note:"pub"};
 const DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const DAYLONG={Sun:"Sundays",Mon:"Mondays",Tue:"Tuesdays",Wed:"Wednesdays",Thu:"Thursdays",Fri:"Fridays",Sat:"Saturdays"};
 const UPD_COLL="data/updates/items";
@@ -1177,7 +1177,7 @@ function pd(s){const p=String(s).split("-").map(Number);return new Date(p[0],p[1
 function fmt(d,o){return d.toLocaleDateString("en-GB",o||{weekday:"short",day:"numeric",month:"short"})}
 const TODAY=new Date(), T0=ymd(TODAY);
 
-function primary(v){const c=v.cats||[];return c[0]==="classical"?"classical":c.includes("music")?"music":c.includes("late")?"late":c.includes("pub")?"pub":"food"}
+function primary(v){const c=v.cats||[];return c.includes("music")||c.includes("classical")?"music":c.includes("late")?"late":c.includes("pub")?"pub":"food"}
 function catColor(c){return "var("+CATVAR[c]+")"}
 
 /* ---------- merged listings for a venue ---------- */
@@ -1550,7 +1550,7 @@ function itemRow(v,e,showDay){
   const extra=(e.weekly?`<span class="badge">${showDay?"Every "+esc(e.day):"Weekly"}</span>`:"")+(e.manual?`<span class="badge you">${YOU_ADDED}</span>`:e.by==="J"?`<span class="badge you">${FROM_YOU}</span>`:"");
   return `<li class="item"><button data-v="${esc(v.id)}" style="--c:${c}"><span class="bar"></span><span><span class="t">${esc(e.title)}</span>${extra}<br><span class="v">${esc(v.name)} · ${esc(v.address)}${distLabel(v)?` <span class="dist">· ${distLabel(v)}</span>`:""}</span></span><span class="tag">${esc(KIND_LABEL[k]||"Event")}</span></button></li>`;
 }
-function kindPass(e){return S.kind==="all"||e.kind===S.kind||(S.kind==="event"&&(e.kind==="event"||e.kind==="comedy"))}
+function kindPass(e){return S.kind==="all"||e.kind===S.kind||(S.kind==="event"&&(e.kind==="event"||e.kind==="comedy"))||(S.kind==="music"&&e.kind==="classical")}
 /* the map follows the What's on filter (Live music, Quizzes...) as well as the venue filters */
 function listView(){return S.view==="detail"||S.view==="map"?S.prev:S.view}
 function kindOnMap(){return listView()==="whatson"&&S.kind!=="all"?S.kind:null}
@@ -1603,9 +1603,9 @@ function sunBar(){
 }
 /* tonight at a glance: tap a count to show just those */
 function tonightHtml(vs){
-  const c={music:0,classical:0,quiz:0,offer:0,club:0,event:0};
-  vs.forEach(v=>onDay(v,TODAY).forEach(e=>{const k=e.kind in c?e.kind:"event";c[k]++}));
-  const W={music:["gig","gigs"],classical:["classical concert","classical concerts"],quiz:["quiz","quizzes"],offer:["deal","deals"],club:["club night","club nights"],event:["other event","other events"]};
+  const c={music:0,quiz:0,offer:0,club:0,event:0};
+  vs.forEach(v=>onDay(v,TODAY).forEach(e=>{const k=e.kind==="classical"?"music":e.kind in c?e.kind:"event";c[k]++}));
+  const W={music:["gig","gigs"],quiz:["quiz","quizzes"],offer:["deal","deals"],club:["club night","club nights"],event:["other event","other events"]};
   const parts=Object.keys(c).filter(k=>c[k]).map(k=>`<button class="tn" data-kind="${k}" aria-pressed="${S.kind===k}"><b>${c[k]}</b> ${W[k][c[k]===1?0:1]}</button>`);
   const head=`<span class="tl">Tonight${S.q||S.cat!=="all"||S.fav||QF.some(([k])=>S.am[k])?" (filtered)":""}</span>`;
   if(!parts.length) return `<div class="tonight">${head}<span class="tq">Nothing listed tonight. Here's what's coming up.</span></div>`;
@@ -2054,6 +2054,8 @@ addEventListener("resize",()=>{const m=isMobile();if(m!==wasMobile){wasMobile=m;
 /* ---------- boot ---------- */
 function boot(data){
   V=data.venues||[];META=data.meta||{};
+  /* classical isn't its own type of place: concert venues count as live music, and concerts still show in What's on */
+  V.forEach(v=>{if((v.cats||[]).includes("classical"))v.cats=[...new Set(v.cats.map(c=>c==="classical"?"music":c))]});
   BYID={};V.forEach(v=>BYID[v.id]=v);
   $("updated").innerHTML=`<span class="tagl">Cambridge pubs, gigs, quizzes and deals</span><span class="upd"> · updated ${esc((META.checkedLabel||"").replace(/ \d{4}$/,""))}</span>`;
   renderChips();render();drawPins();
