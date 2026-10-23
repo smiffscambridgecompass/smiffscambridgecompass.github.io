@@ -1035,6 +1035,21 @@ ol.crawl .ctrl button:focus-visible{outline:2px solid var(--accent)}
 .gpick button[aria-pressed="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
 .mapwrap:has(.mcard:not([hidden])) .leaflet-control-scale{visibility:hidden}
 /* motion */
+/* "add to home screen" card (public site, phones) */
+.a2hs{position:fixed;z-index:1000;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));bottom:calc(74px + env(safe-area-inset-bottom,0px));max-width:460px;margin:0 auto;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 40px rgb(0 0 0/.22);padding:14px 12px 12px 16px;animation:sheetup .26s cubic-bezier(.2,.8,.2,1)}
+.a2-head{display:grid;grid-template-columns:44px 1fr 32px;gap:12px;align-items:center}
+.a2-head img{width:44px;height:44px;border-radius:10px;display:block}
+.a2-head h2{font-family:var(--display);font-weight:400;font-size:1.12rem;line-height:1.2;margin:0}
+.a2hs .a2-sub{margin:8px 4px 0 0;font-size:.9rem;color:var(--muted)}
+.a2hs ol{margin:8px 4px 0 0;padding:0 0 0 1.3em;font-size:.92rem;line-height:1.45}
+.a2hs li{margin:4px 0}
+.a2hs .ish{display:inline-block;width:17px;height:17px;vertical-align:-3px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.a2-foot{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-top:10px}
+.a2-go{border:0;border-radius:10px;background:var(--ink);color:var(--panel);font:inherit;font-weight:700;padding:10px 16px;cursor:pointer}
+.a2-later{all:unset;cursor:pointer;color:var(--muted);font-weight:600;font-size:.88rem;padding:8px 6px;text-decoration:underline;text-underline-offset:3px}
+.a2-link{all:unset;cursor:pointer;color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.a2-go:focus-visible,.a2-later:focus-visible,.a2-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (min-width:861px){.a2hs{bottom:24px}}
 @keyframes sheetup{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
 @keyframes pop{from{transform:translateY(-4px) scale(.98);opacity:0}to{transform:none;opacity:1}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
@@ -1087,6 +1102,7 @@ ol.crawl .ctrl button:focus-visible{outline:2px solid var(--accent)}
   </main>
   <div class="scrim" id="scrim" hidden></div>
   <div class="fsheet" id="fsheet" role="dialog" aria-modal="true" aria-labelledby="fs-title" hidden></div>
+  <section class="a2hs" id="a2hs" aria-labelledby="a2-title" hidden></section>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
@@ -1105,6 +1121,12 @@ const UPD_COLL="data/updates/items";
 
 const S={view:"whatson",prev:"whatson",cat:"all",kind:"all",socials:false,fav:false,open:false,near:false,am:{},q:"",sel:null};
 const PUBLIC=!!window.SMIFF_PUBLIC;
+const UA=navigator.userAgent||"";
+const IOS=/iPhone|iPad|iPod/.test(UA)||(/Macintosh/.test(UA)&&navigator.maxTouchPoints>1);
+const INAPP=/FBAN|FBAV|Instagram|Snapchat|TikTok|LinkedInApp|Line\//i.test(UA);
+const STANDALONE=(()=>{try{return matchMedia("(display-mode: standalone)").matches||navigator.standalone===true}catch(e){return false}})();
+const A2K="smiff-a2hs";
+let BIP=null,A2_MANUAL=false,A2_RET=null;
 const YOU_ADDED=PUBLIC?"Smiff's tip":"Added by you", FROM_YOU=PUBLIC?"Smiff's tip":"From you";
 let LOC=null,PENDING_CENTER=false;
 const AMEN=[["garden","Beer garden","🌳"],["fire","Real fire","🔥"],["sport","Sports on TV","⚽"],["dogs","Dog friendly","🐕"]];
@@ -1616,7 +1638,7 @@ function renderVenues(p){
 function footer(){
   const tip=PUBLIC&&TIP_URL?`<p class="tip"><a href="${esc(TIP_URL)}" target="_blank" rel="noopener" data-gc="tip"><span aria-hidden="true">🍺</span> Buy Smiff a pint</a><span>The Compass is free. If it sorted your night out, a pint keeps it going.</span></p>`:"";
   const ads=V.some(featOf)?`Places marked “Ad” have paid to be featured; Smiff's favourites${PUBLIC?", tips":""} and the Guinness list are never paid for. `:"";
-  return tip+`<p class="foot">${ads}Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}; rechecked every Monday and Thursday. ${USE_TILES?"Street map © OpenStreetMap contributors. ":"Map is a simplified drawing. "}Pin positions from CAMRA, Songkick and DesignMyNight, otherwise by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright). Walking times are estimates. Garden sun times are worked out from the sun's position${PUBLIC?"; cloud cover from Open-Meteo.com (CC BY 4.0)":""}.</p>${PUBLIC?`<p class="foot fb" style="border:0;padding-top:0">Spotted something wrong, or know a gig or quiz that's missing? <a href="${esc(mailHref("Smiff's Cambridge Compass"))}">Email Smiff</a>.</p><p class="foot fb" style="border:0;padding-top:0;margin-top:6px">Run a pub? Your listing is free. <a href="${esc(mailHref("Run a pub: events and Featured spot"))}" data-gc="owner/general">Send your events, or ask about a Featured spot</a>.</p><p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers, and taps on each pub's card, page and links, are counted anonymously, without cookies. Your pub crawl is saved on your device. The street map is loaded from OpenStreetMap and cloud cover from Open-Meteo.</p>`:""}`;
+  return tip+`<p class="foot">${ads}Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}; rechecked every Monday and Thursday. ${USE_TILES?"Street map © OpenStreetMap contributors. ":"Map is a simplified drawing. "}Pin positions from CAMRA, Songkick and DesignMyNight, otherwise by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright). Walking times are estimates. Garden sun times are worked out from the sun's position${PUBLIC?"; cloud cover from Open-Meteo.com (CC BY 4.0)":""}.</p>${PUBLIC?`${a2Offer()?`<p class="foot fb" style="border:0;padding-top:0;margin-bottom:6px">On your phone? <button class="a2-link" data-a2="open">Add Smiff's Compass to your home screen</button>.</p>`:""}<p class="foot fb" style="border:0;padding-top:0">Spotted something wrong, or know a gig or quiz that's missing? <a href="${esc(mailHref("Smiff's Cambridge Compass"))}">Email Smiff</a>.</p><p class="foot fb" style="border:0;padding-top:0;margin-top:6px">Run a pub? Your listing is free. <a href="${esc(mailHref("Run a pub: events and Featured spot"))}" data-gc="owner/general">Send your events, or ask about a Featured spot</a>.</p><p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers, and taps on each pub's card, page and links, are counted anonymously, without cookies. Your pub crawl is saved on your device. The street map is loaded from OpenStreetMap and cloud cover from Open-Meteo.</p>`:""}`;
 }
 $("pane").addEventListener("click",e=>{
   const k=e.target.closest("[data-kind]");if(k){S.kind=(k.classList.contains("tn")&&S.kind===k.dataset.kind)?"all":k.dataset.kind;render();drawPins();announce();const again=$("pane").querySelector((k.classList.contains("tn")?".tn":".kinds .chip")+'[data-kind="'+k.dataset.kind+'"]');if(again)again.focus({preventScroll:true});return}
@@ -1962,6 +1984,55 @@ document.addEventListener("click",e=>{
   if(o){e.preventDefault();const id=o.dataset.open;if(map)map.closePopup();$("mcard").hidden=true;openVenue(id,false);return}
   if(e.target.closest("[data-close-card]")){$("mcard").hidden=true;S.sel=null;drawPins()}
 });
+/* ---------- "add to home screen" card: public site on phones, never when already opened from the home screen ---------- */
+function a2Get(){try{return JSON.parse(localStorage.getItem(A2K)||"{}")||{}}catch(e){return {}}}
+function a2Save(o){try{localStorage.setItem(A2K,JSON.stringify(Object.assign(a2Get(),o)))}catch(e){}}
+function a2Offer(){return PUBLIC&&!STANDALONE&&isMobile()}
+if(PUBLIC){
+  addEventListener("beforeinstallprompt",e=>{e.preventDefault();BIP=e;if(!$("a2hs").hidden)fillA2hs()});
+  addEventListener("appinstalled",()=>{a2Save({never:1});hideA2hs();gc("a2hs/installed")});
+  if(STANDALONE)gc("launch/homescreen");
+}
+const SHARE_IC=`<svg class="ish" viewBox="0 0 24 24" role="img" aria-label="Share"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M7 10H5v10h14V10h-2"/></svg>`;
+function a2Steps(){
+  const ol=a=>`<ol>${a.map(x=>`<li>${x}</li>`).join("")}</ol>`;
+  if(INAPP)return `<p class="a2-sub">First open this page in your phone's browser: tap the menu (<b>•••</b> or <b>⋮</b>) and choose <b>Open in browser</b>. Then add it from there.</p>`;
+  if(BIP)return "";
+  if(IOS){
+    if(/CriOS/.test(UA))return ol([`Tap the Share button ${SHARE_IC} in the address bar`,`Tap <b>Add to Home Screen</b>`,`Tap <b>Add</b>`]);
+    if(/FxiOS|EdgiOS/.test(UA))return ol([`Open the browser menu and tap <b>Share</b>`,`Tap <b>Add to Home Screen</b>`,`Tap <b>Add</b>`]);
+    return ol([`Tap the Share button ${SHARE_IC}. On newer iPhones it's under <b>•••</b> next to the web address.`,`Scroll down and tap <b>Add to Home Screen</b>`,`Tap <b>Add</b>`]);
+  }
+  if(/SamsungBrowser/.test(UA))return ol([`Tap the menu <b>☰</b> at the bottom`,`Tap <b>Add page to</b>, then <b>Home screen</b>`]);
+  return ol([`Tap the menu <b>⋮</b> at the top right`,`Tap <b>Add to home screen</b> or <b>Install app</b>`,`Tap <b>Add</b> or <b>Install</b>`]);
+}
+function fillA2hs(){
+  $("a2hs").innerHTML=`<div class="a2-head"><img src="icon-192.png?v=3" alt=""><h2 id="a2-title" tabindex="-1">Add Smiff's Compass to your home screen</h2><button class="fs-x" data-a2="later" aria-label="Close">×</button></div><p class="a2-sub">It opens like an app, one tap from your home screen. Free, nothing to download.${BIP||INAPP?"":" Here's how:"}</p>${a2Steps()}<div class="a2-foot"><button class="a2-later" data-a2="later">Not now</button>${BIP?`<button class="a2-go" data-a2="install">Add to home screen</button>`:""}</div>`;
+}
+function showA2hs(manual){
+  if(!PUBLIC||STANDALONE)return;
+  A2_MANUAL=!!manual;A2_RET=manual?document.activeElement:null;fillA2hs();$("a2hs").hidden=false;
+  if(manual){gc("a2hs/open");$("a2-title").focus({preventScroll:true})}
+  else{a2Save({n:(a2Get().n||0)+1});gc("a2hs/shown");ANN="Tip: you can add Smiff's Compass to your home screen. It's at the bottom of the screen.";announce()}
+}
+function hideA2hs(){const c=$("a2hs");if(!c)return;const had=c.contains(document.activeElement);c.hidden=true;c.innerHTML="";if(had&&A2_RET&&A2_RET.isConnected)A2_RET.focus({preventScroll:true});A2_RET=null}
+function laterA2hs(){if(!A2_MANUAL){a2Save({until:Date.now()+14*864e5});gc("a2hs/dismiss")}hideA2hs()}
+/* shown once after a short look around, at most 3 times, and not again for 2 weeks after "Not now" */
+(function(){
+  if(!a2Offer())return;
+  const s=a2Get();if(s.never||(s.until&&s.until>Date.now())||(s.n||0)>=3)return;
+  let tries=0;
+  const go=()=>{if(!a2Offer())return;if(!$("fsheet").hidden&&++tries<20){setTimeout(go,3000);return}showA2hs(false)};
+  setTimeout(go,9000);
+})();
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-a2]");if(!b)return;
+  const a=b.dataset.a2;
+  if(a==="open"){showA2hs(true);return}
+  if(a==="later"){laterA2hs();return}
+  if(a==="install"&&BIP){const p=BIP;BIP=null;p.prompt();p.userChoice.then(r=>{const ok=r&&r.outcome==="accepted";gc("a2hs/"+(ok?"install":"decline"));if(ok)a2Save({never:1});hideA2hs()}).catch(()=>hideA2hs())}
+});
+$("a2hs").addEventListener("keydown",e=>{if(e.key==="Escape"){e.stopPropagation();laterA2hs()}});
 document.addEventListener("keydown",e=>{
   if(e.key!=="Escape")return;
   if(!$("fsheet").hidden){closeSheet(false);return}
