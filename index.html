@@ -1482,7 +1482,7 @@ function renderCrawl(p){
     if(stops.length>1||crawlStart()) h+=`<p class="crawl-tot">${stops.length} stop${stops.length===1?"":"s"} · ${walkLabel(tot).replace(" walk"," walking")} in total</p>`;
     h+=`<div class="crawl-actions">${stops.length>1||crawlStart()?`<a href="${esc(crawlMapsLink(stops))}" target="_blank" rel="noopener">Open walking route in Google Maps ↗</a>`:""}<button data-crawl="clear">Clear crawl</button></div>`;
   }
-  h+=footer();
+  h+=`<p class="foot">Your crawl is saved on this device only. Sources, privacy and contact details are at the bottom of What's on and Venues.</p>`;
   p.innerHTML=h;
 }
 
