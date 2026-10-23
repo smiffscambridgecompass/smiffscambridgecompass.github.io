@@ -38,7 +38,7 @@
 :root{
   --bg:#EDF1EE; --panel:#FAFBF9; --ink:#15211D; --muted:#5B6A64; --line:#D6DED9; --soft:#E4EAE6;
   --accent:#A95A12;
-  --c-pub:#A95A12; --c-music:#B02E66; --c-food:#24766A; --c-late:#5747B0;
+  --c-pub:#A95A12; --c-music:#B02E66; --c-classical:#2D5FA0; --c-food:#24766A; --c-late:#5747B0;
   --ok:#24766A; --warn:#9A5B00; --warn-bg:#FBEBD3; --fav:#C08A00;
   --land:#E7ECE8; --dots:#C6D0CA; --road:#FFFFFF; --road-edge:#CDD6D1; --green:#CBDFCC; --water:#93BDD0; --label:#6B7A74;
   --display:"Young Serif", Georgia, "Times New Roman", serif;
@@ -47,14 +47,14 @@
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
   --bg:#0E1513; --panel:#141D1A; --ink:#E6EDE9; --muted:#9BABA4; --line:#26322E; --soft:#1B2623;
   --accent:#E3A04E;
-  --c-pub:#E3A04E; --c-music:#EE6FA4; --c-food:#53BCA7; --c-late:#A093F2;
+  --c-pub:#E3A04E; --c-music:#EE6FA4; --c-classical:#82B1EE; --c-food:#53BCA7; --c-late:#A093F2;
   --ok:#53BCA7; --warn:#F0B866; --warn-bg:#3A2A12; --fav:#F2C94C;
   --land:#18221F; --dots:#2A3833; --road:#3A4A44; --road-edge:#111916; --green:#1E3529; --water:#234A5C; --label:#7F918A;
   color-scheme:dark }}
 :root[data-theme="dark"]{
   --bg:#0E1513; --panel:#141D1A; --ink:#E6EDE9; --muted:#9BABA4; --line:#26322E; --soft:#1B2623;
   --accent:#E3A04E;
-  --c-pub:#E3A04E; --c-music:#EE6FA4; --c-food:#53BCA7; --c-late:#A093F2;
+  --c-pub:#E3A04E; --c-music:#EE6FA4; --c-classical:#82B1EE; --c-food:#53BCA7; --c-late:#A093F2;
   --ok:#53BCA7; --warn:#F0B866; --warn-bg:#3A2A12; --fav:#F2C94C;
   --land:#18221F; --dots:#2A3833; --road:#3A4A44; --road-edge:#111916; --green:#1E3529; --water:#234A5C; --label:#7F918A;
   color-scheme:dark }
@@ -1093,11 +1093,11 @@ ol.crawl .ctrl button:focus-visible{outline:2px solid var(--accent)}
 <script>
 (function(){
 "use strict";
-const CATS=[["pub","Pubs & bars"],["music","Live music"],["food","Food"],["late","Late night"]];
-const CATVAR={pub:"--c-pub",music:"--c-music",food:"--c-food",late:"--c-late"};
-const KINDS=[["all","Everything"],["music","Live music"],["club","Club nights"],["quiz","Quizzes"],["offer","Offers"],["event","Other events"]];
-const KIND_LABEL={music:"Live music",club:"Club night",quiz:"Quiz",offer:"Offer",comedy:"Comedy",event:"Event",note:"Note"};
-const KIND_CAT={music:"music",club:"late",quiz:"pub",offer:"food",comedy:"late",event:"pub",note:"pub"};
+const CATS=[["pub","Pubs & bars"],["music","Live music"],["classical","Classical"],["food","Food"],["late","Late night"]];
+const CATVAR={pub:"--c-pub",music:"--c-music",classical:"--c-classical",food:"--c-food",late:"--c-late"};
+const KINDS=[["all","Everything"],["music","Live music"],["classical","Classical"],["club","Club nights"],["quiz","Quizzes"],["offer","Offers"],["event","Other events"]];
+const KIND_LABEL={music:"Live music",classical:"Classical",club:"Club night",quiz:"Quiz",offer:"Offer",comedy:"Comedy",event:"Event",note:"Note"};
+const KIND_CAT={music:"music",classical:"classical",club:"late",quiz:"pub",offer:"food",comedy:"late",event:"pub",note:"pub"};
 const DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const DAYLONG={Sun:"Sundays",Mon:"Mondays",Tue:"Tuesdays",Wed:"Wednesdays",Thu:"Thursdays",Fri:"Fridays",Sat:"Saturdays"};
 const UPD_COLL="data/updates/items";
@@ -1152,7 +1152,7 @@ function pd(s){const p=String(s).split("-").map(Number);return new Date(p[0],p[1
 function fmt(d,o){return d.toLocaleDateString("en-GB",o||{weekday:"short",day:"numeric",month:"short"})}
 const TODAY=new Date(), T0=ymd(TODAY);
 
-function primary(v){const c=v.cats||[];return c.includes("music")?"music":c.includes("late")?"late":c.includes("pub")?"pub":"food"}
+function primary(v){const c=v.cats||[];return c[0]==="classical"?"classical":c.includes("music")?"music":c.includes("late")?"late":c.includes("pub")?"pub":"food"}
 function catColor(c){return "var("+CATVAR[c]+")"}
 
 /* ---------- merged listings for a venue ---------- */
@@ -1556,7 +1556,7 @@ function renderWhatson(p){
     const d=addDays(TODAY,i);const rows=[];
     vs.forEach(v=>onDay(v,d).forEach(e=>{if(i>6&&e.weekly)return;if(kindPass(e))rows.push([v,e])}));
     if(!rows.length)continue;any=true;total+=rows.length;
-    const ord={music:0,club:1,comedy:2,event:3,quiz:4,offer:5};
+    const ord={music:0,classical:0,club:1,comedy:2,event:3,quiz:4,offer:5};
     rows.sort((a,b)=>(S.near&&LOC?distM(a[0])-distM(b[0]):0)||(ord[a[1].kind]??9)-(ord[b[1].kind]??9)||(a[1].weekly?1:0)-(b[1].weekly?1:0)||a[0].name.localeCompare(b[0].name));
     const title=i===0?"Tonight":i===1?"Tomorrow":fmt(d,{weekday:"long"});
     out+=`<section class="day"><h2>${title} <small>${fmt(d,{day:"numeric",month:"short"})}</small></h2><ul class="items">${rows.map(([v,e])=>itemRow(v,e)).join("")}</ul></section>`;
@@ -1578,9 +1578,9 @@ function sunBar(){
 }
 /* tonight at a glance: tap a count to show just those */
 function tonightHtml(vs){
-  const c={music:0,quiz:0,offer:0,club:0,event:0};
+  const c={music:0,classical:0,quiz:0,offer:0,club:0,event:0};
   vs.forEach(v=>onDay(v,TODAY).forEach(e=>{const k=e.kind in c?e.kind:"event";c[k]++}));
-  const W={music:["gig","gigs"],quiz:["quiz","quizzes"],offer:["deal","deals"],club:["club night","club nights"],event:["other event","other events"]};
+  const W={music:["gig","gigs"],classical:["classical concert","classical concerts"],quiz:["quiz","quizzes"],offer:["deal","deals"],club:["club night","club nights"],event:["other event","other events"]};
   const parts=Object.keys(c).filter(k=>c[k]).map(k=>`<button class="tn" data-kind="${k}" aria-pressed="${S.kind===k}"><b>${c[k]}</b> ${W[k][c[k]===1?0:1]}</button>`);
   const head=`<span class="tl">Tonight${S.q||S.cat!=="all"||S.fav||QF.some(([k])=>S.am[k])?" (filtered)":""}</span>`;
   if(!parts.length) return `<div class="tonight">${head}<span class="tq">Nothing listed tonight. Here's what's coming up.</span></div>`;

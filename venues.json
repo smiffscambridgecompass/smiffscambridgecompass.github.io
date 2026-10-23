@@ -1,7 +1,7 @@
 {
  "meta": {
-  "checked": "2026-10-19",
-  "checkedLabel": "Mon 19 Oct 2026"
+  "checked": "2026-10-22",
+  "checkedLabel": "Thu 22 Oct 2026"
  },
  "venues": [
   {
@@ -26,8 +26,8 @@
    "lng": 0.118048,
    "group": "Greene King",
    "offers": [
-    "Spin to Win in the Greene King app: newcomers can win a free main, pudding or pint",
-    "October specials menu (venison pie, fish pie, cheese & leek pie)"
+    "Spin to Win in the Greene King app: you might win a main, pud or pint",
+    "October specials menu"
    ],
    "eventsUrl": "https://www.greeneking.co.uk/pubs/cambridgeshire/eagle/whats-on",
    "amen": {
@@ -37,8 +37,20 @@
     "dogs": true
    },
    "pos": "exact",
-   "weekly": [],
-   "events": []
+   "weekly": [
+    {
+     "day": "Sun",
+     "title": "Sunday roast",
+     "kind": "event"
+    }
+   ],
+   "events": [
+    {
+     "date": "2027-03-17",
+     "title": "St Patrick's Day",
+     "kind": "event"
+    }
+   ]
   },
   {
    "id": "mill",
@@ -92,7 +104,8 @@
      "kind": "club"
     }
    ],
-   "offers": []
+   "offers": [],
+   "checkSocials": "Website has no listings"
   },
   {
    "id": "anchor",
@@ -117,7 +130,7 @@
    "weekly": [
     {
      "day": "Wed",
-     "title": "Wing Wednesday: 5 wings £5",
+     "title": "Wing Wednesday: 5 wings £5 (extra wings £1 each)",
      "kind": "offer"
     },
     {
@@ -203,7 +216,7 @@
     "note": "Step-free to the front bar"
    },
    "pos": "exact",
-   "checkSocials": "Website has no listings",
+   "checkSocials": "Website blocks automatic reading",
    "events": []
   },
   {
@@ -326,7 +339,7 @@
    "events": [
     {
      "date": "2026-10-23",
-     "title": "Belgian beer tasting, 6pm (£35)",
+     "title": "Belgian beer tasting: 7 Belgian beers with meats & cheeses, 6pm (£35)",
      "kind": "event"
     },
     {
@@ -336,19 +349,19 @@
     },
     {
      "date": "2026-11-03",
-     "title": "Pub quiz 7pm (first Tuesday of the month)",
+     "title": "Charity pub quiz 7pm (first Tuesday of the month)",
      "kind": "quiz"
     },
     {
      "date": "2026-12-01",
-     "title": "Pub quiz 7pm (first Tuesday of the month)",
+     "title": "Charity pub quiz 7pm (first Tuesday of the month)",
      "kind": "quiz"
     }
    ],
    "weekly": [
     {
      "day": "Sun",
-     "title": "Sunday roast",
+     "title": "Sunday roast from 12pm (until sold out)",
      "kind": "event"
     }
    ],
@@ -442,12 +455,12 @@
     },
     {
      "date": "2026-11-10",
-     "title": "Paint and sip night: The Stag and the Moon, 7pm",
+     "title": "Paint and sip night: The Stag and the Moon, 7-9pm",
      "kind": "event"
     },
     {
      "date": "2026-12-08",
-     "title": "Paint and sip night: Festive Christmas Tree, 7pm",
+     "title": "Paint and sip night: Festive Christmas Tree, 7-9pm",
      "kind": "event"
     }
    ],
@@ -482,13 +495,19 @@
    "lng": 0.1136,
    "group": "Greene King",
    "offers": [
-    "Spin to Win in the Greene King app: newcomers can win a free main, dessert or pint"
+    "Spin to Win in the Greene King app: newcomers can win a free main, dessert or pint",
+    "October specials menu"
    ],
    "weekly": [
     {
      "day": "Mon",
      "title": "Pub quiz",
      "kind": "quiz"
+    },
+    {
+     "day": "Sun",
+     "title": "Sunday roast (Sunday food 12-8pm)",
+     "kind": "event"
     }
    ],
    "amen": {
@@ -527,14 +546,32 @@
    "lng": 0.127743,
    "group": "Greene King",
    "offers": [
-    "25% off a cask ale for CAMRA members, until 26 Oct",
-    "Spin to Win in the Greene King app: newcomers can win a free main, dessert or pint",
-    "October specials menu"
+    "Spin to Win in the Greene King app: free food & drink prizes"
    ],
    "weekly": [
     {
+     "day": "Mon",
+     "title": "Happy hour 4-7pm (limited time)",
+     "kind": "offer"
+    },
+    {
+     "day": "Tue",
+     "title": "Happy hour 4-7pm (limited time)",
+     "kind": "offer"
+    },
+    {
+     "day": "Wed",
+     "title": "Happy hour 4-7pm (limited time)",
+     "kind": "offer"
+    },
+    {
+     "day": "Thu",
+     "title": "Happy hour 4-7pm (limited time)",
+     "kind": "offer"
+    },
+    {
      "day": "Sun",
-     "title": "Sunday roast",
+     "title": "Sunday roast (Sunday food 12-8.30pm)",
      "kind": "event"
     }
    ],
@@ -544,7 +581,13 @@
     "sport": false
    },
    "pos": "exact",
-   "events": []
+   "events": [
+    {
+     "date": "2027-03-17",
+     "title": "St Patrick's Day",
+     "kind": "event"
+    }
+   ]
   },
   {
    "id": "old-spring",
@@ -633,7 +676,7 @@
    "lat": 52.204208,
    "lng": 0.119004,
    "offers": [
-    "Bar basket meals £16, all day",
+    "Bar basket meals £16.50",
     "Kids' mains £6.95 (incl. 2 sides)"
    ],
    "amen": {
@@ -649,7 +692,7 @@
    "weekly": [
     {
      "day": "Sun",
-     "title": "Sunday menu: 2 courses £33.50, 3 courses £38.50",
+     "title": "Sunday menu (all day): 2 courses £33.50, 3 courses £38.50",
      "kind": "offer"
     }
    ],
@@ -795,7 +838,7 @@
     "Dog friendly"
    ],
    "src": "https://camra.org.uk/pubs/131210",
-   "checkSocials": "Website events page has nothing after August",
+   "checkSocials": "Events page is out of date (latest entries August 2026)",
    "lat": 52.200359,
    "lng": 0.13977,
    "events": [
@@ -880,14 +923,13 @@
     "Events"
    ],
    "src": "https://camra.org.uk/pubs/131279",
-   "checkSocials": "Website has no listings",
    "lat": 52.200356,
    "lng": 0.134407,
    "group": "Greene King-owned, run independently",
    "weekly": [
     {
      "day": "Mon",
-     "title": "Pub quiz",
+     "title": "Quiz night 8pm (£2)",
      "kind": "quiz"
     }
    ],
@@ -898,7 +940,33 @@
     "dogs": true
    },
    "pos": "exact",
-   "events": []
+   "events": [
+    {
+     "date": "2026-10-22",
+     "title": "Paul Neale, 8.30-11pm (free)",
+     "kind": "music"
+    },
+    {
+     "date": "2026-10-24",
+     "title": "Jazzitation, 8.30-11pm (free)",
+     "kind": "music"
+    },
+    {
+     "date": "2026-10-29",
+     "title": "The Frigidaires, 8.30-11pm (free)",
+     "kind": "music"
+    },
+    {
+     "date": "2026-10-31",
+     "title": "Halloween with Johnny and Marina and guests, 8.30-11pm (free)",
+     "kind": "music"
+    }
+   ],
+   "offers": [],
+   "guinness": {
+    "note": "Guinness is on their drinks list",
+    "src": "http://sixbellspub.co.uk"
+   }
   },
   {
    "id": "geldart",
@@ -930,98 +998,93 @@
    ],
    "events": [
     {
-     "date": "2026-10-20",
-     "title": "The Surfisticats",
-     "kind": "music"
-    },
-    {
      "date": "2026-10-25",
-     "title": "Geldart Jazz Sessions",
+     "title": "Geldart Jazz Sessions (7.30-9.30pm)",
      "kind": "music"
     },
     {
      "date": "2026-10-27",
-     "title": "The Pillars of Creation (£5)",
+     "title": "The Pillars of Creation (8.30-10.30pm, £5)",
      "kind": "music"
     },
     {
      "date": "2026-11-01",
-     "title": "The Sure Can Plays (free)",
+     "title": "The Sure Can Plays (1.30-4.30pm, free)",
      "kind": "music"
     },
     {
      "date": "2026-11-03",
-     "title": "Lift Music Collective",
+     "title": "Lift Music Collective (8.30-10.30pm)",
      "kind": "music"
     },
     {
      "date": "2026-11-08",
-     "title": "Ted Morcaldi solo",
+     "title": "Ted Morcaldi solo (8-10pm)",
      "kind": "music"
     },
     {
      "date": "2026-11-10",
-     "title": "Sean O'Hanrahan's Flying Hammond Trio",
+     "title": "Sean O'Hanrahan's Flying Hammond Trio (8.30-10.30pm, £7, students £5)",
      "kind": "music"
     },
     {
      "date": "2026-11-15",
-     "title": "The Fae Folkrooms (£12)",
+     "title": "The Fae Folkrooms (£12 on the door)",
      "kind": "music"
     },
     {
      "date": "2026-11-17",
-     "title": "Jack Grace Band (£10)",
+     "title": "Jack Grace Band (8.30-10.30pm, £10)",
      "kind": "music"
     },
     {
      "date": "2026-11-19",
-     "title": "El Hombre Sin Nombre (free entry)",
+     "title": "El Hombre Sin Nombre (8-9pm, free entry)",
      "kind": "music"
     },
     {
      "date": "2026-11-22",
-     "title": "Downpipe (£5)",
+     "title": "Downpipe (8.30-10.30pm, £5)",
      "kind": "music"
     },
     {
      "date": "2026-11-24",
-     "title": "BoneFunk",
+     "title": "BoneFunk (8.30-10.30pm, £7/£5)",
      "kind": "music"
     },
     {
      "date": "2026-11-29",
-     "title": "Greta & Friends",
+     "title": "Greta & Friends (6-9pm)",
      "kind": "music"
     },
     {
      "date": "2026-12-01",
-     "title": "The Frigidaires (£5)",
+     "title": "The Frigidaires (8.30-10.30pm, £5)",
      "kind": "music"
     },
     {
      "date": "2026-12-06",
-     "title": "The Sure-Cans (free)",
+     "title": "The Sure-Cans (1.30-4.30pm, free)",
      "kind": "music"
     },
     {
      "date": "2026-12-08",
-     "title": "Sean O'Hanrahan's Flying Hammond Trio",
+     "title": "Sean O'Hanrahan's Flying Hammond Trio (8.30-10.30pm, £7, students £5)",
      "kind": "music"
     },
     {
      "date": "2026-12-13",
-     "title": "Ted Morcaldi solo",
+     "title": "Ted Morcaldi solo (8.30-10.30pm)",
      "kind": "music"
     },
     {
      "date": "2026-12-15",
-     "title": "The 5 Federales (£5)",
+     "title": "The 5 Federales (8-10pm, £5)",
      "kind": "music"
     },
     {
      "date": "2026-12-31",
-     "title": "Ezio and Les Savants NYE Special (£20)",
+     "title": "Ezio and Les Savants NYE Special (10pm-12.30am, £20)",
      "kind": "music"
     }
    ],
@@ -1068,67 +1131,67 @@
    "events": [
     {
      "date": "2026-10-27",
-     "title": "Boozy Book Club, 7pm",
+     "title": "Boozy Book Club, 7-9pm",
      "kind": "event"
     },
     {
      "date": "2026-10-29",
-     "title": "Karaoke: Halloween Hits, 7pm",
+     "title": "Karaoke Night: Halloween Hits, 7-10pm (free)",
      "kind": "event"
     },
     {
      "date": "2026-11-01",
-     "title": "Sunday Session Nomads, live traditional music, 2pm",
+     "title": "Sunday Session Nomads, live traditional music, 2-5pm (free)",
      "kind": "music"
     },
     {
      "date": "2026-11-24",
-     "title": "Boozy Book Club, 7pm",
+     "title": "Boozy Book Club, 7-9pm",
      "kind": "event"
     },
     {
      "date": "2026-12-06",
-     "title": "Sunday Session Nomads, live traditional music, 2pm",
+     "title": "Sunday Session Nomads, live traditional music, 2-5pm (free)",
      "kind": "music"
     },
     {
      "date": "2027-01-03",
-     "title": "Sunday Session Nomads, live traditional music, 2pm",
+     "title": "Sunday Session Nomads, live traditional music, 2-5pm (free)",
      "kind": "music"
     },
     {
      "date": "2027-02-07",
-     "title": "Sunday Session Nomads, live traditional music, 2pm",
+     "title": "Sunday Session Nomads, live traditional music, 2-5pm (free)",
      "kind": "music"
     },
     {
      "date": "2027-03-07",
-     "title": "Sunday Session Nomads, live traditional music, 2pm",
+     "title": "Sunday Session Nomads, live traditional music, 2-5pm (free)",
      "kind": "music"
     },
     {
      "date": "2027-04-04",
-     "title": "Sunday Session Nomads, live traditional music, 2pm",
+     "title": "Sunday Session Nomads, live traditional music, 2-5pm (free)",
      "kind": "music"
     },
     {
      "date": "2027-05-02",
-     "title": "Sunday Session Nomads, live traditional music, 2pm",
+     "title": "Sunday Session Nomads, live traditional music, 2-5pm (free)",
      "kind": "music"
     },
     {
      "date": "2027-06-06",
-     "title": "Sunday Session Nomads, live traditional music, 2pm",
+     "title": "Sunday Session Nomads, live traditional music, 2-5pm (free)",
      "kind": "music"
     },
     {
      "date": "2027-07-04",
-     "title": "Sunday Session Nomads, live traditional music, 2pm",
+     "title": "Sunday Session Nomads, live traditional music, 2-5pm (free)",
      "kind": "music"
     }
    ],
    "offers": [
-    "Loyalty card: points off your next bar bill"
+    "Loyalty card: earn points every visit to redeem against your next bar bill"
    ],
    "eventsUrl": "https://www.thealexcambridge.com/events/",
    "lat": 52.2038,
@@ -1205,7 +1268,7 @@
    "weekly": [
     {
      "day": "Mon",
-     "title": "Pub quiz (every other Monday)",
+     "title": "Pub quiz (every other Monday evening)",
      "kind": "quiz"
     }
    ],
@@ -1261,16 +1324,6 @@
    "offers": [],
    "events": [
     {
-     "date": "2026-10-19",
-     "title": "Blind whisky tasting, 7:30pm",
-     "kind": "event"
-    },
-    {
-     "date": "2026-10-20",
-     "title": "Comical Reactions comedy night, 8pm",
-     "kind": "comedy"
-    },
-    {
      "date": "2026-10-22",
      "title": "Useless Quiz",
      "kind": "quiz"
@@ -1290,7 +1343,8 @@
      "title": "Mikkeller Running Club, 3pm (10% off tap beer after)",
      "kind": "event"
     }
-   ]
+   ],
+   "checkSocials": "Events page blocks automatic reading"
   },
   {
    "id": "town-gown",
@@ -1356,7 +1410,8 @@
     "step": "yes",
     "wc": true
    },
-   "pos": "exact"
+   "pos": "exact",
+   "checkSocials": "Website shows no current listings"
   },
   {
    "id": "revolution",
@@ -1386,28 +1441,7 @@
     "sport": false
    },
    "pos": "exact",
-   "weekly": [
-    {
-     "day": "Fri",
-     "title": "Bangers Bingo with DJ, 8pm",
-     "kind": "event"
-    },
-    {
-     "day": "Sat",
-     "title": "Live music, 7–9pm",
-     "kind": "music"
-    },
-    {
-     "day": "Sun",
-     "title": "Karaoke, 9pm–1am",
-     "kind": "event"
-    },
-    {
-     "day": "Sun",
-     "title": "Industry Sunday: 40% off food & drink for hospitality/retail workers",
-     "kind": "offer"
-    }
-   ],
+   "weekly": [],
    "events": []
   },
   {
@@ -1433,12 +1467,14 @@
    "lng": 0.126708,
    "group": "Greene King",
    "offers": [
+    "Great-value lunch deals",
+    "Shots & bombs deals",
+    "Spin to Win in the Greene King app: chance to win free food and drink",
     "Small plates: 3 for £18.95 or 5 for £26.95",
     "Weekday lunch: main and soft drink £10.95, Mon-Fri 12-3pm",
     "2 pub classics deal, Mon-Fri",
     "Shots: 3 for £9",
-    "Bombs: 2 for £9",
-    "Spin to Win in the Greene King app: newcomers can win a free main, dessert or pint"
+    "Bombs: 2 for £9"
    ],
    "weekly": [
     {
@@ -1487,12 +1523,12 @@
     },
     {
      "day": "Wed",
-     "title": "Beat the Bartender industry night 7pm–2am",
+     "title": "Beat the Bartender industry night 7pm–2am (hospitality payslip)",
      "kind": "offer"
     },
     {
      "day": "Thu",
-     "title": "Beat the Bartender student night 7pm–2am",
+     "title": "Beat the Bartender student night 7pm–2am (student ID)",
      "kind": "offer"
     },
     {
@@ -1567,12 +1603,12 @@
    "events": [
     {
      "date": "2026-11-15",
-     "title": "Songsmith Sessions open mic, 7.30pm",
+     "title": "Songsmith Sessions open mic, 7.30pm (free)",
      "kind": "music"
     },
     {
      "date": "2026-12-20",
-     "title": "Songsmith Sessions open mic, 7.30pm",
+     "title": "Songsmith Sessions open mic, 7.30pm (free)",
      "kind": "music"
     }
    ]
@@ -1637,7 +1673,7 @@
     "dogs": true
    },
    "pos": "exact",
-   "checkSocials": "Website has no listings; points to social media",
+   "checkSocials": "Website has no listings",
    "events": []
   },
   {
@@ -1710,13 +1746,102 @@
    "src": "https://camra.org.uk/pubs/131242",
    "events": [
     {
+     "date": "2026-10-23",
+     "title": "King No-One",
+     "kind": "music"
+    },
+    {
+     "date": "2026-10-25",
+     "title": "Personal Trainer (NL)",
+     "kind": "music"
+    },
+    {
+     "date": "2026-10-29",
+     "title": "The Wave Pictures",
+     "kind": "music"
+    },
+    {
+     "date": "2026-11-05",
+     "title": "chloe slater",
+     "kind": "music"
+    },
+    {
+     "date": "2026-11-11",
+     "title": "Barbican Estate",
+     "kind": "music"
+    },
+    {
+     "date": "2026-11-15",
+     "title": "The Rabbitts",
+     "kind": "music"
+    },
+    {
+     "date": "2026-11-18",
+     "title": "Abigail Lapell",
+     "kind": "music"
+    },
+    {
+     "date": "2026-11-19",
+     "title": "MR B the Gentleman Rhymer",
+     "kind": "music"
+    },
+    {
+     "date": "2026-11-22",
+     "title": "Baskery",
+     "kind": "music"
+    },
+    {
+     "date": "2026-12-08",
+     "title": "Downtown Boys",
+     "kind": "music"
+    },
+    {
+     "date": "2027-01-08",
+     "title": "These Wicked Rivers",
+     "kind": "music"
+    },
+    {
+     "date": "2027-01-09",
+     "title": "The John Otway Band and John Otway",
+     "kind": "music"
+    },
+    {
      "date": "2027-01-15",
      "title": "Desperate Journalist",
+     "kind": "music"
+    },
+    {
+     "date": "2027-01-28",
+     "title": "Modern Woman",
+     "kind": "music"
+    },
+    {
+     "date": "2027-02-04",
+     "title": "The Karma Effect",
+     "kind": "music"
+    },
+    {
+     "date": "2027-02-23",
+     "title": "Scarlet Rebels",
+     "kind": "music"
+    },
+    {
+     "date": "2027-04-09",
+     "title": "George Boomsma",
+     "kind": "music"
+    },
+    {
+     "date": "2027-05-01",
+     "title": "The Frank And Walters",
+     "kind": "music"
+    },
+    {
+     "date": "2027-09-18",
+     "title": "Smashed In Pumpkins",
      "kind": "music"
     }
    ],
    "eventsUrl": "https://www.songkick.com/venues/3388-portland-arms",
-   "checkSocials": "Website blocks automatic reading; Songkick preview showed only past (September) dates",
    "lat": 52.214401,
    "lng": 0.124609,
    "amen": {
@@ -1729,7 +1854,9 @@
     "wc": true,
     "note": "Level entry through the courtyard; the accessible toilet is in the offices next door (office hours only)"
    },
-   "pos": "exact"
+   "pos": "exact",
+   "weekly": [],
+   "offers": []
   },
   {
    "id": "blue-moon",
@@ -1759,7 +1886,7 @@
     },
     {
      "day": "Wed",
-     "title": "Quiz night",
+     "title": "Quiz night (email to book a table)",
      "kind": "quiz"
     }
    ],
@@ -1785,7 +1912,58 @@
    },
    "pos": "exact",
    "offers": [],
-   "events": []
+   "events": [
+    {
+     "date": "2026-10-25",
+     "title": "Non de Script improvised comedy night (last Sunday)",
+     "kind": "comedy"
+    },
+    {
+     "date": "2026-10-29",
+     "title": "Desperate Fleas open scratch night (last Thursday)",
+     "kind": "event"
+    },
+    {
+     "date": "2026-11-05",
+     "title": "Tap takeover: 10 kegs from one brewery, with local food vans (first Thursday)",
+     "kind": "event"
+    },
+    {
+     "date": "2026-11-06",
+     "title": "The Calling goth club night (first Friday, sometimes until 2am)",
+     "kind": "club"
+    },
+    {
+     "date": "2026-11-17",
+     "title": "The Cam Creatives and Cambridge Game Makers (third Tuesday)",
+     "kind": "event"
+    },
+    {
+     "date": "2026-11-26",
+     "title": "Desperate Fleas open scratch night (last Thursday)",
+     "kind": "event"
+    },
+    {
+     "date": "2026-11-29",
+     "title": "Non de Script improvised comedy night (last Sunday)",
+     "kind": "comedy"
+    },
+    {
+     "date": "2026-12-03",
+     "title": "Tap takeover: 10 kegs from one brewery, with local food vans (first Thursday)",
+     "kind": "event"
+    },
+    {
+     "date": "2026-12-04",
+     "title": "The Calling goth club night (first Friday, sometimes until 2am)",
+     "kind": "club"
+    },
+    {
+     "date": "2026-12-15",
+     "title": "The Cam Creatives and Cambridge Game Makers (third Tuesday)",
+     "kind": "event"
+    }
+   ]
   },
   {
    "id": "boathouse",
@@ -1811,6 +1989,11 @@
    "group": "Greene King",
    "weekly": [
     {
+     "day": "Tue",
+     "title": "Pub quiz",
+     "kind": "quiz"
+    },
+    {
      "day": "Thu",
      "title": "Steak night",
      "kind": "event"
@@ -1824,19 +2007,14 @@
      "day": "Sun",
      "title": "Sunday roast from £13.45",
      "kind": "event"
-    },
-    {
-     "day": "Tue",
-     "title": "Pub quiz",
-     "kind": "quiz"
     }
    ],
    "offers": [
+    "Spin to Win in the Greene King app: chance to win a main, pud or pint",
     "Lunch set menu: 1 course £7.95, 2 £10.95, 3 £13.95, Mon-Fri 12-5pm",
     "Sandwich, side and drink £9.95, Mon-Fri 12-5pm",
     "Sharing board and 2 drinks £14.95, Mon-Fri 3-5pm",
-    "Matchday discount",
-    "Spin to Win in the Greene King app: newcomers can win a free main, dessert or pint"
+    "Matchday discount"
    ],
    "notes": [
     "Live music and singalongs (“Live At Your Local”) and live sport, but no dates listed"
@@ -1958,12 +2136,12 @@
     },
     {
      "day": "Tue",
-     "title": "£12 pizza & pint 6–8pm",
+     "title": "£12 pizza & pint 6–8pm (Margot pizza + Brewpoint pint or Margarita; £10 with soft drink)",
      "kind": "offer"
     },
     {
      "day": "Wed",
-     "title": "£12 pizza & pint 6–8pm",
+     "title": "£12 pizza & pint 6–8pm (Margot pizza + Brewpoint pint or Margarita; £10 with soft drink)",
      "kind": "offer"
     },
     {
@@ -1972,26 +2150,27 @@
      "kind": "offer"
     },
     {
+     "day": "Wed",
+     "title": "Quiz night, 8pm (£1pp, teams of up to 6)",
+     "kind": "quiz"
+    },
+    {
      "day": "Thu",
-     "title": "£12 pizza & pint 6–8pm",
+     "title": "£12 pizza & pint 6–8pm (Margot pizza + Brewpoint pint or Margarita; £10 with soft drink)",
      "kind": "offer"
     },
     {
      "day": "Fri",
-     "title": "£12 pizza & pint 6–8pm",
+     "title": "£12 pizza & pint 6–8pm (Margot pizza + Brewpoint pint or Margarita; £10 with soft drink)",
      "kind": "offer"
-    },
-    {
-     "day": "Wed",
-     "title": "Quiz night",
-     "kind": "quiz"
     }
    ],
    "offers": [
-    "£6 cocktails & mocktails Sun–Thu, 4pm–close",
-    "£15 January voucher when you book a festive table of 6+ by 31 Oct",
-    "Matchday Club: 10% off food and drink",
-    "Kids eat for £1 (school holidays, Mon–Fri)"
+    "£6 Cocktail Club cocktails & mocktails Sun–Thu, 4pm–close",
+    "£15 New Year voucher when you book a festive table of 6+ by 31 Oct 2026",
+    "Matchday Club: 10% off food and drink, plus a free drink on sign-up",
+    "Kids eat for £1 (school holidays, Mon–Fri)",
+    "Lunch deal: sub, salad or personal pizza + drink £8"
    ],
    "eventsUrl": "https://www.carpentersarmscambridge.com/whats-on-cambridge/",
    "lat": 52.215801,
@@ -2024,26 +2203,6 @@
    ],
    "events": [
     {
-     "date": "2026-10-19",
-     "title": "School of Comedy Sharing (Intermediate)",
-     "kind": "comedy"
-    },
-    {
-     "date": "2026-10-20",
-     "title": "L'Addition (20-21 Oct)",
-     "kind": "comedy"
-    },
-    {
-     "date": "2026-10-21",
-     "title": "The Undercover Hippy",
-     "kind": "music"
-    },
-    {
-     "date": "2026-10-22",
-     "title": "Megson",
-     "kind": "music"
-    },
-    {
      "date": "2026-10-22",
      "title": "Duke Special",
      "kind": "music"
@@ -2054,19 +2213,29 @@
      "kind": "comedy"
     },
     {
-     "date": "2026-10-23",
-     "title": "Catherine Bohart: Borrowing Trouble",
-     "kind": "comedy"
-    },
-    {
-     "date": "2026-10-23",
-     "title": "Luke Wright: Later Life Letter",
-     "kind": "comedy"
-    },
-    {
-     "date": "2026-10-23",
-     "title": "The Bluetones",
+     "date": "2026-10-22",
+     "title": "Megson",
      "kind": "music"
+    },
+    {
+     "date": "2026-10-23",
+     "title": "Catherine Bohart: Borrowing Trouble (last few tickets)",
+     "kind": "comedy"
+    },
+    {
+     "date": "2026-10-23",
+     "title": "Luke Wright: Later Life Letter (spoken word)",
+     "kind": "comedy"
+    },
+    {
+     "date": "2026-10-23",
+     "title": "The Bluetones (sold out)",
+     "kind": "music"
+    },
+    {
+     "date": "2026-10-23",
+     "title": "Museum Encounters (community workshop, to 18 Dec)",
+     "kind": "event"
     },
     {
      "date": "2026-10-24",
@@ -2075,12 +2244,12 @@
     },
     {
      "date": "2026-10-24",
-     "title": "New Routes: Bête Noire, Dan Wilde (sold out)",
+     "title": "Dutty Moonshine Big Band",
      "kind": "music"
     },
     {
      "date": "2026-10-24",
-     "title": "Dutty Moonshine Big Band",
+     "title": "New Routes: Bête Noire, Dan Wilde (sold out)",
      "kind": "music"
     },
     {
@@ -2092,6 +2261,11 @@
      "date": "2026-10-26",
      "title": "Chris Helme",
      "kind": "music"
+    },
+    {
+     "date": "2026-10-26",
+     "title": "Professional Dance Class (workshop, to 7 Dec)",
+     "kind": "event"
     },
     {
      "date": "2026-10-27",
@@ -2112,6 +2286,26 @@
      "date": "2026-10-28",
      "title": "Peatbog Faeries",
      "kind": "music"
+    },
+    {
+     "date": "2026-10-28",
+     "title": "Millie Manders & The Shutup",
+     "kind": "music"
+    },
+    {
+     "date": "2026-10-29",
+     "title": "Michael Spicer: Hope All's Well",
+     "kind": "comedy"
+    },
+    {
+     "date": "2026-10-29",
+     "title": "The Wedding Present (last few tickets)",
+     "kind": "music"
+    },
+    {
+     "date": "2026-10-29",
+     "title": "Kim Blythe: Puzzle",
+     "kind": "comedy"
     }
    ],
    "src": "https://www.junction.co.uk/whats-on",
@@ -2124,7 +2318,8 @@
    "id": "corn-exchange",
    "name": "Cambridge Corn Exchange",
    "cats": [
-    "music"
+    "music",
+    "classical"
    ],
    "address": "Wheeler Street",
    "postcode": "CB2 3QB",
@@ -2136,16 +2331,6 @@
     "Comedy"
    ],
    "events": [
-    {
-     "date": "2026-10-19",
-     "title": "Tony Blackburn",
-     "kind": "music"
-    },
-    {
-     "date": "2026-10-20",
-     "title": "The Mary Wallopers + Sam Shackleton",
-     "kind": "music"
-    },
     {
      "date": "2026-10-22",
      "title": "Leo Sayer",
@@ -2252,6 +2437,11 @@
      "kind": "music"
     },
     {
+     "date": "2026-12-06",
+     "title": "Royal Philharmonic Orchestra Christmas Concert",
+     "kind": "classical"
+    },
+    {
      "date": "2026-12-15",
      "title": "Greg Davies (comedy)",
      "kind": "comedy"
@@ -2273,6 +2463,7 @@
    "id": "west-road",
    "name": "West Road Concert Hall",
    "cats": [
+    "classical",
     "music"
    ],
    "address": "West Road",
@@ -2285,19 +2476,109 @@
    ],
    "events": [
     {
+     "date": "2026-10-24",
+     "title": "Poulenc and Vaughan Williams (Cambridge University Orchestra)",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-10-27",
+     "title": "CU Lunchtime Concert: Ensemble Alternance",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-10-28",
+     "title": "Guitar at the Opera (Federico Quercia)",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-10-29",
+     "title": "Piano Recital: Bach, Schumann, Brahms, Chopin (Lucas Krupinski)",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-10-31",
+     "title": "Poulenc, Schoenberg and Weill",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-03",
+     "title": "CU Lunchtime Concert: Gershwin's Rhapsody in Blue",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-07",
+     "title": "Rhapsody for a Rascal (Cambridge Philharmonic)",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-10",
+     "title": "CU Lunchtime Concert: Brahms String Sextet No.2",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-17",
+     "title": "CU Lunchtime Concert: IAS Showcase Concert",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-17",
+     "title": "Schubert String Quintet (Cambridge Music Festival)",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-21",
+     "title": "Rachmaninov Piano Concerto No.4 & Shostakovich 10 (Cambridge University Orchestra)",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-23",
+     "title": "Around the World: CUWO Michaelmas Concert",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-24",
+     "title": "CU Lunchtime Concert: King's Men",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-28",
+     "title": "Walton, Prokofiev & Elgar (City of Cambridge Symphony Orchestra)",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-12-01",
+     "title": "CU Lunchtime Concert: Cambridge University Brass Ensemble",
+     "kind": "classical"
+    },
+    {
      "date": "2026-12-02",
      "title": "Academy of Ancient Music & Laurence Cummings",
-     "kind": "music"
+     "kind": "classical"
+    },
+    {
+     "date": "2026-12-05",
+     "title": "Mozart Solemn Vespers and Haydn Nelson Mass",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-12-10",
+     "title": "Prokofiev Sonatas 1-5 (David Christophersen)",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-12-13",
+     "title": "The Snowman (Cambridge Wind Band)",
+     "kind": "classical"
     },
     {
      "date": "2027-02-10",
      "title": "Academy of Ancient Music & Laurence Cummings",
-     "kind": "music"
+     "kind": "classical"
     },
     {
      "date": "2027-04-21",
      "title": "Academy of Ancient Music & Laurence Cummings",
-     "kind": "music"
+     "kind": "classical"
     }
    ],
    "src": "https://songkick.com/venues/113226-west-road-concert-hall",
@@ -2305,7 +2586,8 @@
    "lng": 0.1079,
    "pos": "exact",
    "weekly": [],
-   "offers": []
+   "offers": [],
+   "eventsUrl": "https://www.westroad.org/whats-on"
   },
   {
    "id": "storeys-field",
@@ -2371,17 +2653,17 @@
    "events": [
     {
      "date": "2026-12-19",
-     "title": "Christmas Special (from £7)",
+     "title": "Christmas Special (7pm–midnight, from £7)",
      "kind": "music"
     },
     {
      "date": "2026-12-31",
-     "title": "We Fix Disco on NYE (from £5.50)",
+     "title": "We Fix Disco on NYE (1pm–1am, from £5.50)",
      "kind": "club"
     }
    ],
    "offers": [
-    "No door charge"
+    "Cocktail experience vouchers (for four / for two), on sale until 30 Aug 2027"
    ],
    "src": "https://www.designmynight.com/cambridge/bars/hidden-rooms",
    "lat": 52.208231,
@@ -2449,22 +2731,22 @@
    "weekly": [
     {
      "day": "Tue",
-     "title": "Fresh Tuesdays",
+     "title": "Fresh Tuesdays (urban), 10pm–3:30am",
      "kind": "club"
     },
     {
      "day": "Thu",
-     "title": "Memoria",
+     "title": "Memoria, 10pm–3:30am",
      "kind": "club"
     },
     {
      "day": "Fri",
-     "title": "Let's Kill Disco",
+     "title": "Let's Kill Disco, 10pm–3:30am",
      "kind": "club"
     },
     {
      "day": "Sat",
-     "title": "Good Life",
+     "title": "Good Life, 10pm–3:30am",
      "kind": "club"
     }
    ],
@@ -2492,7 +2774,7 @@
    "events": [
     {
      "date": "2026-10-28",
-     "title": "Hot Ghoul Halloween",
+     "title": "Hot Ghoul Halloween (10:30pm, £6.25)",
      "kind": "club"
     },
     {
@@ -2502,32 +2784,27 @@
     },
     {
      "date": "2026-10-31",
-     "title": "Garage Nation Halloween Day Party",
-     "kind": "club"
-    },
-    {
-     "date": "2026-10-31",
-     "title": "MC DT",
+     "title": "MC DT (3pm)",
      "kind": "club"
     },
     {
      "date": "2026-11-14",
-     "title": "Swiftogeddon (early show)",
+     "title": "Swiftogeddon – 20 years of Taylor special, early show (4pm, from £8.82)",
      "kind": "club"
     },
     {
      "date": "2026-11-21",
-     "title": "Clam Records presents Gino",
+     "title": "Clam Records presents Gino + more (10:30pm, from £4)",
      "kind": "club"
     },
     {
      "date": "2026-12-19",
-     "title": "TCB Presents 2026 Closing Party",
+     "title": "TCB Presents 2026 Closing Party (4pm, £10)",
      "kind": "club"
     },
     {
      "date": "2027-03-13",
-     "title": "An Afternoon of Indie (over 30s), 3–7pm",
+     "title": "An Afternoon of Indie (over 30s), 3–7pm (£9.50–£10)",
      "kind": "club"
     }
    ],
@@ -2592,7 +2869,7 @@
     "Afternoon tea"
    ],
    "offers": [
-    "Afternoon tea for two £39"
+    "Afternoon tea for two £39 (for four £83)"
    ],
    "src": "https://www.fitzbillies.com",
    "lat": 52.202458,
@@ -2628,17 +2905,17 @@
    "events": [
     {
      "date": "2026-12-06",
-     "title": "Sunday lunch",
+     "title": "Sunday lunch (12–3:30pm)",
      "kind": "event"
     },
     {
      "date": "2026-12-13",
-     "title": "Sunday lunch",
+     "title": "Sunday lunch (12–3:30pm)",
      "kind": "event"
     },
     {
      "date": "2026-12-20",
-     "title": "Sunday lunch",
+     "title": "Sunday lunch (12–3:30pm)",
      "kind": "event"
     }
    ]
@@ -2674,7 +2951,8 @@
    "offers": [
     "Halloween afternoon tea, until 1 Nov",
     "Christmas afternoon tea, 16 Nov to 3 Jan",
-    "Set lunch menu: 2 courses £25, 3 courses £29"
+    "Colleges of Cambridge afternoon tea £35pp (child £17.50)",
+    "Set lunch menu: 2 courses £25, 3 courses £29 (12:30–6pm)"
    ],
    "src": "https://www.parkerstavern.com",
    "lat": 52.202183,
@@ -2682,7 +2960,7 @@
    "events": [
     {
      "date": "2026-10-24",
-     "title": "Jazz at the Movies (film tunes concert)",
+     "title": "Jazz at the Movies – film tunes concert (doors 7:30pm, 8pm, £12)",
      "kind": "music"
     }
    ]
@@ -2705,7 +2983,7 @@
    ],
    "offers": [
     "Cool Britannia 2 courses £19.96 (Mon–Fri 11:30am–6:30pm, Sun 11am–6:30pm, until 3 Nov)",
-    "A Night of Whitney Houston, until 30 Oct",
+    "A Night of Whitney Houston live music, until 30 Oct",
     "Live music daily until 11 Dec",
     "Buy a £100 gift card, get a free bottle of The Ivy Cuvée"
    ],
@@ -2716,17 +2994,17 @@
    "events": [
     {
      "date": "2026-10-31",
-     "title": "Halloween breakfast (also 1 Nov; £32.50 adults)",
+     "title": "Halloween breakfast (also 1 Nov; £32.50 adults, £27.50 children)",
      "kind": "event"
     },
     {
      "date": "2026-11-03",
-     "title": "A Night of Elton John (3–13 Nov)",
-     "kind": "event"
+     "title": "A Night of Elton John – live music (3–13 Nov)",
+     "kind": "music"
     },
     {
      "date": "2026-11-19",
-     "title": "November set menu",
+     "title": "November set menu launches",
      "kind": "event"
     }
    ]
@@ -2749,7 +3027,7 @@
    "src": "https://hotnumberscoffee.co.uk",
    "lat": 52.200454,
    "lng": 0.138464,
-   "checkSocials": "Gigs & events page shows no readable dates",
+   "checkSocials": "Website has no listings",
    "events": []
   },
   {
@@ -2844,7 +3122,8 @@
      "kind": "offer"
     }
    ],
-   "events": []
+   "events": [],
+   "checkSocials": "Website has no listings; student deal page failed to load"
   },
   {
    "id": "nanna-mexico",
@@ -2881,7 +3160,7 @@
     "Takeaway Mon–Thu (collection)"
    ],
    "offers": [
-    "Early bird menu"
+    "Early bird menu £25.99pp, Sun–Thu 5–6pm (max 6 guests)"
    ],
    "src": "https://www.navadhanya.co.uk",
    "lat": 52.208199,
@@ -2938,7 +3217,18 @@
     "src": "https://www.thepantonarms.co.uk/"
    },
    "offers": [],
-   "events": []
+   "events": [
+    {
+     "date": "2026-10-31",
+     "title": "Live music (monthly, last Saturday)",
+     "kind": "music"
+    },
+    {
+     "date": "2026-11-28",
+     "title": "Live music (monthly, last Saturday)",
+     "kind": "music"
+    }
+   ]
   },
   {
    "id": "white-swan",
@@ -2965,10 +3255,24 @@
      "title": "Live music",
      "by": "J",
      "kind": "music"
+    },
+    {
+     "day": "Tue",
+     "title": "Buy one get one free on all burgers, 5–7pm",
+     "kind": "offer"
+    },
+    {
+     "day": "Wed",
+     "title": "Buy one get one free on all burgers, 5–7pm",
+     "kind": "offer"
+    },
+    {
+     "day": "Thu",
+     "title": "Buy one get one free on all burgers, 5–7pm",
+     "kind": "offer"
     }
    ],
    "src": "https://camra.org.uk/pubs/131322",
-   "checkSocials": "Website has no listings",
    "lat": 52.1992,
    "lng": 0.139308,
    "group": "Greene King-owned, run independently",
@@ -2979,7 +3283,8 @@
     "dogs": true
    },
    "pos": "exact",
-   "events": []
+   "events": [],
+   "offers": []
   },
   {
    "id": "earl-beaconsfield",
@@ -3003,7 +3308,7 @@
    "weekly": [
     {
      "day": "Mon",
-     "title": "Pub quiz, 8pm (£2 entry)",
+     "title": "Pub quiz, 8pm (£2 entry, cash prizes)",
      "kind": "quiz"
     },
     {
@@ -3080,7 +3385,7 @@
     },
     {
      "day": "Tue",
-     "title": "£12 pizza & pint 6–8pm",
+     "title": "£12 pizza & pint/Margarita (£10 with soft drink) 6–8pm",
      "kind": "offer"
     },
     {
@@ -3100,9 +3405,10 @@
     }
    ],
    "offers": [
-    "Lunch: filled sub + drink £8, Mon–Fri 12–3pm",
-    "£6 cocktails Sun–Thu from 4pm",
-    "£15 January voucher when you book a festive table of 6+ by 31 Oct"
+    "Lunch: filled sub + drink £8, Mon–Fri 12–3pm (+£2 for beer)",
+    "£6 cocktails & mocktails Sun–Thu from 4pm",
+    "£15 January voucher when you book a festive table of 6+ by 31 Oct",
+    "Kids eat for £1, Mon–Fri in school holidays"
    ],
    "group": "Wells & Co",
    "amen": {
@@ -3111,7 +3417,6 @@
     "sport": false
    },
    "pos": "exact",
-   "checkSocials": "Website blocks automatic reading",
    "events": []
   },
   {
@@ -3246,7 +3551,7 @@
     "Monthly folk night"
    ],
    "src": "https://camra.org.uk/pubs/131298",
-   "checkSocials": "Website mentions a weekly jazz jam and monthly folk night but gives no days or dates",
+   "checkSocials": "Website mentions a weekly jazz jam and monthly folk night but gives no days, dates or times",
    "lat": 52.204582,
    "lng": 0.13278,
    "amen": {
@@ -3311,7 +3616,7 @@
    "offers": [
     "Christmas 2026 bookings open"
    ],
-   "checkSocials": "Website calendar empty; points to Instagram/Facebook",
+   "checkSocials": "What's On calendar is empty ('no events in our calendar this month')",
    "lat": 52.2141,
    "lng": 0.125455,
    "amen": {
@@ -3423,11 +3728,12 @@
    "lng": 0.12698,
    "group": "Greene King",
    "offers": [
-    "Small plates: 3 for £17.45 or 5 for £25.45",
-    "Lunch: main + soft drink £10.95, Mon–Fri 12–4pm",
-    "2 pub classics deal, Mon–Fri",
-    "3 shots for £9",
-    "2 bombs for £9"
+    "Small plates: 3 for £17.45 or 5 for £25.45, all day every day",
+    "Lunch: main + soft drink £10.95, Mon–Fri 12–4pm (+£2 for an alcoholic drink)",
+    "2 Pub Classics deal, Mon–Fri",
+    "Shots: 3 for £9",
+    "Bombs: 2 for £9",
+    "CAMRA members: 25% off cask ales until 26 Oct 2026 (then 10%)"
    ],
    "weekly": [],
    "amen": {
@@ -3501,7 +3807,7 @@
    "offers": [
     "Small plates: 3 for £17.45 or 5 for £25.45",
     "Shots 3 for £9, bombs 2 for £9",
-    "Spin to Win in the Greene King app: free food or drink"
+    "Spin to Win in the Greene King app: newcomers can win a free dessert, pub classic or pint"
    ],
    "amen": {
     "garden": true,
@@ -3513,31 +3819,37 @@
    "weekly": [
     {
      "day": "Mon",
-     "title": "Lunch deal: main + soft drink £10.95; 2 Pub Classics deal",
+     "title": "Lunch deal: main + soft drink £10.95 (12–4pm); 2 Pub Classics deal",
      "kind": "offer"
     },
     {
      "day": "Tue",
-     "title": "Lunch deal: main + soft drink £10.95; 2 Pub Classics deal",
+     "title": "Lunch deal: main + soft drink £10.95 (12–4pm); 2 Pub Classics deal",
      "kind": "offer"
     },
     {
      "day": "Wed",
-     "title": "Lunch deal: main + soft drink £10.95; 2 Pub Classics deal",
+     "title": "Lunch deal: main + soft drink £10.95 (12–4pm); 2 Pub Classics deal",
      "kind": "offer"
     },
     {
      "day": "Thu",
-     "title": "Lunch deal: main + soft drink £10.95; 2 Pub Classics deal",
+     "title": "Lunch deal: main + soft drink £10.95 (12–4pm); 2 Pub Classics deal",
      "kind": "offer"
     },
     {
      "day": "Fri",
-     "title": "Lunch deal: main + soft drink £10.95; 2 Pub Classics deal",
+     "title": "Lunch deal: main + soft drink £10.95 (12–4pm); 2 Pub Classics deal",
      "kind": "offer"
     }
    ],
-   "events": []
+   "events": [
+    {
+     "date": "2027-03-17",
+     "title": "St Patrick's Day",
+     "kind": "event"
+    }
+   ]
   },
   {
    "id": "brewboard",
@@ -3565,7 +3877,7 @@
     "sport": false
    },
    "pos": "exact",
-   "checkSocials": "Website has no listings",
+   "checkSocials": "Events page: 'Sorry, we don't have any events coming up for now'",
    "events": []
   },
   {
@@ -3599,28 +3911,29 @@
    "events": [
     {
      "date": "2026-10-29",
-     "title": "Karaoke night, 8pm",
+     "title": "Karaoke night (8pm)",
      "kind": "event"
     },
     {
      "date": "2026-11-26",
-     "title": "Karaoke night, 8pm",
+     "title": "Karaoke night (8pm)",
      "kind": "event"
     },
     {
      "date": "2026-12-17",
-     "title": "Karaoke night, 8pm",
+     "title": "Karaoke night (8pm)",
      "kind": "event"
     },
     {
      "date": "2027-01-29",
-     "title": "Karaoke night, 8pm",
+     "title": "Karaoke night (8pm)",
      "kind": "event"
     }
    ],
    "offers": [
     "Halloween cocktails, 16 Oct–1 Nov",
-    "Free glass of Prosecco for the lead booker on Christmas bookings made 1–30 Nov"
+    "Free glass of Prosecco for the lead booker on Christmas bookings made 1–30 Nov 2026",
+    "Festive food specials through November and December"
    ],
    "amen": {
     "garden": false,
@@ -3651,19 +3964,14 @@
    "features": [
     "City centre"
    ],
-   "weekly": [
-    {
-     "day": "Sun",
-     "title": "Sunday roast",
-     "kind": "event"
-    }
-   ],
+   "weekly": [],
    "offers": [
     "Small plates: 3 for £17.45 or 5 for £25.45",
-    "Weekday lunch: main and soft drink from £8.95, Mon-Fri 12-3pm",
-    "2 pub classics deal, Mon-Fri",
+    "Weekday lunch: main + soft drink £8.95/£10.95, Mon–Fri 12–4pm (participating pubs)",
+    "2 Pub Classics deal, Mon–Fri (participating pubs)",
     "Shots: 3 for £9",
     "Bombs: 2 for £9",
+    "CAMRA members: 25% off cask ales until 26 Oct 2026 (then 10%)",
     "Spin to Win in the Greene King app: newcomers can win a free main, dessert or pint"
    ],
    "src": "https://www.greeneking.co.uk/pubs/cambridgeshire/bath-house",
@@ -3676,7 +3984,18 @@
     "dogs": true
    },
    "pos": "exact",
-   "events": []
+   "events": [
+    {
+     "date": "2026-12-25",
+     "title": "Christmas Day (booking)",
+     "kind": "event"
+    },
+    {
+     "date": "2027-03-17",
+     "title": "St Patrick's Day",
+     "kind": "event"
+    }
+   ]
   },
   {
    "id": "golden-hind",
@@ -3721,7 +4040,8 @@
     "3 small plates £15.25",
     "Seniors menu Mon–Fri until 5pm: 2 courses £7.95, 3 courses £8.95",
     "3 shots £6",
-    "Spirit & mixer from £4.50"
+    "Spirit & mixer from £4.50",
+    "Spin to Win in the Greene King app: newcomers can win a main, dessert or pint"
    ],
    "src": "https://camra.org.uk/pubs/131494",
    "lat": 52.2276,
@@ -3733,7 +4053,18 @@
     "dogs": true
    },
    "pos": "exact",
-   "events": []
+   "events": [
+    {
+     "date": "2026-12-25",
+     "title": "Christmas Day (booking)",
+     "kind": "event"
+    },
+    {
+     "date": "2027-03-17",
+     "title": "St Patrick's Day",
+     "kind": "event"
+    }
+   ]
   },
   {
    "id": "robin-hood",
@@ -3753,8 +4084,10 @@
     "Family friendly"
    ],
    "offers": [
+    "Happiest Hours: selected drinks £5, Thu & Fri 4–7pm, until 6 Nov 2026",
     "Set lunch Mon–Fri until 5pm: 2 courses £12.99, 3 courses £16.49",
-    "Spin to Win in the Greene King app: newcomers can win free food or drink"
+    "CAMRA members: 25% off cask ales until 26 Oct 2026 (then 10%)",
+    "Spin to Win in the Greene King app: newcomers can win a free dessert, pub classic or pint"
    ],
    "src": "https://www.greeneking.co.uk/pubs/cambridgeshire/robin-hood",
    "lat": 52.183998,
@@ -3772,6 +4105,16 @@
    },
    "pos": "exact",
    "weekly": [
+    {
+     "day": "Thu",
+     "title": "Happiest Hours: selected drinks £5, 4–7pm (until 6 Nov)",
+     "kind": "offer"
+    },
+    {
+     "day": "Fri",
+     "title": "Happiest Hours: selected drinks £5, 4–7pm (until 6 Nov)",
+     "kind": "offer"
+    },
     {
      "day": "Fri",
      "title": "Bottles of prosecco £12.99",
@@ -3838,7 +4181,8 @@
    },
    "pos": "exact",
    "offers": [],
-   "events": []
+   "events": [],
+   "checkSocials": "Events page could not be read (server error)"
   },
   {
    "id": "queen-edith",
@@ -3903,12 +4247,16 @@
     "Sports TV",
     "Open mic"
    ],
-   "closedUntil": "2026-10-21",
    "weekly": [
     {
      "day": "Wed",
      "title": "Burger & a drink £9.95",
      "kind": "offer"
+    },
+    {
+     "day": "Thu",
+     "title": "Pub quiz",
+     "kind": "quiz"
     },
     {
      "day": "Fri",
@@ -3919,15 +4267,9 @@
      "day": "Sun",
      "title": "Sunday roasts from £13.75",
      "kind": "offer"
-    },
-    {
-     "day": "Thu",
-     "title": "Pub quiz",
-     "kind": "quiz"
     }
    ],
    "notes": [
-    "Temporarily closed; due to reopen on or before Wed 21 Oct",
     "Open mic night on alternate Tuesdays"
    ],
    "src": "https://camra.org.uk/pubs/131268",
@@ -3944,7 +4286,8 @@
     "Seniors menu Mon–Fri until 5pm: 2 courses £7.95 / 3 for £8.95",
     "Two mains from £15.45",
     "Lunch Club from £8.95",
-    "3 small plates for £14.75"
+    "3 small plates for £14.75",
+    "Spin to Win in the Greene King app: newcomers can win a main, pud or pint"
    ],
    "events": []
   },
@@ -3967,8 +4310,8 @@
     "Family friendly"
    ],
    "offers": [
-    "Happy hour: 2-for-1 on the same classic cocktail, daily 7:30pm to close",
-    "Dumpling masterclasses (book via OpenTable)"
+    "Happy hour (see OpenTable for details)",
+    "Dumplings masterclass (book via OpenTable)"
    ],
    "src": "https://camra.org.uk/pubs/131218",
    "lat": 52.189201,
@@ -4004,7 +4347,7 @@
     "Step-free",
     "Dog friendly"
    ],
-   "checkSocials": "Website has no listings",
+   "checkSocials": "Only past event listed (Wed 23 April brewery takeover)",
    "src": "https://camra.org.uk/pubs/131376",
    "lat": 52.197045,
    "lng": 0.149772,
@@ -4069,7 +4412,8 @@
    "offers": [
     "Cocktails: buy 3, get 1 free, all day every day"
    ],
-   "events": []
+   "events": [],
+   "checkSocials": "Website could not be read (fetch failed)"
   },
   {
    "id": "king-street-cellar",
@@ -4096,7 +4440,7 @@
     "Monday and Sunday hours aren't listed on their website"
    ],
    "src": "https://www.visitcambridge.org/place/king-street-cellar/",
-   "checkSocials": "Tastings and events are posted on Eventbrite",
+   "checkSocials": "Events page points to Eventbrite, which shows no upcoming events",
    "lat": 52.207413,
    "lng": 0.125497,
    "pos": "exact",
@@ -4177,7 +4521,7 @@
    "weekly": [
     {
      "day": "Sat",
-     "title": "Rooftop brunch with pizza and prosecco, 1–3pm",
+     "title": "Rooftop brunch with pizzas and prosecco, 1-3pm (Roof Terrace)",
      "kind": "event"
     }
    ],
@@ -4249,7 +4593,7 @@
     "src": "http://www.thestationtavern.co.uk"
    },
    "pos": "exact",
-   "checkSocials": "Website has no listings"
+   "checkSocials": "Website has no listings (no events in calendar this month)"
   },
   {
    "id": "darrys",
@@ -4266,11 +4610,16 @@
    "features": [
     "Upstairs wine and cocktail bar"
    ],
-   "weekly": [],
+   "weekly": [
+    {
+     "day": "Sun",
+     "title": "Sunday Carvery",
+     "kind": "event"
+    }
+   ],
    "offers": [],
    "events": [],
    "notes": [],
-   "checkSocials": "Website has no listings",
    "src": "https://camra.org.uk/pubs/131464",
    "lat": 52.207199,
    "lng": 0.121639,
@@ -4317,7 +4666,8 @@
     "wc": true,
     "note": "Ramp available"
    },
-   "pos": "exact"
+   "pos": "exact",
+   "checkSocials": "Website has no dated listings or detailed deals"
   },
   {
    "id": "handsome-prince",
@@ -4416,46 +4766,38 @@
    ],
    "weekly": [
     {
+     "day": "Tue",
+     "title": "Pie & Pint Tuesdays: homemade pie with a pint on the house, 12-9pm (£20)",
+     "kind": "offer"
+    },
+    {
      "day": "Sun",
      "title": "The Quizzly Bear pub quiz",
      "kind": "quiz"
     }
    ],
-   "offers": [],
+   "offers": [
+    "Pie & Pint Tuesdays: pie with a pint on the house £20, every Tuesday 12-9pm"
+   ],
    "events": [
     {
      "date": "2026-10-28",
-     "title": "Harry Potter quiz, 8pm (£3)",
+     "title": "Harry Potter themed quiz, 8pm (£3 cash entry, £100 bar tab prize)",
      "kind": "quiz"
     },
     {
      "date": "2026-10-31",
-     "title": "Halloween party: The Rising Blues Band",
+     "title": "Halloween party: The Rising Blues Band, 7-9:30pm",
      "kind": "music"
     },
     {
      "date": "2026-11-06",
-     "title": "Autumn Internationals rugby",
-     "kind": "event"
-    },
-    {
-     "date": "2026-11-13",
-     "title": "Autumn Internationals rugby",
-     "kind": "event"
-    },
-    {
-     "date": "2026-11-20",
-     "title": "Autumn Internationals rugby",
-     "kind": "event"
-    },
-    {
-     "date": "2026-11-27",
-     "title": "Autumn Internationals rugby",
+     "title": "Autumn Internationals rugby (6-27 Nov)",
      "kind": "event"
     },
     {
      "date": "2026-12-31",
-     "title": "NYE masquerade party: The Rising Blues Band (free)",
+     "title": "NYE masquerade party: The Rising Blues Band, 9:30pm until after midnight (free)",
      "kind": "music"
     }
    ],
@@ -4547,7 +4889,8 @@
     "fire": false,
     "sport": false
    },
-   "pos": "exact"
+   "pos": "exact",
+   "checkSocials": "Website could not be fetched (site error)"
   },
   {
    "id": "bar-oh",
@@ -4569,17 +4912,17 @@
    "weekly": [
     {
      "day": "Mon",
-     "title": "Open mic (-OHpen Mic)",
+     "title": "Open mic (-OHpen Mic), 4pm-1am",
      "kind": "music"
     },
     {
      "day": "Wed",
-     "title": "Keys with Bryan",
+     "title": "Keys with Bryan, 4pm-1am",
      "kind": "music"
     },
     {
      "day": "Sun",
-     "title": "Plug and Play",
+     "title": "Plug and Play, 4pm-1am",
      "kind": "music"
     }
    ],
@@ -4707,7 +5050,23 @@
      "kind": "offer"
     }
    ],
-   "events": [],
+   "events": [
+    {
+     "date": "2026-10-24",
+     "title": "Live sport: Aston Villa v Manchester City, 12:30pm (TNT Sports 1)",
+     "kind": "event"
+    },
+    {
+     "date": "2026-10-24",
+     "title": "Live sport: Chelsea v Tottenham Hotspur, 5:30pm (Sky Sports)",
+     "kind": "event"
+    },
+    {
+     "date": "2026-10-25",
+     "title": "Live sport: Manchester United v Bournemouth, 2pm (Sky Sports)",
+     "kind": "event"
+    }
+   ],
    "offers": [
     "Lunch deal £10",
     "Kids meal deal £5.50",
@@ -4785,27 +5144,17 @@
    "events": [
     {
      "date": "2026-11-04",
-     "title": "Hudson's Quiz Night, 7pm",
-     "kind": "quiz"
-    },
-    {
-     "date": "2026-11-04",
-     "title": "Pub quiz (first Wednesday of the month)",
+     "title": "Hudson's Quiz Night, 7-9:30pm (first Wednesday of the month)",
      "kind": "quiz"
     },
     {
      "date": "2026-11-28",
-     "title": "Live music: Beans and Biscuits (free)",
+     "title": "Live music: Beans and Biscuits, 7:30-10:30pm (free)",
      "kind": "music"
     },
     {
      "date": "2026-12-02",
-     "title": "Hudson's Quiz Night, 7pm",
-     "kind": "quiz"
-    },
-    {
-     "date": "2026-12-02",
-     "title": "Pub quiz (first Wednesday of the month)",
+     "title": "Hudson's Quiz Night, 7-9:30pm (first Wednesday of the month)",
      "kind": "quiz"
     }
    ],
@@ -4851,14 +5200,14 @@
      "kind": "offer"
     },
     {
-     "day": "Sun",
-     "title": "Sunday roast, 12–5pm",
-     "kind": "event"
-    },
-    {
      "day": "Wed",
      "title": "Pub quiz",
      "kind": "quiz"
+    },
+    {
+     "day": "Sun",
+     "title": "Sunday roast, 12-5pm",
+     "kind": "event"
     }
    ],
    "events": [],
@@ -4896,7 +5245,7 @@
    "weekly": [
     {
      "day": "Wed",
-     "title": "Wing Wednesday: 5 wings for £5",
+     "title": "Wing Wednesday: 5 wings for £5, extra wings £1 each",
      "kind": "offer"
     },
     {
@@ -4944,38 +5293,38 @@
    "weekly": [],
    "events": [
     {
-     "date": "2026-10-20",
-     "title": "Quiz night, 7:30pm",
-     "kind": "quiz"
-    },
-    {
      "date": "2026-11-17",
-     "title": "Quiz night, 7:30pm",
+     "title": "Quiz night, 7:30pm (cash entry)",
      "kind": "quiz"
     },
     {
      "date": "2026-11-19",
-     "title": "Christmas mosaic workshop, 6:30pm",
+     "title": "Christmas mosaic workshop (CJB Crafts), 6:30-9:30pm, adults only",
      "kind": "event"
     },
     {
-     "date": "2026-11-28",
-     "title": "Wreath making workshop",
+     "date": "2026-12-01",
+     "title": "Elf on the Shelf returns, Santa photos for your pooch and Memory Tree (from 1 Dec)",
      "kind": "event"
     },
     {
      "date": "2026-12-05",
-     "title": "Breakfast with Santa, 10am",
+     "title": "Breakfast with Santa, 10am-12noon",
+     "kind": "event"
+    },
+    {
+     "date": "2026-12-05",
+     "title": "Wreath making workshop, 3pm",
      "kind": "event"
     },
     {
      "date": "2026-12-15",
-     "title": "Festive quiz, 7:30pm",
+     "title": "Festive quiz, 7:30pm (cash entry)",
      "kind": "quiz"
     },
     {
      "date": "2026-12-26",
-     "title": "Boxing Day barrel race + live music: The Pearson Brothers",
+     "title": "Boxing Day barrel race (doors 10am) + live music: The Pearson Brothers from 1:30pm",
      "kind": "event"
     }
    ],
@@ -5015,8 +5364,16 @@
     "Fenced garden"
    ],
    "weekly": [],
-   "events": [],
-   "offers": [],
+   "events": [
+    {
+     "date": "2026-11-07",
+     "title": "Bottomless brunch, 1:30-5:30pm (£70 prosecco / £115 champagne)",
+     "kind": "offer"
+    }
+   ],
+   "offers": [
+    "Christmas party bookings 20 Nov - 24 Dec 2026"
+   ],
    "notes": [
     "Closed Tuesdays and Wednesdays"
    ],
@@ -5033,7 +5390,10 @@
    "access": {
     "wc": true
    },
-   "checkSocials": "Website has no listings"
+   "guinness": {
+    "note": "Guinness is on their drinks list",
+    "src": "https://therupertbrooke.com/wp-content/uploads/2025/06/Drinks-Menu-Website.pdf"
+   }
   },
   {
    "id": "blue-ball",
@@ -5072,7 +5432,7 @@
     "wc": false,
     "note": "Several front steps; gravel slope to the rear"
    },
-   "checkSocials": "Website could not be read automatically"
+   "checkSocials": "Website could not be fetched (site error)"
   },
   {
    "id": "ship",
@@ -5144,7 +5504,7 @@
     "step": "yes",
     "wc": false
    },
-   "checkSocials": "Website lists only TV sport fixtures"
+   "checkSocials": "Website lists only TV sports fixtures; no events, weekly nights or deal details"
   },
   {
    "id": "carlton-arms",
@@ -5310,7 +5670,7 @@
    "weekly": [
     {
      "day": "Sun",
-     "title": "Pub quiz, 8.30pm",
+     "title": "Quiz night, 8.30pm (free entry, 50p jackpot round; runs until 29 Nov 2026)",
      "kind": "quiz"
     }
    ],
@@ -5371,7 +5731,7 @@
     "wc": true,
     "note": "Single-level bar; ring ahead for the ramp at busy times"
    },
-   "checkSocials": "Website has no listings (events page shows none)"
+   "checkSocials": "Website has no listings (events page empty/dynamic)"
   },
   {
    "id": "green-dragon",
@@ -5495,7 +5855,7 @@
     "wc": true,
     "note": "Small step at the doors; step-free via the side passage"
    },
-   "checkSocials": "Website has no listings"
+   "checkSocials": "Website is a 'new website coming soon' placeholder"
   },
   {
    "id": "seven-stars",
@@ -5671,7 +6031,8 @@
     "step": "partly",
     "wc": true,
     "note": "Side door with a ramp"
-   }
+   },
+   "checkSocials": "No current listings (only past event 9 Aug 2026 cocktail night)"
   },
   {
    "id": "plough-fen-ditton",
@@ -5690,7 +6051,11 @@
    ],
    "weekly": [],
    "events": [],
-   "offers": [],
+   "offers": [
+    "2 for £16 cocktails, Monday to Friday",
+    "2 for £8 alcohol-free cocktails, Monday to Friday",
+    "Sparkling Fridays: 30% off selected champagne and sparkling wine via Rewards app (T&Cs)"
+   ],
    "notes": [],
    "src": "https://camra.org.uk/pubs/131238",
    "lat": 52.223976,
@@ -5706,8 +6071,7 @@
     "step": "partly",
     "wc": true,
     "note": "Ramped entrance"
-   },
-   "checkSocials": "Website has no listings"
+   }
   },
   {
    "id": "kings-head-fen-ditton",
@@ -5752,7 +6116,7 @@
     "sport": true,
     "dogs": true
    },
-   "checkSocials": "Website lists no upcoming dates"
+   "checkSocials": "Website has no current dated listings"
   },
   {
    "id": "ancient-shepherds",
@@ -5856,12 +6220,415 @@
    "lat": 52.21905,
    "lng": 0.08778,
    "pos": "exact",
-   "checkSocials": "Events are posted on Mato and their socials",
+   "checkSocials": "Website has no listings; ma.to events page does not mention douce",
    "amen": {
     "garden": false,
     "fire": false,
     "sport": false
    }
+  },
+  {
+   "id": "kings-college-chapel",
+   "name": "King's College Chapel",
+   "cats": [
+    "classical"
+   ],
+   "address": "King's Parade",
+   "postcode": "CB2 1ST",
+   "lat": 52.20472,
+   "lng": 0.11639,
+   "pos": "exact",
+   "website": "https://www.kings.cam.ac.uk/chapel",
+   "eventsUrl": "https://www.kings.cam.ac.uk/chapel/music-chapel/concerts-kings",
+   "src": "https://www.kings.cam.ac.uk/chapel/attend-chapel-services",
+   "hours": "Choral Evensong typically six days a week in term; Holy Eucharist Sun & Thu in term",
+   "food": null,
+   "features": [
+    "Choral Evensong",
+    "Choir of King's College",
+    "Organ recitals (Sunday afternoons in term)",
+    "Free entry to services"
+   ],
+   "events": [],
+   "weekly": [],
+   "offers": [],
+   "notes": [
+    "Term-time services; free and open to visitors",
+    "Exact Evensong times are in the Michaelmas 2026 services booklet (PDF), not on the web page",
+    "Concert listing (kingscollegechoir.com) could not be read; organ recital dates for Michaelmas 2026 'available soon'"
+   ]
+  },
+  {
+   "id": "st-johns-college-chapel",
+   "name": "St John's College Chapel",
+   "cats": [
+    "classical"
+   ],
+   "address": "St John's Street",
+   "postcode": "CB2 1TP",
+   "lat": 52.20799,
+   "lng": 0.11715,
+   "pos": "exact",
+   "website": "https://www.joh.cam.ac.uk/chapel-and-choir/chapel-services-and-events",
+   "eventsUrl": "https://www.joh.cam.ac.uk/chapel-and-choir/chapel-services-and-events",
+   "src": "https://www.joh.cam.ac.uk/chapel-and-choir/chapel-services-and-events",
+   "hours": "Choral Evensong Tue–Sun 6.30pm in Full Term",
+   "food": null,
+   "features": [
+    "Choral Evensong",
+    "Choir of St John's College",
+    "Sunday organ recitals",
+    "Free entry to services (no tickets required)"
+   ],
+   "events": [
+    {
+     "date": "2026-10-25",
+     "title": "Sunday Organ Recital: Alexander Robson (Worcester Cathedral), 6pm",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-01",
+     "title": "Sunday Organ Recital: Joseph Wicks (The Gesualdo Six), 6pm",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-08",
+     "title": "Sunday Organ Recital: Thomas Watkin, 6pm",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-15",
+     "title": "Sunday Organ Recital: Pascal Bachmann, 6pm",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-22",
+     "title": "Sunday Organ Recital: Benjamin Nicholas (Merton College, Oxford), 6pm",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-12-04",
+     "title": "Christmas Concert: The Choir of St John's College, 6.30pm",
+     "kind": "classical"
+    }
+   ],
+   "weekly": [
+    {
+     "day": "Tue",
+     "title": "Choral Evensong, 6.30pm (free)",
+     "kind": "classical"
+    },
+    {
+     "day": "Wed",
+     "title": "Choral Evensong, 6.30pm (free)",
+     "kind": "classical"
+    },
+    {
+     "day": "Thu",
+     "title": "Choral Evensong, 6.30pm (free)",
+     "kind": "classical"
+    },
+    {
+     "day": "Fri",
+     "title": "Choral Evensong, 6.30pm (free)",
+     "kind": "classical"
+    },
+    {
+     "day": "Sat",
+     "title": "Choral Evensong, 6.30pm (free)",
+     "kind": "classical"
+    },
+    {
+     "day": "Sun",
+     "title": "Choral Evensong, 6.30pm (free)",
+     "kind": "classical"
+    }
+   ],
+   "offers": [],
+   "notes": [
+    "Evensong in University Full Term only",
+    "Evensong times from https://www.joh.cam.ac.uk/node/362 and sjcchoir.co.uk",
+    "Organ recital prices not stated"
+   ]
+  },
+  {
+   "id": "trinity-college-chapel",
+   "name": "Trinity College Chapel",
+   "cats": [
+    "classical"
+   ],
+   "address": "Trinity Street",
+   "postcode": "CB2 1TQ",
+   "lat": 52.2075,
+   "lng": 0.1175,
+   "pos": "exact",
+   "website": "https://www.trin.cam.ac.uk/chapel/home/services/",
+   "eventsUrl": "https://www.trin.cam.ac.uk/events",
+   "src": "https://www.trin.cam.ac.uk/chapel/home/services/",
+   "hours": "Choral Evensong Sun, Tue, Thu 6.15pm in term",
+   "food": null,
+   "features": [
+    "Choral Evensong",
+    "Choir of Trinity College",
+    "Metzler organ",
+    "Public welcome at services"
+   ],
+   "events": [
+    {
+     "date": "2026-10-26",
+     "title": "Compline sung by Cambridge University Schola Cantorum, 8.30pm",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-12-03",
+     "title": "Bridgemas: Carols at Trinity, 5.30pm (free, booking)",
+     "kind": "classical"
+    }
+   ],
+   "weekly": [
+    {
+     "day": "Sun",
+     "title": "Choral Evensong, 6.15pm",
+     "kind": "classical"
+    },
+    {
+     "day": "Tue",
+     "title": "Choral Evensong, 6.15pm",
+     "kind": "classical"
+    },
+    {
+     "day": "Wed",
+     "title": "Sung Compline, 9pm",
+     "kind": "classical"
+    },
+    {
+     "day": "Thu",
+     "title": "Choral Evensong, 6.15pm",
+     "kind": "classical"
+    }
+   ],
+   "offers": [],
+   "notes": [
+    "Michaelmas Term 2026 pattern",
+    "All welcome incl. members of the public"
+   ]
+  },
+  {
+   "id": "great-st-marys",
+   "name": "Great St Mary's, the University Church",
+   "cats": [
+    "classical"
+   ],
+   "address": "Senate House Hill",
+   "postcode": "CB2 3PQ",
+   "lat": 52.20534,
+   "lng": 0.11827,
+   "pos": "exact",
+   "website": "https://greatstmarys.org/",
+   "eventsUrl": "https://www.greatstmarys.org/lunchtime-recitals",
+   "src": "https://greatstmarys.org/whats-on",
+   "hours": "Lunchtime recitals Fridays 1pm (not Aug/Sep)",
+   "food": null,
+   "features": [
+    "Friday lunchtime recitals",
+    "University Organ",
+    "Free entry (retiring collection)"
+   ],
+   "events": [
+    {
+     "date": "2026-10-23",
+     "title": "Lunchtime concert: Cambridge Chamber Ensemble (Stephen Foster violin, Anastasia Matkovskaia piano), 1pm (free)",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-10-30",
+     "title": "Lunchtime concert: Michael Tao, piano (Beethoven, Chopin, Tchaikovsky), 1pm (free)",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-01",
+     "title": "Requiem Eucharist for All Souls with Fauré Requiem, 4pm",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-06",
+     "title": "Lunchtime concert: Jungmin Gregory Ha, piano (Mompou, Carl Vine), 1pm (free)",
+     "kind": "classical"
+    }
+   ],
+   "weekly": [
+    {
+     "day": "Fri",
+     "title": "Lunchtime recital, 1pm (free, retiring collection)",
+     "kind": "classical"
+    }
+   ],
+   "offers": [],
+   "notes": [
+    "No recitals in August or September",
+    "Listings published only to 6 Nov at time of check"
+   ]
+  },
+  {
+   "id": "kettles-yard",
+   "name": "Kettle's Yard",
+   "cats": [
+    "classical"
+   ],
+   "address": "Castle Street",
+   "postcode": "CB3 0AQ",
+   "lat": 52.21083,
+   "lng": 0.11417,
+   "pos": "exact",
+   "website": "https://www.kettlesyard.cam.ac.uk/",
+   "eventsUrl": "https://www.kettlesyard.cam.ac.uk/whats-on/types/music/",
+   "src": "https://www.kettlesyard.cam.ac.uk/whats-on/types/music/",
+   "hours": "Chamber music concerts Thursdays 8pm (doors 7.30pm)",
+   "food": null,
+   "features": [
+    "Chamber music series",
+    "New music concerts",
+    "Season subscription (15 concerts, £250 / £70 students)"
+   ],
+   "events": [
+    {
+     "date": "2026-11-12",
+     "title": "Raphael Wallfisch (cello) & Simon Callaghan (piano), 8pm (sold out)",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-19",
+     "title": "Nicholas Daniel (oboe) & Huw Watkins (piano), 8pm (sold out)",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-26",
+     "title": "Doric Quartet, 8pm (sold out)",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-12-03",
+     "title": "New Music: Bozzini Quartet, 8pm",
+     "kind": "classical"
+    }
+   ],
+   "weekly": [],
+   "offers": [],
+   "notes": [
+    "Ticket prices not shown on listing",
+    "2026-27 chamber season runs 8 Oct 2026 – 27 May 2027"
+   ]
+  },
+  {
+   "id": "peterhouse-chapel",
+   "name": "Peterhouse Chapel",
+   "cats": [
+    "classical"
+   ],
+   "address": "Trumpington Street",
+   "postcode": "CB2 1RD",
+   "lat": 52.2007,
+   "lng": 0.11786,
+   "pos": "exact",
+   "website": "https://www.pet.cam.ac.uk/",
+   "eventsUrl": "https://www.pet.cam.ac.uk/node/3212",
+   "src": "https://www.pet.cam.ac.uk/node/3212",
+   "hours": "Choral Evensong Sun 6pm and Wed 6.30pm in term",
+   "food": null,
+   "features": [
+    "Choral Evensong",
+    "Choir of Peterhouse",
+    "Visitors welcome at services"
+   ],
+   "events": [
+    {
+     "date": "2026-10-26",
+     "title": "Choral Compline, 9pm",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-10-28",
+     "title": "Feast of St Simon & St Jude: Evensong, 6.30pm",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-23",
+     "title": "Choral Compline, 9pm",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-29",
+     "title": "Advent Carol Service, 6pm",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-12-03",
+     "title": "Christmas Carol Service, 6pm",
+     "kind": "classical"
+    }
+   ],
+   "weekly": [
+    {
+     "day": "Sun",
+     "title": "Choral Evensong, 6pm",
+     "kind": "classical"
+    },
+    {
+     "day": "Wed",
+     "title": "Choral Evensong or Evening Prayer, 6.30pm",
+     "kind": "classical"
+    }
+   ],
+   "offers": [],
+   "notes": [
+    "Term-time pattern"
+   ]
+  },
+  {
+   "id": "selwyn-college-chapel",
+   "name": "Selwyn College Chapel",
+   "cats": [
+    "classical"
+   ],
+   "address": "Grange Road",
+   "postcode": "CB3 9DQ",
+   "lat": 52.20091,
+   "lng": 0.1068,
+   "pos": "exact",
+   "website": "https://www.sel.cam.ac.uk/chapel-services",
+   "eventsUrl": "https://www.sel.cam.ac.uk/chapel-services",
+   "src": "https://www.sel.cam.ac.uk/chapel-services",
+   "hours": "Choral Evensong Sun 6pm, Tue & Thu 6.30pm",
+   "food": null,
+   "features": [
+    "Choral Evensong",
+    "Selwyn College Chapel Choir",
+    "All services open to the public",
+    "Livestreamed on YouTube"
+   ],
+   "events": [],
+   "weekly": [
+    {
+     "day": "Sun",
+     "title": "Choral Evensong with sermon, 6pm",
+     "kind": "classical"
+    },
+    {
+     "day": "Tue",
+     "title": "Choral Evensong, 6.30pm",
+     "kind": "classical"
+    },
+    {
+     "day": "Thu",
+     "title": "Choral Evensong, 6.30pm",
+     "kind": "classical"
+    }
+   ],
+   "offers": [],
+   "notes": [
+    "Choir page (sel.cam.ac.uk/node/137) gives Tue/Thu Evensong as 6.15pm; services page says 6.30pm",
+    "No dated events published for this window"
+   ]
   }
  ]
 }
