@@ -21,8 +21,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Smiff's Compass">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#15211D">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F2EDE4">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#141D1A">
 <link rel="icon" type="image/svg+xml" href="favicon.svg?v=4">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}*{box-sizing:border-box}</style>
 <script>if(location.hostname==="smiffscambridgecompass.github.io")location.replace("https://smiffscompass.smiffscompass.workers.dev"+location.pathname+location.search+location.hash)</script>
@@ -37,11 +38,12 @@
 <style>
 /* Layout: an app shell. Header with search and filters, a reading panel (What's on / Venues / one venue) on the left, the map filling the rest. On phones the panel and the map become tabs. */
 :root{
-  --bg:#EDF1EE; --panel:#FAFBF9; --ink:#15211D; --muted:#5B6A64; --line:#D6DED9; --soft:#E4EAE6;
-  --accent:#A95A12;
-  --c-pub:#A95A12; --c-music:#B02E66; --c-classical:#2D5FA0; --c-food:#24766A; --c-late:#5747B0;
-  --ok:#24766A; --warn:#9A5B00; --warn-bg:#FBEBD3; --fav:#C08A00;
-  --land:#E7ECE8; --dots:#C6D0CA; --road:#FFFFFF; --road-edge:#CDD6D1; --green:#CBDFCC; --water:#93BDD0; --label:#6B7A74;
+  /* light theme: the posters' warm paper with dark green type */
+  --bg:#E9E2D6; --panel:#F2EDE4; --ink:#3D4F3A; --muted:#56634F; --line:#D9D0C2; --soft:#E6DFD3;
+  --accent:#94500E;
+  --c-pub:#94500E; --c-music:#A82A60; --c-classical:#2D5C9A; --c-food:#1E675C; --c-late:#5245A8;
+  --ok:#1E675C; --warn:#8A5200; --warn-bg:#F7E3C6; --fav:#9C6F00;
+  --land:#ECE6DB; --dots:#D3CBBD; --road:#FBF8F2; --road-edge:#D8CFC1; --green:#CFDDC6; --water:#93BDD0; --label:#5F6958;
   --display:"Young Serif", Georgia, "Times New Roman", serif;
   --body:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
