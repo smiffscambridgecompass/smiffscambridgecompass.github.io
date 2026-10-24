@@ -4632,7 +4632,7 @@
   },
   {
    "id": "bridge-street-wine-bar",
-   "name": "Bridge Street Wine Bar",
+   "name": "Cambridge Wine Merchants, Bridge Street",
    "cats": [
     "pub"
    ],
@@ -4651,8 +4651,16 @@
    "offers": [
     "Still wines at £35 and up: pay the shop price in the bar"
    ],
-   "events": [],
-   "notes": [],
+   "events": [
+    {
+     "date": "2026-11-12",
+     "title": "Cambridge Wine Merchants Winter Wine Fair, at Westminster College, Madingley Road, 5–9pm (£35)",
+     "kind": "event"
+    }
+   ],
+   "notes": [
+    "Pick any bottle off the shop shelves to drink in the bar (corkage applies)"
+   ],
    "src": "https://camra.org.uk/pubs/131429",
    "lat": 52.209669,
    "lng": 0.117009,
@@ -4667,7 +4675,98 @@
     "note": "Ramp available"
    },
    "pos": "exact",
-   "checkSocials": "Website has no dated listings or detailed deals"
+   "eventsUrl": "https://www.cambridgewine.com/shop/products/events/page-1.html"
+  },
+  {
+   "id": "cwm-kings-parade",
+   "name": "Cambridge Wine Merchants, Kings Parade",
+   "cats": [
+    "pub"
+   ],
+   "group": "Cambridge Wine Merchants",
+   "address": "2 King's Parade",
+   "postcode": "CB2 1SJ",
+   "website": "https://www.cambridgewine.com/our-stores/",
+   "eventsUrl": "https://www.cambridgewine.com/shop/products/events/page-1.html",
+   "hours": "Mon–Sat 12–8pm · Sun 12–7pm",
+   "food": "",
+   "features": [
+    "Wine shop and bar",
+    "Outside tables until 6pm",
+    "Tastings and meet-the-producer evenings"
+   ],
+   "weekly": [],
+   "offers": [],
+   "events": [
+    {
+     "date": "2026-11-06",
+     "title": "Sherry & Tapas tasting, 8pm (£20)",
+     "kind": "event"
+    },
+    {
+     "date": "2026-11-06",
+     "title": "A taste of Piemonte: fine wine dinner at Market House, Market Hill, 6:45pm (£120)",
+     "kind": "event"
+    }
+   ],
+   "notes": [
+    "The shop opens from 10am (Sun 11am); last orders in the bar 30 minutes before closing"
+   ],
+   "src": "https://www.cambridgewine.com/our-stores/",
+   "lat": 52.204261,
+   "lng": 0.117865,
+   "amen": {
+    "garden": false,
+    "fire": false,
+    "sport": false
+   },
+   "pos": "postcode"
+  },
+  {
+   "id": "cwm-cherry-hinton-road",
+   "name": "Cambridge Wine Merchants, Cherry Hinton Road",
+   "cats": [
+    "pub"
+   ],
+   "group": "Cambridge Wine Merchants",
+   "address": "163 Cherry Hinton Road",
+   "postcode": "CB1 7BX",
+   "website": "https://www.cambridgewine.com/our-stores/",
+   "eventsUrl": "https://www.cambridgewine.com/shop/products/events/page-1.html",
+   "hours": "Mon–Wed 12–8pm · Thu–Sat 12–10pm · Sun 12–7pm",
+   "food": "",
+   "features": [
+    "Wine shop and bar",
+    "Seats about 25, tables can be booked",
+    "Bar can be booked for private tastings and parties"
+   ],
+   "weekly": [
+    {
+     "day": "Fri",
+     "title": "Fizz Fridays, 5–7pm",
+     "kind": "offer"
+    }
+   ],
+   "offers": [],
+   "events": [
+    {
+     "date": "2026-11-26",
+     "title": "Quiz night, 8pm (£25 per team)",
+     "kind": "quiz"
+    }
+   ],
+   "notes": [
+    "The shop opens from 11am (Sat 10am)"
+   ],
+   "src": "https://www.cambridgewine.com/our-stores/",
+   "lat": 52.188208,
+   "lng": 0.144854,
+   "amen": {
+    "garden": false,
+    "fire": false,
+    "sport": false
+   },
+   "pos": "postcode"
   },
   {
    "id": "handsome-prince",
