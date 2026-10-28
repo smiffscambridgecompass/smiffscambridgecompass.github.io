@@ -1065,6 +1065,11 @@ ol.crawl .ctrl button:focus-visible{outline:2px solid var(--accent)}
 a.a2-go{text-decoration:none;display:inline-block}
 .np-ic{width:44px;height:44px;border-radius:10px;background:#8EE8D8;color:#0A0C0B;display:grid;place-items:center}
 .np-ic .nic{width:24px;height:24px}
+#newsp{max-height:calc(100vh - 110px);overflow-y:auto}
+.np-form{margin:12px 0 0;min-height:52px}
+.np-form iframe{display:block;max-width:100%}
+.np-alt{margin:8px 0 0;font-size:.86rem;color:var(--muted)}
+.np-alt a{color:var(--accent);font-weight:600}
 .nic{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block}
 .news{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start;margin:18px 0 20px;padding:14px 16px 16px;background:var(--panel);border:1.5px solid var(--ink);border-radius:18px 14px 20px 14px}
 .news>.nic{width:30px;height:30px;color:var(--ink);margin-top:2px}
@@ -1175,6 +1180,7 @@ let FEAT=null;const FEAT_COLL="data/updates/featured";
 function featOf(v){const f=FEAT&&FEAT[v.id]?(FEAT[v.id].on?FEAT[v.id]:null):v.featured;return f&&f.until&&f.until>=T0&&!closedNote(v)?f:null}
 const AD='<span class="adb">Ad</span>';
 const NEWS_URL="https://justins-newsletter-bec391.beehiiv.com/subscribe"; /* Smiff's weekly newsletter sign-up page (beehiiv) */
+const NEWS_FORM="9367d54f-5426-497b-8f10-70151def95cf"; /* beehiiv sign-up form shown inside the app (public site only) */
 const TIP_URL=""; /* Smiff's Ko-fi or Buy Me a Coffee page; the tip link stays hidden until this is set */
 function httpsUrl(u){u=String(u||"").trim();return /^https:\/\/[^\s"'<>]+$/i.test(u)?u:""}
 /* anonymous counts of taps on each pub (public site only, no cookies) */
@@ -1652,7 +1658,7 @@ const MAIL_IC=`<svg class="nic" viewBox="0 0 24 24" aria-hidden="true"><rect x="
 function newsLink(where){return NEWS_URL+(NEWS_URL.includes("?")?"&":"?")+"utm_source=smiffs-compass&utm_medium=app&utm_campaign="+encodeURIComponent(where)}
 function newsHtml(where){
   if(!NEWS_URL)return "";
-  return `<section class="news" aria-labelledby="news-${where}">${MAIL_IC}<div><h2 id="news-${where}">Sign up to the weekly newsletter</h2><p>The next events in Cambridge pubs, in your inbox each week: Smiff's pick, gigs, quizzes and deals. Free, and you can unsubscribe any time.</p><a class="news-go" href="${esc(newsLink(where))}" target="_blank" rel="noopener" data-news="${where}">Sign up, it's free<span class="sr-only"> (opens in a new tab)</span></a></div></section>`;
+  return `<section class="news" aria-labelledby="news-${where}">${MAIL_IC}<div><h2 id="news-${where}">Sign up to the weekly newsletter</h2><p>The next events in Cambridge pubs, in your inbox each week: Smiff's pick, gigs, quizzes and deals. Free, and you can unsubscribe any time.</p>${PUBLIC&&NEWS_FORM?`<button class="news-go" data-newsopen="${where}">Sign up, it's free</button>`:`<a class="news-go" href="${esc(newsLink(where))}" target="_blank" rel="noopener" data-news="${where}">Sign up, it's free<span class="sr-only"> (opens in a new tab)</span></a>`}</div></section>`;
 }
 /* tonight at a glance: tap a count to show just those */
 function tonightHtml(vs){
@@ -2082,24 +2088,48 @@ function nGet(){try{return JSON.parse(localStorage.getItem(NWK)||"{}")||{}}catch
 function nSave(o){try{localStorage.setItem(NWK,JSON.stringify(Object.assign(nGet(),o)))}catch(e){}}
 const VISITS=(()=>{try{const v=JSON.parse(localStorage.getItem(VK)||"{}")||{};const now=Date.now();if(!v.t||now-v.t>18e5)v.n=(v.n||0)+1;v.t=now;localStorage.setItem(VK,JSON.stringify(v));return v.n}catch(e){return 0}})();
 function newsDue(){if(!PUBLIC||!NEWS_URL||VISITS<2)return false;const s=nGet();return !(s.done||(s.until&&s.until>Date.now())||(s.n||0)>=3)}
-function showNews(){
+let NP_BUILT=false,NP_MANUAL=false,NP_RET=null;
+function buildNews(){
   const c=$("newsp");
-  c.innerHTML=`<div class="a2-head"><span class="np-ic">${MAIL_IC}</span><h2 id="np-title" tabindex="-1">Get next week's events by email</h2><button class="fs-x" data-np="later" aria-label="Close">×</button></div><p class="a2-sub">Smiff's weekly newsletter: the next gigs, quizzes and deals in Cambridge pubs, plus Smiff's pick. Free, and you can unsubscribe any time.</p><div class="a2-foot"><button class="a2-later" data-np="later">Not now</button><a class="a2-go" href="${esc(newsLink("prompt"))}" target="_blank" rel="noopener" data-news="prompt">Sign up<span class="sr-only"> (opens in a new tab)</span></a></div>`;
-  c.hidden=false;nSave({n:(nGet().n||0)+1});gc("news/shown");
-  ANN="Tip: Smiff's weekly newsletter. Sign up at the bottom of the screen.";announce();
+  c.innerHTML=`<div class="a2-head"><span class="np-ic">${MAIL_IC}</span><h2 id="np-title" tabindex="-1">Get next week's events by email</h2><button class="fs-x" data-np="later" aria-label="Close">×</button></div><p class="a2-sub">Smiff's weekly newsletter: the next gigs, quizzes and deals in Cambridge pubs, plus Smiff's pick. Free, and you can unsubscribe any time.</p><div class="np-form" id="npform"></div><p class="np-alt" id="npalt" hidden>Form not loading? <a href="${esc(newsLink("prompt"))}" target="_blank" rel="noopener" data-news="fallback">Sign up on the web<span class="sr-only"> (opens in a new tab)</span></a></p><div class="a2-foot"><button class="a2-later" data-np="later">Not now</button></div>`;
+  /* beehiiv's loader turns this script tag into the sign-up form; it is added once and the card is kept, so the form never reloads */
+  const sc=document.createElement("script");sc.async=true;sc.src="https://subscribe-forms.beehiiv.com/v3/loader.js";sc.setAttribute("data-beehiiv-form",NEWS_FORM);
+  sc.onerror=()=>{$("npalt").hidden=false};
+  $("npform").appendChild(sc);
+  setTimeout(()=>{if(!$("npform").querySelector("iframe"))$("npalt").hidden=false},7000);
+  NP_BUILT=true;
 }
-function hideNews(){const c=$("newsp");if(!c)return;c.hidden=true;c.innerHTML=""}
+function showNews(manual,where){
+  if(!PUBLIC||!NEWS_FORM)return;
+  if(!NP_BUILT)buildNews();
+  if(!$("a2hs").hidden)hideA2hs();
+  NP_MANUAL=!!manual;NP_RET=manual?document.activeElement:null;
+  $("newsp").hidden=false;
+  if(manual){gc("news/open/"+(where||"list"));$("np-title").focus({preventScroll:true})}
+  else{nSave({n:(nGet().n||0)+1});gc("news/shown");ANN="Tip: Smiff's weekly newsletter. Sign up at the bottom of the screen.";announce()}
+}
+function hideNews(){const c=$("newsp");if(!c||c.hidden)return;const had=c.contains(document.activeElement);c.hidden=true;if(had&&NP_RET&&NP_RET.isConnected)NP_RET.focus({preventScroll:true});NP_RET=null}
+function laterNews(){if(!NP_MANUAL){nSave({until:Date.now()+14*864e5});gc("news/dismiss")}hideNews()}
 (function(){
   if(!newsDue())return;
   let tries=0;
-  const go=()=>{if(!$("fsheet").hidden&&++tries<20){setTimeout(go,3000);return}showNews()};
+  const go=()=>{if(!$("fsheet").hidden&&++tries<20){setTimeout(go,3000);return}if($("newsp").hidden)showNews(false)};
   setTimeout(go,9000);
 })();
 document.addEventListener("click",e=>{
-  const s=e.target.closest("[data-news]");if(s){nSave({done:1});gc("news/click/"+s.dataset.news);if(!$("newsp").hidden)setTimeout(hideNews,300);return}
-  if(e.target.closest("[data-np]")){nSave({until:Date.now()+14*864e5});gc("news/dismiss");hideNews()}
+  const o=e.target.closest("[data-newsopen]");if(o){showNews(true,o.dataset.newsopen);return}
+  const s=e.target.closest("[data-news]");if(s){nSave({done:1});gc("news/click/"+s.dataset.news);return}
+  if(e.target.closest("[data-np]"))laterNews();
 });
-$("newsp").addEventListener("keydown",e=>{if(e.key==="Escape"){e.stopPropagation();nSave({until:Date.now()+14*864e5});gc("news/dismiss");hideNews()}});
+$("newsp").addEventListener("keydown",e=>{if(e.key==="Escape"){e.stopPropagation();laterNews()}});
+/* the beehiiv form says when someone has signed up: stop asking them */
+addEventListener("message",e=>{
+  let h="";try{h=new URL(e.origin).hostname}catch(x){}
+  if(!/(^|\.)beehiiv\.com$/.test(h))return;
+  let d=e.data;if(typeof d==="string"){try{d=JSON.parse(d)}catch(x){}}
+  const t=String(d&&(d.type||d.event)||"");
+  if(/success|subscribed|submitted/i.test(t)&&!nGet().done){nSave({done:1});gc("news/subscribed")}
+});
 /* home-screen prompt: from someone's second visit (phones), at most 3 times, and not again for 2 weeks after "Not now" */
 (function(){
   if(!a2Offer()||VISITS<2||newsDue())return;
