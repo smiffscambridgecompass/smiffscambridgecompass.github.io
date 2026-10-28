@@ -1062,6 +1062,17 @@ ol.crawl .ctrl button:focus-visible{outline:2px solid var(--accent)}
 .a2-link{all:unset;cursor:pointer;color:var(--accent);text-decoration:underline;text-underline-offset:2px}
 .a2-go:focus-visible,.a2-later:focus-visible,.a2-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 @media (min-width:861px){.a2hs{bottom:24px}}
+a.a2-go{text-decoration:none;display:inline-block}
+.np-ic{width:44px;height:44px;border-radius:10px;background:#8EE8D8;color:#0A0C0B;display:grid;place-items:center}
+.np-ic .nic{width:24px;height:24px}
+.nic{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block}
+.news{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start;margin:18px 0 20px;padding:14px 16px 16px;background:var(--panel);border:1.5px solid var(--ink);border-radius:18px 14px 20px 14px}
+.news>.nic{width:30px;height:30px;color:var(--ink);margin-top:2px}
+.news h2{font-family:var(--display);font-weight:400;font-size:1.08rem;line-height:1.2;margin:0 0 4px}
+.news p{margin:0 0 10px;font-size:.88rem;line-height:1.4;color:var(--muted)}
+.news-go{display:inline-block;background:var(--ink);color:var(--panel);font-weight:600;text-decoration:none;border-radius:999px;padding:8px 16px;font-size:.92rem}
+.news-go:hover{filter:brightness(1.15)}
+.news-go:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 @keyframes sheetup{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
 @keyframes pop{from{transform:translateY(-4px) scale(.98);opacity:0}to{transform:none;opacity:1}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
@@ -1115,6 +1126,7 @@ ol.crawl .ctrl button:focus-visible{outline:2px solid var(--accent)}
   <div class="scrim" id="scrim" hidden></div>
   <div class="fsheet" id="fsheet" role="dialog" aria-modal="true" aria-labelledby="fs-title" hidden></div>
   <section class="a2hs" id="a2hs" aria-labelledby="a2-title" hidden></section>
+  <section class="a2hs" id="newsp" aria-labelledby="np-title" hidden></section>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
@@ -1162,6 +1174,7 @@ const SHAM=v=>guinnessOf(v)?' <span class="sham" role="img" aria-label="Serves G
 let FEAT=null;const FEAT_COLL="data/updates/featured";
 function featOf(v){const f=FEAT&&FEAT[v.id]?(FEAT[v.id].on?FEAT[v.id]:null):v.featured;return f&&f.until&&f.until>=T0&&!closedNote(v)?f:null}
 const AD='<span class="adb">Ad</span>';
+const NEWS_URL="https://justins-newsletter-bec391.beehiiv.com/subscribe"; /* Smiff's weekly newsletter sign-up page (beehiiv) */
 const TIP_URL=""; /* Smiff's Ko-fi or Buy Me a Coffee page; the tip link stays hidden until this is set */
 function httpsUrl(u){u=String(u||"").trim();return /^https:\/\/[^\s"'<>]+$/i.test(u)?u:""}
 /* anonymous counts of taps on each pub (public site only, no cookies) */
@@ -1521,6 +1534,7 @@ function renderCrawl(p){
     if(stops.length>1||crawlStart()) h+=`<p class="crawl-tot">${stops.length} stop${stops.length===1?"":"s"} · ${walkLabel(tot).replace(" walk"," walking")} in total</p>`;
     h+=`<div class="crawl-actions">${stops.length>1||crawlStart()?`<a href="${esc(crawlMapsLink(stops))}" target="_blank" rel="noopener">Open walking route in Google Maps ↗</a>`:""}<button data-crawl="clear">Clear crawl</button></div>`;
   }
+  h+=newsHtml("crawl");
   h+=`<p class="foot">Your crawl is saved on this device only. Sources, privacy and contact details are at the bottom of What's on and Venues.</p>`;
   p.innerHTML=h;
 }
@@ -1591,8 +1605,8 @@ function featuredSlot(onlyKind){
 }
 function renderWhatson(p){
   const vs=visible();let out=sunBar()+tonightHtml(vs)+`<div class="kinds" role="group" aria-label="Filter listings">${KINDS.map(([k,l])=>`<button class="chip" data-kind="${k}" aria-pressed="${S.kind===k}">${l}</button>`).join("")}</div>`+featuredSlot(true);
-  if(S.kind==="sport"){p.innerHTML=out+sportHtml(vs)+footer();return}
-  let any=false,total=0;
+  if(S.kind==="sport"){p.innerHTML=out+sportHtml(vs)+newsHtml("sport")+footer();return}
+  let any=false,total=0,newsIn=false;
   for(let i=0;i<14;i++){
     const d=addDays(TODAY,i);const rows=[];
     vs.forEach(v=>onDay(v,d).forEach(e=>{if(i>6&&e.weekly)return;if(kindPass(e))rows.push([v,e])}));
@@ -1601,12 +1615,14 @@ function renderWhatson(p){
     rows.sort((a,b)=>(S.near&&LOC?distM(a[0])-distM(b[0]):0)||(ord[a[1].kind]??9)-(ord[b[1].kind]??9)||(a[1].weekly?1:0)-(b[1].weekly?1:0)||a[0].name.localeCompare(b[0].name));
     const title=i===0?"Tonight":i===1?"Tomorrow":fmt(d,{weekday:"long"});
     out+=`<section class="day"><h2>${title} <small>${fmt(d,{day:"numeric",month:"short"})}</small></h2><ul class="items">${rows.map(([v,e])=>itemRow(v,e)).join("")}</ul></section>`;
+    if(!newsIn){out+=newsHtml("whatson");newsIn=true}
   }
   const later=[];const lim=ymd(addDays(TODAY,14));
   vs.forEach(v=>listings(v).dated.forEach(e=>{if(e.date>=lim&&kindPass(e))later.push([v,e])}));
   later.sort((a,b)=>a[1].date<b[1].date?-1:1);
   if(later.length){any=true;out+=`<section class="day"><h2>Further ahead</h2><ul class="items">${later.slice(0,40).map(([v,e])=>itemRow(v,Object.assign({},e,{title:fmt(pd(e.date),{day:"numeric",month:"short"})+" · "+e.title}))).join("")}</ul></section>`}
   if(!any) out+=`<p class="empty">Nothing listed for this filter. Try “Everything” or clear the search.</p>`;
+  if(!newsIn) out+=newsHtml("whatson");
   ANN=any?`${total} listing${total===1?"":"s"} in the next two weeks${S.kind!=="all"?", "+(KINDS.find(x=>x[0]===S.kind)||["",""])[1].toLowerCase()+" only":""}`:"Nothing listed for this filter";
   out+=footer();
   p.innerHTML=out;
@@ -1630,6 +1646,13 @@ function sportHtml(vs){
   h+=rows.map(([v,fx])=>{const more=fx.length-3;
     return `<li class="vrow"><button data-v="${esc(v.id)}" style="--c:${catColor(primary(v))}"><span class="pin"></span><span><span class="n">${isFav(v)?'<span class="star" aria-hidden="true">★</span><span class="sr-only">Favourite: </span>':""}${esc(v.name)}${SHAM(v)}</span><br><span class="a">${esc(v.address)}</span>${fx.length?`<span class="fx">${fx.slice(0,3).map(e=>`<span class="l"><b>${esc(fxWhen(e))}</b> ${esc(e.title)}</span>`).join("")}${more>0?`<span class="l more">+${more} more on their page</span>`:""}</span>`:`<span class="fx none">Sport on TV · fixtures not listed online</span>`}${statusHtml(v)}</span><span class="cats">${(v.cats||[]).map(c=>`<i style="--c:${catColor(c)}" title="${esc(CATS.find(x=>x[0]===c)?.[1]||c)}"></i>`).join("")}</span></button></li>`}).join("");
   return h+`</ul></section>`;
+}
+/* weekly newsletter: a small sign-up section in the lists, and a prompt for people who come back */
+const MAIL_IC=`<svg class="nic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7.5 8 6 8-6"/></svg>`;
+function newsLink(where){return NEWS_URL+(NEWS_URL.includes("?")?"&":"?")+"utm_source=smiffs-compass&utm_medium=app&utm_campaign="+encodeURIComponent(where)}
+function newsHtml(where){
+  if(!NEWS_URL)return "";
+  return `<section class="news" aria-labelledby="news-${where}">${MAIL_IC}<div><h2 id="news-${where}">Sign up to the weekly newsletter</h2><p>The next events in Cambridge pubs, in your inbox each week: Smiff's pick, gigs, quizzes and deals. Free, and you can unsubscribe any time.</p><a class="news-go" href="${esc(newsLink(where))}" target="_blank" rel="noopener" data-news="${where}">Sign up, it's free<span class="sr-only"> (opens in a new tab)</span></a></div></section>`;
 }
 /* tonight at a glance: tap a count to show just those */
 function tonightHtml(vs){
@@ -1664,6 +1687,7 @@ function renderVenues(p){
   out+=`</ul>`;
   if(!vs.length) out+=`<p class="empty">No venues match. Turn off a filter or clear the search.</p>`;
   if(S.am.guinness) out+=`<p class="acc-sub" style="margin-top:12px">These are the pubs where we've seen Guinness confirmed on their website or menu. Plenty of others pour it too.${PUBLIC?` Know one? <a href="${esc(mailHref("Guinness at "))}">Tell Smiff</a>.`:" Mark others from a pub's page."}</p>`;
+  out+=newsHtml("venues");
   if(S.am.step) out+=`<p class="acc-sub" style="margin-top:12px">Step-free means CAMRA lists a step-free way in. Access details aren't listed for every pub, so others may be fine too. Worth ringing ahead.</p>`;
   out+=footer();
   p.innerHTML=out;
@@ -2052,9 +2076,33 @@ function showA2hs(manual){
 }
 function hideA2hs(){const c=$("a2hs");if(!c)return;const had=c.contains(document.activeElement);c.hidden=true;c.innerHTML="";if(had&&A2_RET&&A2_RET.isConnected)A2_RET.focus({preventScroll:true});A2_RET=null}
 function laterA2hs(){if(!A2_MANUAL){a2Save({until:Date.now()+14*864e5});gc("a2hs/dismiss")}hideA2hs()}
-/* shown once after a short look around, at most 3 times, and not again for 2 weeks after "Not now" */
+/* newsletter prompt: from someone's second visit, at most 3 times, not again for 2 weeks after "Not now", never after they tap Sign up */
+const NWK="smiff-news",VK="smiff-visits";
+function nGet(){try{return JSON.parse(localStorage.getItem(NWK)||"{}")||{}}catch(e){return {}}}
+function nSave(o){try{localStorage.setItem(NWK,JSON.stringify(Object.assign(nGet(),o)))}catch(e){}}
+const VISITS=(()=>{try{const v=JSON.parse(localStorage.getItem(VK)||"{}")||{};const now=Date.now();if(!v.t||now-v.t>18e5)v.n=(v.n||0)+1;v.t=now;localStorage.setItem(VK,JSON.stringify(v));return v.n}catch(e){return 0}})();
+function newsDue(){if(!PUBLIC||!NEWS_URL||VISITS<2)return false;const s=nGet();return !(s.done||(s.until&&s.until>Date.now())||(s.n||0)>=3)}
+function showNews(){
+  const c=$("newsp");
+  c.innerHTML=`<div class="a2-head"><span class="np-ic">${MAIL_IC}</span><h2 id="np-title" tabindex="-1">Get next week's events by email</h2><button class="fs-x" data-np="later" aria-label="Close">×</button></div><p class="a2-sub">Smiff's weekly newsletter: the next gigs, quizzes and deals in Cambridge pubs, plus Smiff's pick. Free, and you can unsubscribe any time.</p><div class="a2-foot"><button class="a2-later" data-np="later">Not now</button><a class="a2-go" href="${esc(newsLink("prompt"))}" target="_blank" rel="noopener" data-news="prompt">Sign up<span class="sr-only"> (opens in a new tab)</span></a></div>`;
+  c.hidden=false;nSave({n:(nGet().n||0)+1});gc("news/shown");
+  ANN="Tip: Smiff's weekly newsletter. Sign up at the bottom of the screen.";announce();
+}
+function hideNews(){const c=$("newsp");if(!c)return;c.hidden=true;c.innerHTML=""}
 (function(){
-  if(!a2Offer())return;
+  if(!newsDue())return;
+  let tries=0;
+  const go=()=>{if(!$("fsheet").hidden&&++tries<20){setTimeout(go,3000);return}showNews()};
+  setTimeout(go,9000);
+})();
+document.addEventListener("click",e=>{
+  const s=e.target.closest("[data-news]");if(s){nSave({done:1});gc("news/click/"+s.dataset.news);if(!$("newsp").hidden)setTimeout(hideNews,300);return}
+  if(e.target.closest("[data-np]")){nSave({until:Date.now()+14*864e5});gc("news/dismiss");hideNews()}
+});
+$("newsp").addEventListener("keydown",e=>{if(e.key==="Escape"){e.stopPropagation();nSave({until:Date.now()+14*864e5});gc("news/dismiss");hideNews()}});
+/* home-screen prompt: from someone's second visit (phones), at most 3 times, and not again for 2 weeks after "Not now" */
+(function(){
+  if(!a2Offer()||VISITS<2||newsDue())return;
   const s=a2Get();if(s.never||(s.until&&s.until>Date.now())||(s.n||0)>=3)return;
   let tries=0;
   const go=()=>{if(!a2Offer())return;if(!$("fsheet").hidden&&++tries<20){setTimeout(go,3000);return}showA2hs(false)};
