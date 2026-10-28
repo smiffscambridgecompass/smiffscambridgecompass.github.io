@@ -2174,9 +2174,12 @@ function boot(data){
   renderChips();render();drawPins();
   /* opened from a pub link or a poster's QR code */
   if(QS){
-    const pid=QS.get("p"),src=QS.get("s");
+    const pid=QS.get("p"),src=QS.get("s"),f=QS.get("f");
     if(src==="poster")gc("poster/"+(pid&&BYID[pid]?pid:"general"));
-    if(pid&&BYID[pid])openVenue(pid,true);else if(src)syncUrl();
+    else if(src&&/^[a-z0-9-]{1,30}$/.test(src))gc("from/"+src);
+    /* ?f=open opens the list of places open right now (used by the email signature) */
+    if(f==="open"&&!(pid&&BYID[pid])){S.open=true;setView("venues");renderChips();render();drawPins();gc("link/open-now")}
+    if(pid&&BYID[pid])openVenue(pid,true);else if(src||f)syncUrl();
   }
 }
 initMap();
