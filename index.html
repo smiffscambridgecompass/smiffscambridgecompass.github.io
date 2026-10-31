@@ -1142,7 +1142,11 @@ ol.crawl .num,.cnum{background:var(--pop);color:var(--on-pop);box-shadow:0 0 0 2
 .leaflet-bar a{border-color:var(--edge)!important}
 .notice,.note,.c-flag{border:1.5px solid currentColor}
 .tab[aria-current="true"]{background:var(--pop);color:var(--on-pop);box-shadow:inset 0 0 0 2px var(--edge)}
+/* the page behind everything matches the panels, so the iPhone status bar and home-bar areas never show a different-coloured strip */
+body{background:var(--panel)}
 @media (max-width:860px){
+  /* the root already pads for the home bar, so the list only needs to clear the tab bar itself */
+  .body{padding-bottom:66px}
   .tabs{border-top:2px solid var(--edge);background:var(--panel);-webkit-backdrop-filter:none;backdrop-filter:none}
   .tab[aria-current="true"]{background:none;box-shadow:none;color:var(--ink)}
   .tab[aria-current="true"] .ic{box-sizing:content-box;padding:3px 16px;background:var(--pop);color:var(--on-pop);border:2px solid var(--edge);border-radius:999px;margin:-5px 0 -2px}
