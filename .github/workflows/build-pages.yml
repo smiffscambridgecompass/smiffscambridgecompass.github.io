@@ -1,0 +1,33 @@
+name: Build guide pages
+# Rebuilds the pub pages, guides and sitemap whenever venues.json or the builder changes,
+# and every morning so "today" and "this weekend" stay right.
+on:
+  push:
+    branches: [main]
+    paths: [venues.json, tools/build_pages.py]
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: build-pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python3 tools/build_pages.py
+      - name: Commit pages if they changed
+        run: |
+          git config user.name "Smiff's Cambridge Compass"
+          git config user.email "smiffscompass@gmail.com"
+          git add -A pubs pages.css sitemap.xml robots.txt this-weekend pub-quizzes live-music sunday-roasts beer-gardens real-fires dog-friendly-pubs live-sport guinness independent-pubs pub-deals christmas
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "Rebuild guide pages $(date -u +%F)"
+          git pull --rebase origin main
+          git push origin main

@@ -7,14 +7,15 @@
 <meta property="og:title" content="Smiff's Cambridge Compass">
 <meta property="og:description" content="Pubs, gigs, quiz nights and deals across Cambridge, on one map.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://smiffscompass.smiffscompass.workers.dev/">
+<meta property="og:url" content="https://smiffs.uk/">
+<link rel="canonical" href="https://smiffs.uk/">
 <meta property="og:site_name" content="Smiff's Cambridge Compass">
-<meta property="og:image" content="https://smiffscompass.smiffscompass.workers.dev/preview.png?v=6">
+<meta property="og:image" content="https://smiffs.uk/preview.png?v=6">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Smiff's Compass: Cambridge pubs, gigs, quizzes and deals, beside a map of Cambridge pubs">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://smiffscompass.smiffscompass.workers.dev/preview.png?v=6">
+<meta name="twitter:image" content="https://smiffs.uk/preview.png?v=6">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=6">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=6">
@@ -26,7 +27,7 @@
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1A1A1A">
 <link rel="icon" type="image/svg+xml" href="favicon.svg?v=6">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}*{box-sizing:border-box}</style>
-<script>if(location.hostname==="smiffscambridgecompass.github.io")location.replace("https://smiffscompass.smiffscompass.workers.dev"+location.pathname+location.search+location.hash)</script>
+<script>if(location.hostname==="smiffscambridgecompass.github.io"||location.hostname==="smiffscompass.smiffscompass.workers.dev")location.replace("https://smiffs.uk"+location.pathname+location.search+location.hash)</script>
 <script>window.SMIFF_PUBLIC=true</script>
 <script data-goatcounter="https://smiffscambridgecompass.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 <title>Smiff's Compass: Cambridge pubs, gigs, quizzes and deals</title>
@@ -1872,7 +1873,8 @@ function renderVenues(p){
 function footer(){
   const tip=PUBLIC&&TIP_URL?`<p class="tip"><a href="${esc(TIP_URL)}" target="_blank" rel="noopener" data-gc="tip"><span aria-hidden="true">🍺</span> Buy Smiff a pint</a><span>The Compass is free. If it sorted your night out, a pint keeps it going.</span></p>`:"";
   const ads=V.some(featOf)?`Places marked “Ad” have paid to be featured; Smiff's favourites${PUBLIC?", tips":""} and the Guinness list are never paid for. `:"";
-  return tip+`<p class="foot">${ads}Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}; rechecked every Monday and Thursday. ${USE_TILES?"Street map © OpenStreetMap contributors. ":"Map is a simplified drawing. "}Pin positions from CAMRA, Songkick and DesignMyNight, otherwise by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright). Walking times are estimates. Garden sun times are worked out from the sun's position${PUBLIC?"; cloud cover from Open-Meteo.com (CC BY 4.0)":""}.</p>${PUBLIC?`${a2Offer()?`<p class="foot fb" style="border:0;padding-top:0;margin-bottom:6px">On your phone? <button class="a2-link" data-a2="open">Add Smiff's Compass to your home screen</button>.</p>`:""}<p class="foot fb" style="border:0;padding-top:0">Spotted something wrong, or know a gig or quiz that's missing? <a href="${esc(mailHref("Smiff's Cambridge Compass"))}">Email Smiff</a>.</p><p class="foot fb" style="border:0;padding-top:0;margin-top:6px">Run a pub? Your listing is free. <a href="${esc(mailHref("Run a pub: events and Featured spot"))}" data-gc="owner/general">Send your events, or ask about a Featured spot</a>.</p><p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers, and taps on each pub's card, page and links, are counted anonymously, without cookies. Your pub crawl is saved on your device. The street map is loaded from OpenStreetMap and cloud cover from Open-Meteo.</p>`:""}`;
+  const guides=PUBLIC?`<p class="foot guides-l">Guides: <a href="/this-weekend/">This weekend</a> · <a href="/pub-quizzes/">Pub quizzes</a> · <a href="/live-music/">Live music</a> · <a href="/sunday-roasts/">Sunday roasts</a> · <a href="/beer-gardens/">Beer gardens</a> · <a href="/real-fires/">Real fires</a> · <a href="/dog-friendly-pubs/">Dog-friendly pubs</a> · <a href="/live-sport/">Live sport</a> · <a href="/guinness/">Guinness</a> · <a href="/pub-deals/">Pub deals</a> · <a href="/christmas/">Christmas</a> · <a href="/pubs/">Every pub A to Z</a></p>`:"";
+  return tip+guides+`<p class="foot">${ads}Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}; rechecked every Monday and Thursday. ${USE_TILES?"Street map © OpenStreetMap contributors. ":"Map is a simplified drawing. "}Pin positions from CAMRA, Songkick and DesignMyNight, otherwise by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright). Walking times are estimates. Garden sun times are worked out from the sun's position${PUBLIC?"; cloud cover from Open-Meteo.com (CC BY 4.0)":""}.</p>${PUBLIC?`${a2Offer()?`<p class="foot fb" style="border:0;padding-top:0;margin-bottom:6px">On your phone? <button class="a2-link" data-a2="open">Add Smiff's Compass to your home screen</button>.</p>`:""}<p class="foot fb" style="border:0;padding-top:0">Spotted something wrong, or know a gig or quiz that's missing? <a href="${esc(mailHref("Smiff's Cambridge Compass"))}">Email Smiff</a>.</p><p class="foot fb" style="border:0;padding-top:0;margin-top:6px">Run a pub? Your listing is free. <a href="${esc(mailHref("Run a pub: events and Featured spot"))}" data-gc="owner/general">Send your events, or ask about a Featured spot</a>.</p><p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers, and taps on each pub's card, page and links, are counted anonymously, without cookies. Your pub crawl is saved on your device. The street map is loaded from OpenStreetMap and cloud cover from Open-Meteo.</p>`:""}`;
 }
 $("pane").addEventListener("click",e=>{
   if(e.target.closest("[data-daypick]")){openCal();return}
