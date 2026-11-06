@@ -26,7 +26,7 @@ jobs:
         run: |
           git config user.name "Smiff's Cambridge Compass"
           git config user.email "smiffscompass@gmail.com"
-          git add -A pubs pages.css sitemap.xml robots.txt this-weekend pub-quizzes live-music sunday-roasts beer-gardens real-fires dog-friendly-pubs live-sport guinness independent-pubs pub-deals christmas
+          git add -A
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -m "Rebuild guide pages $(date -u +%F)"
           git pull --rebase origin main

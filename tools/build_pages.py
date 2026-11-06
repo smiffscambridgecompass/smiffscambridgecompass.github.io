@@ -263,9 +263,9 @@ def shell(path, title, desc, body, crumbs=None, ld=None, map_link="/"):
 </main>
 <footer class="foot"><div class="wrap">
 <h2>Guides to Cambridge pubs</h2>
-<ul class="guides">{guides}<li><a href="/pubs/">Every place A to Z</a></li></ul>
+<ul class="guides">{guides}<li><a href="/areas/">Pubs by area</a></li><li><a href="/pubs/">Every place A to Z</a></li></ul>
 <p>Smiff&rsquo;s Cambridge Compass is a free map of what&rsquo;s on in Cambridge pubs, made by a local pub-goer. Listings come from venue websites, CAMRA and event listings, and are checked twice a week (last checked {e(CHECKED)}). Times and deals can change, so check with the pub before a big night out.</p>
-<p>Run a pub or venue? Send your events to <a href="mailto:{EMAIL}">{EMAIL}</a> and they&rsquo;ll go on the map for free.</p>
+<p>Run a pub or venue? Send your events to <a href="mailto:{EMAIL}">{EMAIL}</a> and they&rsquo;ll go on the map for free, and <a href="/for-pubs/">get a free badge for your website</a>.</p>
 </div></footer>
 </body>
 </html>
@@ -471,21 +471,74 @@ def guide_spec():
         "Pizza nights, 2-for-1s, happy hours, pie and pint deals and more in Cambridge pubs, sorted by day of the week.",
         "Food and drink deals in Cambridge pubs, sorted by the day they run. Deals change often, so check with the pub before you go.", b_deals)
 
-    xmas = re.compile(r"christmas|festive|carol|mince pie|new year|nye|\bmulled", re.I)
+    xmas = re.compile(r"christmas|festive|carol|mince pie|xmas|advent|christingle|\bmulled", re.I)
+    nye = re.compile(r"new year|\bnye\b|hogmanay", re.I)
+    party = re.compile(r"function room|private hire|private tasting|party booking|parties|christmas party|private room", re.I)
+    yr = TODAY.year if TODAY.month >= 6 else TODAY.year - 1
 
     def b_xmas(ld):
-        ev = sorted([(x["date"], v, x) for v in V for x in dated(v) if xmas.search(x["title"])], key=lambda r: (r[0], r[1]["name"]))
+        ev = sorted([(x["date"], v, x) for v in V for x in dated(v) if xmas.search(x["title"]) and not nye.search(x["title"])],
+                    key=lambda r: (r[0], r[1]["name"]))
+        carols = [(d, v, x) for d, v, x in ev if re.search(r"carol|concert|choir|evensong|advent|christingle|music for", x["title"], re.I) or "classical" in v["cats"]]
+        days = sorted([(x["date"], v, x) for v in V for x in dated(v) if x["date"][5:] in ("12-24", "12-25", "12-26")], key=lambda r: (r[0], r[1]["name"]))
+        carols = [r for r in carols if r[0][5:] not in ("12-24", "12-25", "12-26")]
+        other = [r for r in ev if r not in carols and r[0][5:] not in ("12-24", "12-25", "12-26")]
         out = ""
-        if ev:
-            out += "<h2>Christmas and New Year events</h2><ul class=\"list\">" + "".join(row(v, e(x["title"]), fmt_date(d)) for d, v, x in ev) + "</ul>"
+        if other:
+            out += grp("Christmas parties, quizzes and events", [row(v, e(x["title"]), fmt_date(d)) for d, v, x in other])
+        if carols:
+            out += grp("Carols and Christmas concerts", [row(v, e(x["title"]), fmt_date(d)) for d, v, x in carols])
         info = [(v, t) for v in V for t in dict.fromkeys(offers(v) + v.get("notes", [])) if xmas.search(t)]
         if info:
-            out += "<h2>Festive menus and Christmas opening</h2><ul class=\"list\">" + "".join(row(v, e(t)) for v, t in info) + "</ul>"
+            out += grp("Festive menus and Christmas bookings", [row(v, e(t)) for v, t in info])
+        if days:
+            out += grp("Christmas Eve, Christmas Day and Boxing Day", [row(v, e(x["title"]), fmt_date(d)) for d, v, x in days])
+        out += f'<p class="meta">More pubs announce their Christmas plans every week, and this page is updated as they do. Also see <a href="/new-years-eve/">New Year&rsquo;s Eve</a> and <a href="/christmas-party-venues/">Christmas party venues</a>.</p>'
         return out or "<p>Nothing festive listed yet. Check back soon.</p>"
 
-    add("/christmas/", "Christmas", f"Christmas in Cambridge pubs {TODAY.year}: events, festive menus and opening times",
-        "Christmas and New Year's Eve events, festive menus and Christmas opening times in Cambridge pubs, checked twice a week.",
-        "Christmas parties, carols, festive menus, New Year's Eve and Christmas opening times in Cambridge pubs, as the pubs announce them.", b_xmas)
+    add("/christmas/", "Christmas", f"Christmas in Cambridge pubs {yr}: events, carols, festive menus and opening",
+        "Christmas parties, carols, festive menus, Christmas Day lunches and Boxing Day events in Cambridge pubs, updated as pubs announce them.",
+        "Christmas parties and quizzes, carols, festive menus and what's on over Christmas in Cambridge pubs and venues, as they're announced.", b_xmas)
+
+    def b_nye(ld):
+        ev = sorted([(x["date"], v, x) for v in V for x in dated(v) if nye.search(x["title"]) or x["date"][5:] == "12-31"], key=lambda r: r[1]["name"])
+        out = ""
+        if ev:
+            out += grp(f"New Year&rsquo;s Eve parties", [row(v, e(x["title"]), fmt_date(d)) for d, v, x in ev])
+        nyd = sorted([(x["date"], v, x) for v in V for x in dated(v) if x["date"][5:] == "01-01"], key=lambda r: r[1]["name"])
+        if nyd:
+            out += grp("New Year&rsquo;s Day", [row(v, e(x["title"]), fmt_date(d)) for d, v, x in nyd])
+        info = [(v, t) for v in V for t in dict.fromkeys(offers(v) + v.get("notes", [])) if nye.search(t)]
+        if info:
+            out += grp("New Year menus and bookings", [row(v, e(t)) for v, t in info])
+        out += '<p class="meta">More New Year&rsquo;s Eve nights get announced through December, and this page is updated as they are. Tickets for the popular ones go early.</p>'
+        return out
+
+    add("/new-years-eve/", "New Year's Eve", f"New Year's Eve in Cambridge {yr}: pub parties, gigs and club nights",
+        f"Where to go for New Year's Eve {yr} in Cambridge: pub parties, live bands, DJs and club nights, with times and ticket prices.",
+        f"Pub parties, live bands and club nights for New Year's Eve {yr} in Cambridge, with times and prices where the venue lists them.", b_nye)
+
+    def b_party(ld):
+        fr = [v for v in V if not closed(v) and any(party.search(t) for t in v.get("features", []) + offers(v) + v.get("notes", []))]
+        menus = [v for v in V if not closed(v) and v not in fr and any(xmas.search(t) and re.search(r"book|menu|party", t, re.I) for t in offers(v) + v.get("notes", []))]
+        out = ""
+        if fr:
+            out += grp("Pubs with a function room or party bookings", [
+                row(v, addr(v) + "".join(f"<br>{e(t)}" for t in dict.fromkeys(offers(v) + v.get("notes", [])) if xmas.search(t) or party.search(t))) for v in fr])
+        if menus:
+            out += grp("Pubs taking Christmas bookings", [
+                row(v, addr(v) + "".join(f"<br>{e(t)}" for t in dict.fromkeys(offers(v) + v.get("notes", [])) if xmas.search(t))) for v in menus])
+        return out
+
+    add("/christmas-party-venues/", "Christmas party venues", f"Christmas party venues in Cambridge pubs {yr}",
+        "Cambridge pubs with function rooms, party bookings and Christmas menus, for work Christmas parties and big groups.",
+        "Cambridge pubs with a function room or party bookings, then the pubs taking Christmas bookings for tables. Ring early: December weekends go first.", b_party)
+
+    riverside = ["anchor", "mill", "granta", "millworks", "old-spring", "fort-st-george", "boathouse", "tivoli", "waterman",
+                 "red-lion-grantchester", "green-man-grantchester", "rupert-brooke", "blue-ball", "plough-fen-ditton"]
+    amen_page("/riverside-pubs/", "Riverside pubs", "Riverside pubs in Cambridge: pubs by the Cam",
+              "Cambridge pubs on or near the River Cam, from the Mill and the Anchor by the punts to Chesterton and Grantchester.",
+              "Pubs on or near the River Cam, from the punting stations in town to Chesterton and out to Grantchester.", lambda v: v["id"] in riverside, nxt)
     return specs
 
 
@@ -563,7 +616,7 @@ def venue_page(v):
     body += f"<h2>Near {e(name)}</h2><ul class=\"list\">" + "".join(
         row(o, e(walk(d)) + (f" · {e(nx['title'])} ({e(when_label(nx['date']))})" if (nx := (dated(o, 7) or [None])[0]) else "")) for d, o in near) + "</ul>"
     src = https(v.get("src"))
-    body += f'<p class="meta" style="margin-top:22px">Details from {"<a href=%s rel=\"noopener nofollow\">%s</a>" % (e(src), e(re.sub(r"^https?://(www\\.)?", "", src).split("/")[0])) if src else "the venue"}; last checked {e(CHECKED)}. Run {e(name)}? <a href="mailto:{EMAIL}?subject={e("Listing for " + name)}">Send your events</a>.</p>'
+    body += f'<p class="meta" style="margin-top:22px">Details from {"<a href=%s rel=\"noopener nofollow\">%s</a>" % (e(src), e(re.sub(r"^https?://(www\\.)?", "", src).split("/")[0])) if src else "the venue"}; last checked {e(CHECKED)}. Run {e(name)}? <a href="mailto:{EMAIL}?subject={e("Listing for " + name)}">Send your events</a> or <a href="/for-pubs/#{e(v["id"])}">get a badge for your website</a>.</p>'
 
     place = {"@context": "https://schema.org", "@type": schema_type(v), "name": name, "url": page_url(path),
              "address": {"@type": "PostalAddress", "streetAddress": v["address"], "addressLocality": "Cambridge",
@@ -577,6 +630,145 @@ def venue_page(v):
                    "eventStatus": "https://schema.org/EventScheduled", "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
                    "location": {"@type": "Place", "name": name, "address": place["address"]}, "url": page_url(path)})
     return path, shell(path, title, desc, body, crumbs=[("Pubs and venues", "/pubs/"), (name, None)], ld=ld, map_link=f"/?p={v['id']}")
+
+
+# ---------- areas ----------
+STATION = {"lat": 52.1946, "lng": 0.1376}
+AREAS = [
+    ("city-centre", "City centre", "Pubs in Cambridge city centre",
+     "Pubs and bars in the middle of Cambridge, around the market, King's Parade, Bene't Street, Bridge Street and St Andrew's Street.",
+     ["chop-house", "cwm-kings-parade", "ivy", "mitre", "baron-of-beef", "bridge-street-wine-bar", "kiki", "cambridge-tap", "regal", "castle-bar",
+      "revolution", "bar-oh", "vinyl", "town-gown", "mash", "pint-shop", "brewboard", "corn-exchange", "eagle", "smokeworks", "bath-house",
+      "orator", "maypole", "hidden-rooms", "byrons-bear", "mill", "anchor", "north-star"]),
+    ("mill-road", "Mill Road", "Mill Road pubs: Mill Road and Petersfield",
+     "Pubs on and around Mill Road, from the Six Bells and the Kingston Arms to the Cambridge Blue and the Royal Standard.",
+     ["white-swan", "devonshire-arms", "salisbury-arms", "live-let-live", "six-bells", "cambridge-blue", "hot-numbers", "alexandra-arms",
+      "kingston-arms", "calverleys", "geldart", "petersfield", "dobblers", "earl-beaconsfield", "empress", "royal-standard", "brook", "blue-moon"]),
+    ("king-street", "King Street and the Kite", "King Street pubs and the Kite",
+     "King Street's run of pubs plus the back streets of the Kite, including the Free Press and the Elm Tree.",
+     ["free-press", "tram-depot", "cricketers", "elm-tree", "st-radegund", "king-street-cellar", "brew-house", "champion", "king-street-run",
+      "darrys", "handsome-prince"]),
+    ("newmarket-road", "Newmarket Road", "Newmarket Road pubs",
+     "Pubs along Newmarket Road from the Burleigh Arms out to the Wrestlers, plus the Riverside.",
+     ["burleigh-arms", "bird-or-worm", "engineers-house", "wrestlers", "seven-stars", "corner-house", "navadhanya"]),
+    ("chesterton", "Chesterton and the river", "Chesterton pubs: Chesterton Road, the river and Chesterton village",
+     "Pubs along Chesterton Road and by the river at Midsummer Common, out to the old village pubs in Chesterton.",
+     ["thirsty", "fort-st-george", "midsummer-house", "old-spring", "haymakers", "green-dragon", "stem-glory", "boathouse", "waterman",
+      "tivoli", "portland-arms"]),
+    ("castle-hill", "Castle Hill and Histon Road", "Castle Hill pubs: Castle Street, Magdalene Street and Histon Road",
+     "Pubs up Castle Hill and Magdalene Street and on towards Histon Road and Victoria Road.",
+     ["pickerel", "architect", "castle-inn", "sir-isaac-newton", "kettles-yard", "carpenters-arms", "grapes"]),
+    ("regent-street", "Regent Street and Hills Road", "Regent Street and Hills Road pubs",
+     "Pubs and bars along Regent Street and Hills Road, plus the Panton Arms and the Alma in the streets between.",
+     ["grain-hop", "parkers-tavern", "prince-regent", "novi", "old-bicycle-shop", "the-lab", "panton-arms", "alma", "emperor", "earl-of-derby"]),
+    ("newnham", "Newnham", "Newnham pubs", "Pubs in Newnham and along Barton Road, a short walk over the river from the centre.",
+     ["granta", "millworks", "red-bull"]),
+    ("grantchester", "Grantchester", "Grantchester pubs",
+     "Grantchester's four pubs, a walk across the meadows or a punt up the river from Cambridge.",
+     ["red-lion-grantchester", "green-man-grantchester", "rupert-brooke", "blue-ball"]),
+    ("trumpington", "Trumpington", "Trumpington pubs", "Pubs in Trumpington village on the south side of Cambridge.",
+     ["green-man-trumpington", "hudsons", "lord-byron"]),
+    ("cherry-hinton", "Cherry Hinton and the south-east", "Cherry Hinton pubs and the south-east of Cambridge",
+     "Pubs in Cherry Hinton and along Cherry Hinton Road, plus Queen Edith's and Perne Road.",
+     ["robin-hood", "red-lion-cherry-hinton", "rock", "cwm-cherry-hinton-road", "queen-edith", "dumpling-tree", "junction"]),
+    ("fen-ditton", "Fen Ditton", "Fen Ditton pubs", "The three pubs in Fen Ditton, just across the river from Cambridge.",
+     ["kings-head-fen-ditton", "ancient-shepherds", "plough-fen-ditton"]),
+    ("north-cambridge", "North Cambridge", "North Cambridge pubs: Arbury, Kings Hedges and Milton Road",
+     "Pubs in the north of the city, around Arbury, Kings Hedges and Milton Road.",
+     ["golden-hind", "hickorys", "carlton-arms", "ship"]),
+    ("eddington", "Eddington", "Eddington bars and venues", "Bars and venues in Eddington, the new neighbourhood in north-west Cambridge.",
+     ["storeys-field", "starman", "douce"]),
+]
+
+
+def area_body(vs, near_station=False):
+    vs = [v for v in vs if not closed(v)]
+    items = []
+    for v in vs:
+        bits = []
+        if near_station:
+            bits.append(walk(dist_m(STATION, v)) + " from the station")
+        bits.append(f'{v["address"]}, {v.get("postcode", "")}'.strip(", "))
+        q = [w for w in weekly(v) if is_kind(w, ("quiz",))]
+        if q:
+            bits.append("Quiz " + " and ".join(DAYLONG[w["day"]] + "s" for w in q[:2]))
+        am = [k for k, lab in (("garden", "beer garden"), ("fire", "real fire"), ("sport", "sport on TV"), ("dogs", "dogs welcome")) if amen(v, k)]
+        if am:
+            bits.append(", ".join(lab for k, lab in (("garden", "beer garden"), ("fire", "real fire"), ("sport", "sport on TV"), ("dogs", "dogs welcome")) if k in am))
+        items.append(row(v, e(" · ".join(bits))))
+    out = f'<p class="meta">{len(vs)} places</p><section class="grp0"><ul class="list">' + "".join(items) + "</ul></section>"
+    week = ""
+    for i in range(7):
+        d = (TODAY + dt.timedelta(i)).isoformat()
+        rows = [(v, x) for v in vs for x in on_day(v, d) if x.get("kind") not in ("sport",)]
+        rows.sort(key=lambda r: (0 if r[1].get("kind") in ("music", "classical") else 1 if r[1].get("kind") in ("quiz", "comedy", "club") else 2, r[0]["name"]))
+        if rows:
+            week += grp(e(when_label(d) if i < 2 else fmt_date(d, True)), [row(v, e(x["title"]), "", KINDNAME.get(x.get("kind"), ""), dn_of(d)) for v, x in rows])
+    if week:
+        out += "<h2>On this week</h2>" + daybar(week) + week
+    return out
+
+
+def build_areas(pages):
+    cards = []
+    for slug, label, title, intro, ids in AREAS:
+        vs = [BYID[i] for i in ids if i in BYID]
+        if not vs:
+            continue
+        path = f"/areas/{slug}/"
+        others = " · ".join(f'<a href="/areas/{s}/">{e(l)}</a>' for s, l, *_ in AREAS if s != slug)
+        body = f"<h1>{e(title)}</h1><p class=\"lede\">{e(intro)}</p>" + area_body(vs) + f'<h2>Other areas</h2><p>{others} · <a href="/areas/near-the-station/">Near the station</a></p>'
+        desc = f"{len(vs)} pubs and bars in {label}, Cambridge, with quiz nights, beer gardens and what's on this week, checked twice a week."
+        write(path, shell(path, f"{title} | Smiff's Cambridge Compass", desc, body, crumbs=[("Areas", "/areas/"), (label, None)]))
+        pages.append(path)
+        cards.append((path, label, len(vs)))
+    near = sorted((v for v in V if not closed(v) and dist_m(STATION, v) <= 1100 and "classical" not in v["cats"][:1]), key=lambda v: dist_m(STATION, v))
+    path = "/areas/near-the-station/"
+    body = ("<h1>Pubs near Cambridge station</h1><p class=\"lede\">Pubs and bars within about a 15-minute walk of Cambridge railway station, nearest first, "
+            "for a pint before your train or the first stop on a night out.</p>" + area_body(near, near_station=True))
+    write(path, shell(path, "Pubs near Cambridge station | Smiff's Cambridge Compass",
+                      f"{len(near)} pubs within a 15-minute walk of Cambridge railway station, nearest first, with walking times and what's on.",
+                      body, crumbs=[("Areas", "/areas/"), ("Near the station", None)]))
+    pages.append(path)
+    cards.insert(1, (path, "Near the station", len(near)))
+    lis = "".join(f'<li><span class="n"><a href="{p}">{e(l)}</a></span><span class="sub">{n} places</span></li>' for p, l, n in cards)
+    body = "<h1>Cambridge pubs by area</h1><p class=\"lede\">Find a pub near you, or plan a night out in one part of town.</p>" + f'<ul class="list">{lis}</ul>'
+    write("/areas/", shell("/areas/", "Cambridge pubs by area | Smiff's Cambridge Compass",
+                           "Cambridge pubs by area: the city centre, Mill Road, King Street, Chesterton, Grantchester, near the station and more.",
+                           body, crumbs=[("Areas", None)]))
+    pages.append("/areas/")
+
+
+# ---------- for pubs: badge ----------
+def build_for_pubs(pages):
+    path = "/for-pubs/"
+    opts = "".join(f'<option value="{e(v["id"])}">{e(v["name"])}</option>' for v in V)
+    body = f"""<h1>Put Smiff&rsquo;s Compass on your website</h1>
+<p class="lede">Every pub and venue on the map has its own page with your opening hours, quiz nights, deals and what&rsquo;s on. Link to it from your website, Linktree or Instagram bio and your customers can see everything in one place.</p>
+<p><img src="/badge.png" alt="Find us on Smiff&rsquo;s Compass" width="275" height="72"></p>
+<h2>1. Pick your pub</h2>
+<p><label for="pub" class="meta">Your pub or venue</label><br><select id="pub" style="font:inherit;font-size:1rem;padding:10px 12px;border:2px solid var(--edge);border-radius:10px;background:var(--panel);color:var(--ink);max-width:100%"><option value="">Choose&hellip;</option>{opts}</select></p>
+<div id="out" hidden>
+<h2>2. Your page</h2>
+<p><a id="link" href="/"></a></p>
+<h2>3. Add the badge to your website</h2>
+<p>Paste this where you want the badge, for example in your footer or on your &ldquo;What&rsquo;s on&rdquo; page:</p>
+<textarea id="code" readonly rows="5" style="width:100%;font:14px/1.4 ui-monospace,monospace;padding:10px;border:2px solid var(--edge);border-radius:10px;background:var(--soft);color:var(--ink)"></textarea>
+<p><button type="button" id="copy" class="cta" style="font:inherit;font-weight:700;cursor:pointer">Copy the code</button> <span id="done" class="meta" aria-live="polite"></span></p>
+<h2>Linktree or Instagram</h2>
+<p>Add your page link above as a link called &ldquo;What&rsquo;s on&rdquo;. If your link tool takes an image, <a href="/badge.png" download>download the badge</a>.</p>
+</div>
+<h2>Keep your listing up to date</h2>
+<p>Send your gigs, quiz nights and deals to <a href="mailto:{EMAIL}">{EMAIL}</a> and they&rsquo;ll go on your page and the map for free.</p>
+<script>(function(){{var s=document.getElementById("pub"),o=document.getElementById("out"),l=document.getElementById("link"),c=document.getElementById("code"),d=document.getElementById("done");
+function upd(){{var id=s.value;o.hidden=!id;if(!id)return;var u="{SITE}/pubs/"+id+"/";l.href=u;l.textContent=u;
+c.value='<a href="'+u+'"><img src="{SITE}/badge.png" alt="Find us on Smiff\\u2019s Compass" width="275" height="72"></a>';d.textContent="";try{{history.replaceState(null,"","#"+id)}}catch(e){{}}}}
+s.addEventListener("change",upd);document.getElementById("copy").addEventListener("click",function(){{c.select();var ok=false;try{{navigator.clipboard.writeText(c.value);ok=true}}catch(e){{try{{ok=document.execCommand("copy")}}catch(e2){{}}}}d.textContent=ok?"Copied":"Select the code and copy it"}});
+var h=location.hash.slice(1);if(h&&s.querySelector('option[value="'+h+'"]')){{s.value=h;upd()}}}})()</script>"""
+    write(path, shell(path, "Find us on Smiff's Compass: a free badge for Cambridge pubs",
+                      "A free badge and link for Cambridge pubs and venues to show their events, quiz nights and deals on Smiff's Compass.",
+                      body, crumbs=[("For pubs", None)]))
+    pages.append(path)
 
 
 # ---------- build ----------
@@ -607,6 +799,8 @@ def main():
                           f"All {len(V)} Cambridge pubs, bars and venues on Smiff's Compass, with opening hours, quiz nights, food and what's on.",
                           body, crumbs=[("Pubs and venues", None)]))
     pages.append("/pubs/")
+    build_areas(pages)
+    build_for_pubs(pages)
     for v in V:
         path, doc = venue_page(v)
         write(path, doc)
