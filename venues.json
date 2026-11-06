@@ -4594,28 +4594,6 @@
    "events": []
   },
   {
-   "id": "nanna-mexico",
-   "name": "Nanna Mexico",
-   "cats": [
-    "food"
-   ],
-   "address": "29 Petty Cury",
-   "postcode": "CB2 3NB",
-   "website": "https://www.nannamexico.com",
-   "hours": "Daily 9am–10pm",
-   "food": "Mexican, made from scratch; vegan, GF and halal options",
-   "features": [
-    "Casual"
-   ],
-   "src": "https://www.nannamexico.com",
-   "lat": 52.205278,
-   "lng": 0.120328,
-   "checkSocials": "Website has no listings (offers page lists no offers)",
-   "events": [],
-   "weekly": [],
-   "offers": []
-  },
-  {
    "id": "navadhanya",
    "name": "Navadhanya",
    "cats": [
@@ -6706,37 +6684,6 @@
    "src": "https://camra.org.uk/pubs/131344",
    "lat": 52.2033,
    "lng": 0.122165,
-   "pos": "exact"
-  },
-  {
-   "id": "bar-2648",
-   "name": "2648",
-   "cats": [
-    "late",
-    "music"
-   ],
-   "address": "14A Trinity Street",
-   "postcode": "CB2 1TB",
-   "website": "http://www.2648cambridge.com",
-   "hours": "Mon–Thu 5pm–12am · Fri–Sat 5pm–1am",
-   "food": "American-style bar food, 5–9:30pm Mon–Sat",
-   "features": [
-    "Cellar cocktail bar with a music theme"
-   ],
-   "weekly": [
-    {
-     "day": "Wed",
-     "title": "Open mic",
-     "kind": "music"
-    }
-   ],
-   "offers": [],
-   "events": [],
-   "notes": [],
-   "checkSocials": "Website blocks automatic reading",
-   "src": "https://camra.org.uk/pubs/131355",
-   "lat": 52.206579,
-   "lng": 0.118323,
    "pos": "exact"
   },
   {
