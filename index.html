@@ -1151,6 +1151,30 @@ body{background:var(--panel)}
   .tab[aria-current="true"]{background:none;box-shadow:none;color:var(--ink)}
   .tab[aria-current="true"] .ic{box-sizing:content-box;padding:3px 16px;background:var(--pop);color:var(--on-pop);border:2px solid var(--edge);border-radius:999px;margin:-5px 0 -2px}
 }
+/* pick a day: a small month calendar in the same sheet style as Filters */
+.chip.daypick .ic{width:15px;height:15px}
+.chip.dayx{padding:5px 9px;font-size:1rem;line-height:1}
+@media (min-width:861px){.calsheet{width:340px}}
+.cal-nav{display:grid;grid-template-columns:40px 1fr 40px;align-items:center;margin:4px 0 8px}
+.cal-nav b{text-align:center;font-weight:700;font-size:1rem}
+.cal-nav button{all:unset;cursor:pointer;width:36px;height:36px;display:grid;place-items:center;border-radius:10px;border:2px solid var(--edge);background:var(--panel);color:var(--ink);font-size:1.2rem;font-weight:700}
+.cal-nav button:disabled{opacity:.3;cursor:default}
+.cal-nav button:focus-visible{outline:3px solid var(--pop);outline-offset:2px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-wd{text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:2px 0 4px}
+.cal-d{all:unset;box-sizing:border-box;cursor:pointer;height:44px;border-radius:10px;border:2px solid transparent;display:grid;place-items:center;align-content:center;gap:2px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink);position:relative}
+.cal-d:hover:not(:disabled){border-color:var(--edge)}
+.cal-d:disabled{color:var(--muted);opacity:.4;cursor:default}
+.cal-d.today{border-color:var(--edge)}
+.cal-d[aria-pressed="true"]{background:var(--pop);color:var(--on-pop);border-color:var(--edge);box-shadow:2px 2px 0 var(--hard)}
+.cal-d:focus-visible{outline:3px solid var(--pop);outline-offset:1px}
+.cal-d i{width:6px;height:6px;border-radius:50%;background:currentColor;display:block}
+.cal-d .n{line-height:1}
+.cal-key{display:flex;align-items:flex-start;gap:6px;margin:10px 0 0;font-size:.8rem;color:var(--muted)}
+.cal-key i{width:6px;height:6px;border-radius:50%;background:var(--ink);display:block;flex:none;margin-top:.5em}
+.cal-quick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.day-note{margin:-2px 0 10px;font-size:.84rem;color:var(--muted)}
+.day-note .linkbtn{color:var(--ink);font-weight:600}
 </style>
 
 <div class="app" id="app">
@@ -1184,6 +1208,7 @@ body{background:var(--panel)}
   </main>
   <div class="scrim" id="scrim" hidden></div>
   <div class="fsheet" id="fsheet" role="dialog" aria-modal="true" aria-labelledby="fs-title" hidden></div>
+  <div class="fsheet calsheet" id="calsheet" role="dialog" aria-modal="true" aria-labelledby="cal-title" hidden></div>
   <section class="a2hs" id="a2hs" aria-labelledby="a2-title" hidden></section>
   <section class="a2hs" id="newsp" aria-labelledby="np-title" hidden></section>
 </div>
@@ -1202,7 +1227,7 @@ const DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const DAYLONG={Sun:"Sundays",Mon:"Mondays",Tue:"Tuesdays",Wed:"Wednesdays",Thu:"Thursdays",Fri:"Fridays",Sat:"Saturdays"};
 const UPD_COLL="data/updates/items";
 
-const S={view:"whatson",prev:"whatson",cat:"all",kind:"all",socials:false,fav:false,indie:false,open:false,near:false,am:{},q:"",sel:null};
+const S={view:"whatson",prev:"whatson",cat:"all",kind:"all",day:null,socials:false,fav:false,indie:false,open:false,near:false,am:{},q:"",sel:null};
 const PUBLIC=!!window.SMIFF_PUBLIC;
 const UA=navigator.userAgent||"";
 const IOS=/iPhone|iPad|iPod/.test(UA)||(/Macintosh/.test(UA)&&navigator.maxTouchPoints>1);
@@ -1364,7 +1389,83 @@ function closeSheet(go){
   if(go&&filterCount()&&(S.view==="whatson"||S.view==="crawl")){setView("venues");render();drawPins()}
   const b=$("fbtn");if(b)b.focus({preventScroll:true});
 }
-$("scrim").addEventListener("click",()=>closeSheet(false));
+$("scrim").addEventListener("click",()=>{closeSheet(false);closeCal()});
+/* ---------- pick a day ---------- */
+const CAL_ICO='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>';
+let CAL_M=null,CAL_LAST=null;
+function dayName(key,long){const d=pd(key);if(key===T0)return "Tonight";if(key===ymd(addDays(TODAY,1)))return "Tomorrow";return fmt(d,long?{weekday:"long",day:"numeric",month:"long"}:{weekday:"short",day:"numeric",month:"short"})}
+function calLastMonth(){
+  let last=ymd(addDays(TODAY,60));
+  V.forEach(v=>listings(v).dated.forEach(e=>{if(e.date>last)last=e.date}));
+  const cap=ymd(addDays(TODAY,365));if(last>cap)last=cap;
+  const d=pd(last);return d.getFullYear()*12+d.getMonth();
+}
+function calHtml(){
+  const y=Math.floor(CAL_M/12),m=CAL_M%12,first=new Date(y,m,1),nowM=TODAY.getFullYear()*12+TODAY.getMonth();
+  const counts={};visible().forEach(v=>{if(closedNote(v)&&!v.closedUntil)return;listings(v).dated.forEach(e=>{if(kindPass(e)&&!(v.closedUntil&&e.date<v.closedUntil))counts[e.date]=(counts[e.date]||0)+1})});
+  const lead=(first.getDay()+6)%7,days=new Date(y,m+1,0).getDate();
+  let cells=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(w=>`<span class="cal-wd" aria-hidden="true">${w.slice(0,2)}</span>`).join("");
+  for(let i=0;i<lead;i++)cells+=`<span aria-hidden="true"></span>`;
+  for(let n=1;n<=days;n++){
+    const d=new Date(y,m,n),k=ymd(d),past=k<T0,c=counts[k]||0;
+    const lab=fmt(d,{weekday:"long",day:"numeric",month:"long"})+(k===T0?", today":"")+(c?`, ${c} one-off event${c===1?"":"s"}`:"");
+    cells+=`<button class="cal-d${k===T0?" today":""}" data-cal="day" data-d="${k}" aria-pressed="${S.day===k}" aria-label="${esc(lab)}"${past?" disabled":""}><span class="n">${n}</span>${c&&!past?'<i aria-hidden="true"></i>':'<i aria-hidden="true" style="visibility:hidden"></i>'}</button>`;
+  }
+  const quick=[[T0,"Tonight"],[ymd(addDays(TODAY,1)),"Tomorrow"]];
+  const sat=addDays(TODAY,(6-TODAY.getDay()+7)%7);if(ymd(sat)!==T0&&ymd(sat)!==quick[1][0])quick.push([ymd(sat),"Saturday"]);
+  return `<div class="fs-head"><h2 id="cal-title">Pick a day</h2><button class="fs-x" data-cal="close" aria-label="Close calendar">&times;</button></div>
+  <div class="cal-quick">${quick.map(([k,l])=>`<button class="opt" data-cal="day" data-d="${k}" aria-pressed="${S.day===k}">${l}</button>`).join("")}</div>
+  <div class="cal-nav"><button data-cal="prev" aria-label="Previous month"${CAL_M<=nowM?" disabled":""}>‹</button><b aria-live="polite">${fmt(first,{month:"long",year:"numeric"})}</b><button data-cal="next" aria-label="Next month"${CAL_M>=calLastMonth()?" disabled":""}>›</button></div>
+  <div class="cal-grid" role="group" aria-label="Days in ${fmt(first,{month:"long"})}">${cells}</div>
+  <p class="cal-key"><i aria-hidden="true"></i>One-off gigs and events on. Weekly quizzes and deals show on every day they run.</p>
+  <div class="fs-foot"><button class="fs-clear" data-cal="clear">Show all upcoming days</button><button class="fs-go" data-cal="close">Done</button></div>`;
+}
+function placeCal(){
+  const s=$("calsheet");
+  if(isMobile()){s.style.top="";s.style.left="";return}
+  const b=$("pane").querySelector("[data-daypick]");if(!b)return;
+  const r=b.getBoundingClientRect();
+  s.style.top=Math.max(12,Math.min(r.bottom+8,innerHeight-s.offsetHeight-12))+"px";s.style.left=Math.max(12,Math.min(r.left,innerWidth-s.offsetWidth-12))+"px";
+}
+function openCal(){
+  CAL_LAST=document.activeElement;
+  const d=S.day?pd(S.day):TODAY;CAL_M=d.getFullYear()*12+d.getMonth();
+  const s=$("calsheet");s.innerHTML=calHtml();s.hidden=false;$("scrim").hidden=false;placeCal();
+  const f=s.querySelector('.cal-d[aria-pressed="true"]')||s.querySelector(".cal-d.today")||s.querySelector(".cal-d:not(:disabled)");if(f)f.focus({preventScroll:true});
+  gc("daypick/open");
+}
+function closeCal(){
+  const s=$("calsheet");if(s.hidden)return;
+  s.hidden=true;if($("fsheet").hidden)$("scrim").hidden=true;
+  const b=$("pane").querySelector("[data-daypick]");if(b)b.focus({preventScroll:true});
+}
+function setDay(k){
+  S.day=k;if(S.kind==="sport")S.kind="all";
+  if(S.view==="detail")setView(S.prev);
+  if(S.view!=="whatson"&&S.view!=="map")setView("whatson");
+  render();drawPins();announce();$("panel").scrollTop=0;
+}
+$("calsheet").addEventListener("click",e=>{
+  const b=e.target.closest("[data-cal]");if(!b||b.disabled)return;
+  const a=b.dataset.cal;
+  if(a==="close"){closeCal();return}
+  if(a==="prev"||a==="next"){CAL_M+=a==="next"?1:-1;$("calsheet").innerHTML=calHtml();const again=$("calsheet").querySelector(`[data-cal="${a}"]`);if(again&&!again.disabled)again.focus({preventScroll:true});else{const f=$("calsheet").querySelector(".cal-d:not(:disabled)");if(f)f.focus({preventScroll:true})}return}
+  if(a==="clear"){setDay(null);closeCal();return}
+  if(a==="day"){gc("daypick/"+(b.dataset.d===T0?"tonight":"day"));setDay(b.dataset.d);closeCal()}
+});
+$("calsheet").addEventListener("keydown",e=>{
+  const s=$("calsheet");
+  if(e.key==="Tab"){const f=[...s.querySelectorAll("button:not(:disabled)")];if(!f.length)return;
+    if(e.shiftKey&&document.activeElement===f[0]){e.preventDefault();f[f.length-1].focus()}
+    else if(!e.shiftKey&&document.activeElement===f[f.length-1]){e.preventDefault();f[0].focus()}return}
+  const cur=document.activeElement;if(!cur||!cur.classList.contains("cal-d"))return;
+  const mv={ArrowLeft:-1,ArrowRight:1,ArrowUp:-7,ArrowDown:7}[e.key];if(!mv)return;
+  e.preventDefault();const t=ymd(addDays(pd(cur.dataset.d),mv));if(t<T0)return;
+  const td=pd(t),tm=td.getFullYear()*12+td.getMonth();
+  if(tm!==CAL_M){if(tm>calLastMonth())return;CAL_M=tm;s.innerHTML=calHtml()}
+  const n=s.querySelector(`.cal-d[data-d="${t}"]`);if(n)n.focus();
+});
+addEventListener("resize",()=>{if(!$("calsheet").hidden)placeCal()});
 $("fsheet").addEventListener("click",e=>{
   const b=e.target.closest("[data-fs]");if(!b)return;
   const a=b.dataset.fs;
@@ -1644,14 +1745,17 @@ function kindPass(e){if(e.kind==="sport")return false;return S.kind==="all"||e.k
 function listView(){return S.view==="detail"||S.view==="map"?S.prev:S.view}
 function kindOnMap(){return listView()==="whatson"&&S.kind!=="all"?S.kind:null}
 function hasKind(v){if(closedNote(v))return false;if(S.kind==="sport")return showsSport(v);const L=listings(v);return L.dated.some(kindPass)||L.weekly.some(kindPass)}
-function mapVisible(){const k=kindOnMap();const vs=visible();return k?vs.filter(v=>hasKind(v)||v.id===S.sel):vs}
+function dayOnMap(){return listView()==="whatson"&&S.day&&S.kind!=="sport"?S.day:null}
+function hasDay(v){const k=dayOnMap();return !k||onDay(v,pd(k)).some(kindPass)}
+function mapVisible(){const k=kindOnMap(),dk=dayOnMap();const vs=visible();return k||dk?vs.filter(v=>((!k||hasKind(v))&&hasDay(v))||v.id===S.sel):vs}
 const KIND_PLURAL={music:"live music",club:"club nights",quiz:"quizzes",sport:"live sport",offer:"offers",event:"other events"};
 function mapFilterNote(){
   const el=$("mapfilter");if(!el)return;
-  const k=kindOnMap();
-  if(!k){el.hidden=true;return}
-  const n=mapVisible().filter(v=>v.id!==S.sel||hasKind(v)).length;
-  el.innerHTML=`<span>Showing ${n} place${n===1?"":"s"} with ${esc(KIND_PLURAL[k]||"events")}</span><button data-clearkind aria-label="Show every place on the map">&times;</button>`;
+  const k=kindOnMap(),dk=dayOnMap();
+  if(!k&&!dk){el.hidden=true;return}
+  const n=mapVisible().filter(v=>v.id!==S.sel||((!k||hasKind(v))&&hasDay(v))).length;
+  const what=k?esc(KIND_PLURAL[k]||"events"):"something on",when=dk?" "+(dk===T0?"tonight":dk===ymd(addDays(TODAY,1))?"tomorrow":"on "+esc(fmt(pd(dk),{weekday:"short",day:"numeric",month:"short"}))):"";
+  el.innerHTML=`<span>Showing ${n} place${n===1?"":"s"} with ${what}${when}</span><button data-clearkind aria-label="Show every place on the map">&times;</button>`;
   el.hidden=false;
 }
 /* one or two paid "Featured pub" cards at the top of a list, clearly labelled Ad */
@@ -1664,7 +1768,19 @@ function featuredSlot(onlyKind){
     return `<aside class="fcard" aria-label="Ad: ${esc(v.name)}" style="--c:${catColor(primary(v))}"><div class="fhd">${AD}<span>Featured pub</span></div><p class="fname">${esc(v.name)}${SHAM(v)}</p>${f.blurb?`<p class="fline">${esc(f.blurb)}</p>`:""}${nu?`<p class="fnow">${nu}</p>`:""}<div class="c-btns"><button data-v="${esc(v.id)}" aria-label="Details for ${esc(v.name)}">Details</button>${bk?`<a href="${esc(bk)}" target="_blank" rel="noopener sponsored" data-gc="book/${esc(v.id)}">Book ↗</a>`:""}</div></aside>`}).join("");
 }
 function renderWhatson(p){
-  const vs=visible();let out=sunBar()+tonightHtml(vs)+`<div class="kinds" role="group" aria-label="Filter listings">${KINDS.map(([k,l])=>`<button class="chip" data-kind="${k}" aria-pressed="${S.kind===k}">${l}</button>`).join("")}</div>`+featuredSlot(true);
+  if(S.day&&S.day<T0)S.day=null;
+  const vs=visible();let out=sunBar()+tonightHtml(vs)+`<div class="kinds" role="group" aria-label="Filter listings">${KINDS.map(([k,l])=>`<button class="chip" data-kind="${k}" aria-pressed="${S.kind===k}">${l}</button>`).join("")}<button class="chip daypick" data-daypick aria-haspopup="dialog" aria-pressed="${!!S.day}">${CAL_ICO}${S.day?esc(dayName(S.day)):"Pick a day"}</button>${S.day?`<button class="chip dayx" data-dayclear aria-label="Show all upcoming days">&times;</button>`:""}</div>`+featuredSlot(true);
+  if(S.day&&S.kind!=="sport"){
+    const d=pd(S.day),rows=[];
+    vs.forEach(v=>onDay(v,d).forEach(e=>{if(kindPass(e))rows.push([v,e])}));
+    const ord={music:0,classical:0,club:1,comedy:2,event:3,quiz:4,offer:5};
+    rows.sort((a,b)=>(S.near&&LOC?distM(a[0])-distM(b[0]):0)||(ord[a[1].kind]??9)-(ord[b[1].kind]??9)||(a[1].weekly?1:0)-(b[1].weekly?1:0)||a[0].name.localeCompare(b[0].name));
+    const title=S.day===T0?"Tonight":S.day===ymd(addDays(TODAY,1))?"Tomorrow":fmt(d,{weekday:"long"});
+    out+=`<section class="day"><h2>${title} <small>${fmt(d,{day:"numeric",month:"short"})}</small></h2><p class="day-note">Just this day. <button class="linkbtn" data-daypick>Pick another</button> or <button class="linkbtn" data-dayclear>see everything coming up</button>.</p>${rows.length?`<ul class="items">${rows.map(([v,e])=>itemRow(v,e)).join("")}</ul>`:`<p class="empty">Nothing listed for ${esc(fmt(d,{weekday:"long",day:"numeric",month:"long"}))}${S.kind!=="all"?" with this filter":""} yet. Listings are checked twice a week, so it's worth looking again nearer the day.</p>`}</section>`;
+    out+=newsHtml("whatson");
+    ANN=`${rows.length} listing${rows.length===1?"":"s"} for ${dayName(S.day,true)}${S.kind!=="all"?", "+(KINDS.find(x=>x[0]===S.kind)||["",""])[1].toLowerCase()+" only":""}`;
+    p.innerHTML=out+footer();return;
+  }
   if(S.kind==="sport"){p.innerHTML=out+sportHtml(vs)+newsHtml("sport")+footer();return}
   let any=false,total=0,newsIn=false;
   for(let i=0;i<14;i++){
@@ -1717,12 +1833,13 @@ function newsHtml(where){
 /* tonight at a glance: tap a count to show just those */
 function tonightHtml(vs){
   const c={music:0,quiz:0,offer:0,club:0,event:0};
-  vs.forEach(v=>onDay(v,TODAY).forEach(e=>{if(e.kind==="sport")return;const k=e.kind==="classical"?"music":e.kind in c?e.kind:"event";c[k]++}));
+  const dd=S.day?pd(S.day):TODAY,dl=S.day?dayName(S.day):"Tonight";
+  vs.forEach(v=>onDay(v,dd).forEach(e=>{if(e.kind==="sport")return;const k=e.kind==="classical"?"music":e.kind in c?e.kind:"event";c[k]++}));
   const W={music:["gig","gigs"],quiz:["quiz","quizzes"],offer:["deal","deals"],club:["club night","club nights"],event:["other event","other events"]};
   const parts=Object.keys(c).filter(k=>c[k]).map(k=>`<button class="tn" data-kind="${k}" aria-pressed="${S.kind===k}"><b>${c[k]}</b> ${W[k][c[k]===1?0:1]}</button>`);
-  const head=`<span class="tl">Tonight${S.q||S.cat!=="all"||S.fav||S.indie||QF.some(([k])=>S.am[k])?" (filtered)":""}</span>`;
-  if(!parts.length) return `<div class="tonight">${head}<span class="tq">Nothing listed tonight. Here's what's coming up.</span></div>`;
-  return `<div class="tonight" role="group" aria-label="Tonight at a glance. Tap a count to show just those.">${head}${parts.join("")}</div>`;
+  const head=`<span class="tl">${esc(dl)}${S.q||S.cat!=="all"||S.fav||S.indie||QF.some(([k])=>S.am[k])?" (filtered)":""}</span>`;
+  if(!parts.length) return `<div class="tonight">${head}<span class="tq">${S.day?"Nothing listed yet.":"Nothing listed tonight. Here's what's coming up."}</span></div>`;
+  return `<div class="tonight" role="group" aria-label="${esc(dl)} at a glance. Tap a count to show just those.">${head}${parts.join("")}</div>`;
 }
 function nextUp(v){
   if(closedNote(v))return `<b>${esc(closedNote(v))}</b>`;
@@ -1758,6 +1875,8 @@ function footer(){
   return tip+`<p class="foot">${ads}Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}; rechecked every Monday and Thursday. ${USE_TILES?"Street map © OpenStreetMap contributors. ":"Map is a simplified drawing. "}Pin positions from CAMRA, Songkick and DesignMyNight, otherwise by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright). Walking times are estimates. Garden sun times are worked out from the sun's position${PUBLIC?"; cloud cover from Open-Meteo.com (CC BY 4.0)":""}.</p>${PUBLIC?`${a2Offer()?`<p class="foot fb" style="border:0;padding-top:0;margin-bottom:6px">On your phone? <button class="a2-link" data-a2="open">Add Smiff's Compass to your home screen</button>.</p>`:""}<p class="foot fb" style="border:0;padding-top:0">Spotted something wrong, or know a gig or quiz that's missing? <a href="${esc(mailHref("Smiff's Cambridge Compass"))}">Email Smiff</a>.</p><p class="foot fb" style="border:0;padding-top:0;margin-top:6px">Run a pub? Your listing is free. <a href="${esc(mailHref("Run a pub: events and Featured spot"))}" data-gc="owner/general">Send your events, or ask about a Featured spot</a>.</p><p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers, and taps on each pub's card, page and links, are counted anonymously, without cookies. Your pub crawl is saved on your device. The street map is loaded from OpenStreetMap and cloud cover from Open-Meteo.</p>`:""}`;
 }
 $("pane").addEventListener("click",e=>{
+  if(e.target.closest("[data-daypick]")){openCal();return}
+  if(e.target.closest("[data-dayclear]")){setDay(null);const b=$("pane").querySelector("[data-daypick]");if(b)b.focus({preventScroll:true});return}
   const k=e.target.closest("[data-kind]");if(k){S.kind=(k.classList.contains("tn")&&S.kind===k.dataset.kind)?"all":k.dataset.kind;render();drawPins();announce();const again=$("pane").querySelector((k.classList.contains("tn")?".tn":".kinds .chip")+'[data-kind="'+k.dataset.kind+'"]');if(again)again.focus({preventScroll:true});return}
   const b=e.target.closest("[data-v]");if(b){openVenue(b.dataset.v,true);return}
   if(e.target.closest(".back")){S.sel=null;setView(S.prev);render();drawPins();return}
@@ -2090,7 +2209,7 @@ document.addEventListener("click",e=>{
   if(ca){e.preventDefault();toggleCrawl(ca.dataset.crawladd);return}
   const fb=e.target.closest("[data-fav]");
   if(fb){e.preventDefault();toggleFav(fb.dataset.fav);return}
-  if(e.target.closest("[data-clearkind]")){S.kind="all";render();drawPins();announce();return}
+  if(e.target.closest("[data-clearkind]")){S.kind="all";S.day=null;render();drawPins();announce();return}
   const sb=e.target.closest("[data-sunny]");
   if(sb){S.am.sunny=true;setView("venues");renderChips();render();drawPins();announce();return}
   const gt=e.target.closest("[data-guin]");
@@ -2202,6 +2321,7 @@ document.addEventListener("click",e=>{
 $("a2hs").addEventListener("keydown",e=>{if(e.key==="Escape"){e.stopPropagation();laterA2hs()}});
 document.addEventListener("keydown",e=>{
   if(e.key!=="Escape")return;
+  if(!$("calsheet").hidden){closeCal();return}
   if(!$("fsheet").hidden){closeSheet(false);return}
   if(!$("legend").hidden){toggleKey(false);return}
   if(!$("mcard").hidden){$("mcard").hidden=true;S.sel=null;drawPins()}
