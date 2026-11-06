@@ -2331,7 +2331,23 @@ document.addEventListener("keydown",e=>{
 });
 function toggleKey(show){const k=$("legend"),b=$("keybtn");show=show==null?k.hidden:show;k.hidden=!show;b.setAttribute("aria-expanded",String(show));placeLabels()}
 $("keybtn").addEventListener("click",e=>{e.stopPropagation();toggleKey()});
-{let lastY=0;$("panel").addEventListener("scroll",()=>{if(!isMobile())return;const y=$("panel").scrollTop,t=$("top");if(y>lastY+6&&y>70)t.classList.add("tuck");else if(y<lastY-6||y<30)t.classList.remove("tuck");lastY=y},{passive:true})}
+{/* Tuck the header away while scrolling down a list on phones. Tucking resizes the scrolling panel, so:
+   only tuck when the list is long enough to stay scrollable afterwards, ignore the iOS bounce at either end,
+   need a clear 40px of travel in one direction, and pause for the 260ms animation after each change,
+   otherwise the panel resize itself fires scroll events and the header flicks in and out. */
+let anchor=0,dir=0,lockUntil=0;
+$("panel").addEventListener("scroll",()=>{
+  if(!isMobile())return;
+  const pn=$("panel"),t=$("top"),y=pn.scrollTop,max=pn.scrollHeight-pn.clientHeight,now=performance.now();
+  if(now<lockUntil||y<0||y>max){anchor=Math.max(0,Math.min(y,max));return}
+  const tucked=t.classList.contains("tuck");
+  const set=on=>{t.classList.toggle("tuck",on);lockUntil=now+260;anchor=y;dir=0};
+  if(y<24){if(tucked)set(false);else anchor=y;return}
+  const d=y>anchor?1:y<anchor?-1:0;
+  if(d&&d!==dir){dir=d;anchor=y;return}
+  if(!tucked&&dir>0&&y-anchor>40&&max>360)set(true);
+  else if(tucked&&dir<0&&anchor-y>40)set(false);
+},{passive:true})}
 function retheme(){if(map){drawBase();drawPins()}renderChips();if(V.length)render()}
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change",retheme);
 new MutationObserver(retheme).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
