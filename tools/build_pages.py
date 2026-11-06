@@ -207,6 +207,7 @@ dl.facts dd{margin:0}
 .dchip.today{border-style:dashed}
 .dchip[aria-pressed="true"]{background:var(--pop);color:var(--on-pop);border-style:solid;box-shadow:2px 2px 0 var(--hard)}
 section.grp[hidden],li[hidden]{display:none}
+.hd-r{display:flex;align-items:center;gap:10px}
 .az{columns:2 220px;column-gap:24px}
 .az li{break-inside:avoid}
 footer.foot{border-top:2px solid var(--edge);padding:18px 0 40px;color:var(--muted);font-size:.86rem}
@@ -228,6 +229,7 @@ def shell(path, title, desc, body, crumbs=None, ld=None, map_link="/"):
         lds.append({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": i + 1, "name": n, "item": page_url(p or path)} for i, (n, p) in enumerate(items)]})
     guides = "".join(f'<li><a href="{p}">{e(l)}</a></li>' for p, l in GUIDES)
+    NAV = nav_html()
     ldtags = "".join('<script type="application/ld+json">' + json.dumps(x, ensure_ascii=False).replace("</", "<\\/") + "</script>" for x in lds)
     return f"""<!doctype html>
 <html lang="en-GB">
@@ -256,7 +258,7 @@ def shell(path, title, desc, body, crumbs=None, ld=None, map_link="/"):
 {ldtags}
 </head>
 <body>
-<header class="top"><div class="wrap"><a class="brand" href="/"><img src="/favicon.svg" alt="" width="36" height="36"><span>Smiff&rsquo;s Cambridge Compass</span></a><a class="cta" href="{e(map_link)}">Open the map</a></div></header>
+<header class="top"><div class="wrap"><a class="brand" href="/"><img src="/favicon.svg" alt="" width="36" height="36"><span>Smiff&rsquo;s Cambridge Compass</span></a><div class="hd-r"><a class="cta" href="{e(map_link)}">Open the map</a>{NAV}</div></div></header>
 <main class="wrap">
 {crumb_html}
 {body}
@@ -267,6 +269,7 @@ def shell(path, title, desc, body, crumbs=None, ld=None, map_link="/"):
 <p>Smiff&rsquo;s Cambridge Compass is a free map of what&rsquo;s on in Cambridge pubs, made by a local pub-goer. Listings come from venue websites, CAMRA and event listings, and are checked twice a week (last checked {e(CHECKED)}). Times and deals can change, so check with the pub before a big night out.</p>
 <p>Run a pub or venue? Send your events to <a href="mailto:{EMAIL}">{EMAIL}</a> and they&rsquo;ll go on the map for free, and <a href="/for-pubs/">get a free badge for your website</a>.</p>
 </div></footer>
+<script>{NAV_JS}</script>
 </body>
 </html>
 """
@@ -305,11 +308,12 @@ def daybar(body):
         f'<button type="button" class="dchip{" today" if d == today else ""}" data-f="{d}" aria-pressed="false">{"Today" if d == today else d}</button>' for d in days)
     return (f'<div class="daybar" role="group" aria-label="Show one day">{chips}</div><p class="dnone meta" hidden>Nothing on that day yet.</p>'
             '<script>(function(){var bar=document.currentScript.previousElementSibling.previousElementSibling,none=bar.nextElementSibling;'
-            'function apply(f){bar.querySelectorAll(".dchip").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.f===f?"true":"false")});'
+            'function apply(f){bar.querySelectorAll(".dchip").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.f===f?"true":"false");if(b.dataset.f===f&&b.scrollIntoView)try{bar.scrollTo({left:b.offsetLeft-bar.clientWidth/2+b.offsetWidth/2,behavior:"smooth"})}catch(e){}});'
             'var any=false;document.querySelectorAll("section.grp").forEach(function(sec){var vis=0;sec.querySelectorAll("li[data-day]").forEach(function(li){var on=!f||li.dataset.day===f||li.dataset.day==="all";li.hidden=!on;if(on)vis++});sec.hidden=!vis;if(vis)any=true});'
             'none.hidden=any;try{history.replaceState(null,"",f?"#"+f.toLowerCase():location.pathname)}catch(e){}}'
             'bar.addEventListener("click",function(e){var b=e.target.closest(".dchip");if(b)apply(b.dataset.f)});'
-            'var h=(location.hash||"").slice(1);h=h.charAt(0).toUpperCase()+h.slice(1,3);if(/^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)$/.test(h)&&bar.querySelector(\'[data-f="\'+h+\'"]\'))document.addEventListener("DOMContentLoaded",function(){apply(h)})})()</script>')
+            'var h=(location.hash||"").slice(1);h=h.charAt(0).toUpperCase()+h.slice(1,3);if(/^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)$/.test(h)&&bar.querySelector(\'[data-f="\'+h+\'"]\'))document.addEventListener("DOMContentLoaded",function(){apply(h)});'
+            'window.addEventListener("hashchange",function(){var h=(location.hash||"").slice(1);h=h.charAt(0).toUpperCase()+h.slice(1,3);if(bar.querySelector(\'[data-f="\'+h+\'"]\')){apply(h);bar.scrollIntoView({block:"start"})}})})()</script>')
 
 
 def addr(v):
@@ -771,6 +775,99 @@ var h=location.hash.slice(1);if(h&&s.querySelector('option[value="'+h+'"]')){{s.
     pages.append(path)
 
 
+# ---------- site menu (used on every guide page and injected into the app's header) ----------
+NAV_CSS = """
+.sn-btn{display:inline-grid;place-items:center;width:44px;height:44px;flex:none;border:2px solid var(--edge,#161616);border-radius:12px;background:var(--panel,#FFFDF8);color:var(--ink,#161616);cursor:pointer;padding:0}
+.sn-btn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
+.sn-btn[aria-expanded="true"]{background:var(--pop,#FFD23F);color:#161616}
+.sn-scrim{position:fixed;inset:0;z-index:2000;background:rgb(0 0 0/.35)}
+.sn-panel{position:fixed;top:0;right:0;bottom:0;z-index:2001;width:min(360px,88vw);overflow:auto;overscroll-behavior:contain;background:var(--panel,#FFFDF8);color:var(--ink,#161616);border-left:2px solid var(--edge,#161616);padding:12px 12px calc(24px + env(safe-area-inset-bottom,0px));font-family:var(--body,system-ui);animation:sn-in .2s ease-out}
+@keyframes sn-in{from{transform:translateX(24px);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.sn-panel{animation:none}}
+.sn-head{display:flex;align-items:center;justify-content:space-between;padding:4px 4px 10px;border-bottom:2px solid var(--edge,#161616);margin-bottom:6px}
+.sn-head b{font:800 1.3rem/1.1 var(--display,system-ui)}
+.sn-x{all:unset;cursor:pointer;width:40px;height:40px;display:grid;place-items:center;border-radius:10px;font-size:1.6rem;line-height:1}
+.sn-x:focus-visible,.sn-panel a:focus-visible,.sn-tg:focus-visible{outline:3px solid var(--pop,#FFD23F);outline-offset:1px}
+.sn-panel ul{list-style:none;margin:0;padding:0}
+.sn-panel li{border-bottom:1.5px dashed var(--line,#DDD5C4)}
+.sn-panel li li{border:0}
+.sn-r{display:flex;align-items:stretch;min-height:48px}
+.sn-r>a,.sn-r>.sn-tg.full{flex:1;display:flex;align-items:center;padding:6px 8px;font-weight:700;font-size:1.02rem;color:inherit;text-decoration:none;text-align:left}
+.sn-tg{all:unset;box-sizing:border-box;cursor:pointer;min-width:48px;display:grid;place-items:center}
+.sn-tg svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;transition:transform .18s}
+.sn-tg[aria-expanded="true"] svg{transform:rotate(90deg)}
+.sn-tg.full{justify-content:space-between;display:flex}
+.sn-sub{padding:0 0 8px 14px}
+.sn-sub a{display:flex;align-items:center;min-height:40px;padding:2px 8px;color:inherit;text-decoration:none;font-size:.96rem;border-radius:8px}
+.sn-sub a:hover,.sn-r>a:hover{background:var(--soft,#F5EFE2)}
+.sn-sub a .t{margin-left:8px;font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:var(--pop,#FFD23F);color:#161616;border-radius:999px;padding:1px 7px}
+"""
+
+NAV_JS = """(function(){var b=document.getElementById("sn-btn"),p=document.getElementById("sn-panel"),s=document.getElementById("sn-scrim");if(!b||!p)return;
+function open(o){p.hidden=!o;s.hidden=!o;b.setAttribute("aria-expanded",o?"true":"false");document.documentElement.style.overflow=o?"hidden":"";if(o){var f=p.querySelector(".sn-x");f&&f.focus()}else b.focus()}
+b.addEventListener("click",function(){open(p.hidden)});s.addEventListener("click",function(){open(false)});
+p.addEventListener("click",function(e){var t=e.target.closest(".sn-tg");if(t){var u=document.getElementById(t.getAttribute("aria-controls"));var x=t.getAttribute("aria-expanded")!=="true";t.setAttribute("aria-expanded",x?"true":"false");u.hidden=!x;return}
+if(e.target.closest(".sn-x")){open(false);return}if(e.target.closest("a"))open(false)});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!p.hidden){e.stopPropagation();open(false)}},true)})();"""
+
+ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>'
+BURGER = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>'
+
+
+def nav_html():
+    today = DAYS[TODAY.weekday()]
+
+    def days(path, which=DAYS):
+        return [(f"{path}#{d.lower()}", DAYLONG[d], d == today) for d in which]
+
+    items = [
+        ("This weekend", "/this-weekend/", None),
+        ("Live music", "/live-music/", days("/live-music/")),
+        ("Pub quizzes", "/pub-quizzes/", days("/pub-quizzes/")),
+        ("Sunday roasts", "/sunday-roasts/", days("/sunday-roasts/", ["Sat", "Sun"])),
+        ("Pub deals", "/pub-deals/", days("/pub-deals/")),
+        ("Occasions", None, [("/christmas/", "Christmas", False), ("/christmas-party-venues/", "Christmas party venues", False),
+                             ("/new-years-eve/", "New Year's Eve", False)]),
+        ("Pubs with…", None, [("/beer-gardens/", "Beer gardens", False), ("/real-fires/", "Real fires", False),
+                             ("/dog-friendly-pubs/", "Dog-friendly", False), ("/live-sport/", "Live sport", False),
+                             ("/riverside-pubs/", "Riverside", False), ("/guinness/", "Guinness", False),
+                             ("/independent-pubs/", "Independent pubs", False)]),
+        ("Areas", "/areas/", [("/areas/near-the-station/", "Near the station", False)] +
+         [(f"/areas/{s}/", l, False) for s, l, *_ in AREAS]),
+        ("Every pub A to Z", "/pubs/", None),
+        ("For pubs: get a badge", "/for-pubs/", None),
+    ]
+    lis = ""
+    for i, (label, href, subs) in enumerate(items):
+        sid = f"sn-s{i}"
+        if subs:
+            sub = "".join(f'<li><a href="{e(h)}">{e(l)}{"<span class=t>Today</span>" if t else ""}</a></li>' for h, l, t in subs)
+            if href:
+                r = f'<a href="{e(href)}">{e(label)}</a><button type="button" class="sn-tg" aria-expanded="false" aria-controls="{sid}" aria-label="Show {e(label.lower())} options">{ARROW}</button>'
+            else:
+                r = f'<button type="button" class="sn-tg full" aria-expanded="false" aria-controls="{sid}"><span>{e(label)}</span>{ARROW}</button>'
+            lis += f'<li><div class="sn-r">{r}</div><ul class="sn-sub" id="{sid}" hidden>{sub}</ul></li>'
+        else:
+            lis += f'<li><div class="sn-r"><a href="{e(href)}">{e(label)}</a></div></li>'
+    return (f'<button type="button" class="sn-btn" id="sn-btn" aria-expanded="false" aria-controls="sn-panel" aria-label="Menu">{BURGER}</button>'
+            f'<div class="sn-scrim" id="sn-scrim" hidden></div>'
+            f'<nav class="sn-panel" id="sn-panel" aria-label="Guides" hidden><div class="sn-head"><b>Explore</b><button type="button" class="sn-x" aria-label="Close menu">&times;</button></div>'
+            f'<ul><li><div class="sn-r"><a href="/">The map</a></div></li>{lis}</ul></nav>')
+
+
+def inject_app_nav():
+    """Keep the menu in the app (index.html) in step with the guides, between marker comments."""
+    fp = os.path.join(ROOT, "index.html")
+    s = open(fp, encoding="utf-8").read()
+    a, b = "<!--SITE-NAV-->", "<!--/SITE-NAV-->"
+    if a not in s or b not in s:
+        return
+    block = a + f'<style>{NAV_CSS.strip()}</style>' + nav_html() + f"<script>{NAV_JS}</script>" + b
+    s2 = s[:s.index(a)] + block + s[s.index(b) + len(b):]
+    if s2 != s:
+        open(fp, "w", encoding="utf-8").write(s2)
+
+
 # ---------- build ----------
 def main():
     specs = guide_spec()
@@ -783,7 +880,7 @@ def main():
             if os.path.isdir(os.path.join(pub_dir, d)) and d not in keep:
                 shutil.rmtree(os.path.join(pub_dir, d))
     with open(os.path.join(ROOT, "pages.css"), "w", encoding="utf-8") as f:
-        f.write(CSS.strip() + "\n")
+        f.write(CSS.strip() + "\n" + NAV_CSS.strip() + "\n")
     for path, label, title, desc, intro, build in specs:
         ld = []
         main_html = build(ld)
@@ -805,6 +902,7 @@ def main():
         path, doc = venue_page(v)
         write(path, doc)
         pages.append(path)
+    inject_app_nav()
     urls = ["/"] + pages
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(
         f"  <url><loc>{page_url(u)}</loc><lastmod>{T0}</lastmod></url>\n" for u in urls) + "</urlset>\n"
