@@ -30,6 +30,7 @@ CATNAME = {"pub": "Pub", "music": "Live music", "food": "Food", "late": "Late ni
 KINDNAME = {"music": "Live music", "classical": "Classical", "club": "Club night", "quiz": "Quiz", "offer": "Deal",
             "comedy": "Comedy", "sport": "Sport", "event": ""}
 
+GIVING = re.compile(r"streetsmart|homeless|charit|fundrais|donat|good cause", re.I)
 TODAY = dt.datetime.now(ZoneInfo("Europe/London")).date()
 if len(sys.argv) > 1:  # optional fixed date for testing: build_pages.py 2026-11-06
     TODAY = dt.date.fromisoformat(sys.argv[1])
@@ -492,7 +493,10 @@ def guide_spec():
             out += grp("Christmas parties, quizzes and events", [row(v, e(x["title"]), fmt_date(d)) for d, v, x in other])
         if carols:
             out += grp("Carols and Christmas concerts", [row(v, e(x["title"]), fmt_date(d)) for d, v, x in carols])
-        info = [(v, t) for v in V for t in dict.fromkeys(offers(v) + v.get("notes", [])) if xmas.search(t)]
+        give = [(v, t) for v in V for t in dict.fromkeys(offers(v) + v.get("notes", [])) if GIVING.search(t)]
+        if give:
+            out += grp("Giving back this Christmas", [row(v, e(t)) for v, t in give])
+        info = [(v, t) for v in V for t in dict.fromkeys(offers(v) + v.get("notes", [])) if xmas.search(t) and not GIVING.search(t)]
         if info:
             out += grp("Festive menus and Christmas bookings", [row(v, e(t)) for v, t in info])
         if days:
@@ -552,6 +556,7 @@ def venue_page(v):
     kp = kind_of_place(v)
     name = v["name"]
     wk, dd, of = weekly(v), dated(v), offers(v)
+    give = [n for n in dict.fromkeys(v.get("notes", []) + of) if GIVING.search(n)]
     quiz = [w for w in wk if is_kind(w, ("quiz",))]
     feats = []
     if amen(v, "garden"):
@@ -611,9 +616,11 @@ def venue_page(v):
         facts.append(("Access", e(("Step-free entrance. " if acc.get("step") == "yes" else "") + ("Accessible toilet. " if acc.get("wc") else "") + (acc.get("note") or "")).strip()))
     if v.get("guinness"):
         facts.append(("Guinness", e(v["guinness"].get("note", "Pours Guinness"))))
+    if give:
+        body = body.replace('<div class="links">', '<div class="box"><h3 style="margin-top:0">&#10084;&#65039; Giving back</h3>' + "".join(f"<p>{e(n)}</p>" for n in give) + '</div><div class="links">', 1)
     if facts:
         body += "<h2>Good to know</h2><dl class=\"facts\">" + "".join(f"<dt>{k}</dt><dd>{x}</dd>" for k, x in facts) + "</dl>"
-    notes = [n for n in v.get("notes", []) if n not in of]
+    notes = [n for n in v.get("notes", []) if n not in of and n not in give]
     if notes:
         body += "<h3>Notes</h3><ul class=\"list\">" + "".join(f"<li>{e(n)}</li>" for n in notes) + "</ul>"
     near = sorted((dist_m(v, o), o) for o in V if o is not v and not closed(o))[:6]
