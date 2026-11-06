@@ -42,6 +42,12 @@ dl.facts dt{font-weight:700}
 dl.facts dd{margin:0}
 .guides{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:8px 0}
 .guides a{display:inline-block;border:2px solid var(--edge);border-radius:999px;padding:4px 12px;font-weight:600;text-decoration:none;font-size:.9rem;background:var(--panel)}
+.daybar{position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 16px;margin:6px -16px 4px;background:var(--panel);border-bottom:2px solid var(--edge)}
+.daybar::-webkit-scrollbar{display:none}
+.dchip{flex:none;font:inherit;font-size:.92rem;font-weight:700;color:var(--ink);background:var(--panel);border:2px solid var(--edge);border-radius:999px;padding:6px 14px;min-height:40px;cursor:pointer}
+.dchip.today{border-style:dashed}
+.dchip[aria-pressed="true"]{background:var(--pop);color:var(--on-pop);border-style:solid;box-shadow:2px 2px 0 var(--hard)}
+section.grp[hidden],li[hidden]{display:none}
 .az{columns:2 220px;column-gap:24px}
 .az li{break-inside:avoid}
 footer.foot{border-top:2px solid var(--edge);padding:18px 0 40px;color:var(--muted);font-size:.86rem}

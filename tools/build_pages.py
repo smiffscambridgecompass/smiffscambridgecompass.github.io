@@ -201,6 +201,12 @@ dl.facts dt{font-weight:700}
 dl.facts dd{margin:0}
 .guides{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:8px 0}
 .guides a{display:inline-block;border:2px solid var(--edge);border-radius:999px;padding:4px 12px;font-weight:600;text-decoration:none;font-size:.9rem;background:var(--panel)}
+.daybar{position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 16px;margin:6px -16px 4px;background:var(--panel);border-bottom:2px solid var(--edge)}
+.daybar::-webkit-scrollbar{display:none}
+.dchip{flex:none;font:inherit;font-size:.92rem;font-weight:700;color:var(--ink);background:var(--panel);border:2px solid var(--edge);border-radius:999px;padding:6px 14px;min-height:40px;cursor:pointer}
+.dchip.today{border-style:dashed}
+.dchip[aria-pressed="true"]{background:var(--pop);color:var(--on-pop);border-style:solid;box-shadow:2px 2px 0 var(--hard)}
+section.grp[hidden],li[hidden]{display:none}
 .az{columns:2 220px;column-gap:24px}
 .az li{break-inside:avoid}
 footer.foot{border-top:2px solid var(--edge);padding:18px 0 40px;color:var(--muted);font-size:.86rem}
@@ -273,10 +279,37 @@ def write(path, content):
         f.write(content)
 
 
-def row(v, detail="", when="", kind=""):
+def row(v, detail="", when="", kind="", day=None):
     w = f'<span class="w">{e(when)}</span> ' if when else ""
     k = f'<span class="k">{e(kind)}</span>' if kind else ""
-    return f'<li>{w}<span class="n">{vlink(v)}</span>{k}<span class="sub">{detail}</span></li>'
+    dd = f' data-day="{e(day)}"' if day else ""
+    return f'<li{dd}>{w}<span class="n">{vlink(v)}</span>{k}<span class="sub">{detail}</span></li>'
+
+
+def dn_of(d):
+    return DAYS[dt.date.fromisoformat(d).weekday()]
+
+
+def grp(title, items):
+    return f'<section class="grp"><h2>{title}</h2><ul class="list">' + "".join(items) + "</ul></section>"
+
+
+def daybar(body):
+    """Day chips for a guide whose list items carry data-day. Works without JS as plain text links to nothing harmful."""
+    have = set(re.findall(r'data-day="(\w{3})"', body))
+    days = [d for d in DAYS if d in have]
+    if len(days) < 2:
+        return ""
+    today = DAYS[TODAY.weekday()]
+    chips = '<button type="button" class="dchip" data-f="" aria-pressed="true">All days</button>' + "".join(
+        f'<button type="button" class="dchip{" today" if d == today else ""}" data-f="{d}" aria-pressed="false">{"Today" if d == today else d}</button>' for d in days)
+    return (f'<div class="daybar" role="group" aria-label="Show one day">{chips}</div><p class="dnone meta" hidden>Nothing on that day yet.</p>'
+            '<script>(function(){var bar=document.currentScript.previousElementSibling.previousElementSibling,none=bar.nextElementSibling;'
+            'function apply(f){bar.querySelectorAll(".dchip").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.f===f?"true":"false")});'
+            'var any=false;document.querySelectorAll("section.grp").forEach(function(sec){var vis=0;sec.querySelectorAll("li[data-day]").forEach(function(li){var on=!f||li.dataset.day===f||li.dataset.day==="all";li.hidden=!on;if(on)vis++});sec.hidden=!vis;if(vis)any=true});'
+            'none.hidden=any;try{history.replaceState(null,"",f?"#"+f.toLowerCase():location.pathname)}catch(e){}}'
+            'bar.addEventListener("click",function(e){var b=e.target.closest(".dchip");if(b)apply(b.dataset.f)});'
+            'var h=(location.hash||"").slice(1);h=h.charAt(0).toUpperCase()+h.slice(1,3);if(/^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)$/.test(h)&&bar.querySelector(\'[data-f="\'+h+\'"]\'))document.addEventListener("DOMContentLoaded",function(){apply(h)})})()</script>')
 
 
 def addr(v):
@@ -311,8 +344,8 @@ def guide_spec():
             rows.sort(key=lambda r: r[:3])
             if not rows:
                 continue
-            out += f"<h2>{e(fmt_date(d, True))}</h2><ul class=\"list\">" + "".join(
-                row(v, e(x["title"]) + (" <em>(every week)</em>" if x.get("weekly") else ""), "", KINDNAME.get(x.get("kind"), "")) for *_, v, x in rows[:40]) + "</ul>"
+            out += grp(e(fmt_date(d, True)), [
+                row(v, e(x["title"]) + (" <em>(every week)</em>" if x.get("weekly") else ""), "", KINDNAME.get(x.get("kind"), ""), dn_of(d)) for *_, v, x in rows[:40]])
         return out or "<p>Nothing listed yet for this weekend. Listings are checked every Monday and Thursday.</p>"
 
     wk = weekend_days()
@@ -326,10 +359,10 @@ def guide_spec():
         for dn in DAYS:
             rows = [(v, w) for v in V if not closed(v) for w in weekly(v) if w.get("day") == dn and is_kind(w, ("quiz",))]
             if rows:
-                out += f"<h2>{DAYLONG[dn]} quiz nights</h2><ul class=\"list\">" + "".join(row(v, e(w["title"]) + f' · {addr(v)}') for v, w in rows) + "</ul>"
+                out += grp(f"{DAYLONG[dn]} quiz nights", [row(v, e(w["title"]) + f' · {addr(v)}', day=dn) for v, w in rows])
         once = sorted([(x["date"], v, x) for v in V for x in dated(v, 60) if is_kind(x, ("quiz",))], key=lambda r: (r[0], r[1]["name"]))
         if once:
-            out += "<h2>Monthly and one-off quizzes</h2><ul class=\"list\">" + "".join(row(v, e(x["title"]), when_label(d)) for d, v, x in once) + "</ul>"
+            out += grp("Monthly and one-off quizzes", [row(v, e(x["title"]), when_label(d), day=dn_of(d)) for d, v, x in once])
         return out
 
     nq = len({v["id"] for v in V for w in weekly(v) if is_kind(w, ("quiz",))})
@@ -344,12 +377,12 @@ def guide_spec():
             d = (TODAY + dt.timedelta(i)).isoformat()
             rows = sorted([(v, x) for v in V for x in dated(v) if x["date"] == d and is_kind(x, ("music", "classical"))], key=lambda r: r[0]["name"])
             if rows:
-                out += f"<h2>{e(when_label(d) if i < 2 else fmt_date(d, True))}</h2><ul class=\"list\">" + "".join(
-                    row(v, e(x["title"]), "", "Classical" if x.get("kind") == "classical" else "") for v, x in rows) + "</ul>"
+                out += grp(e(when_label(d) if i < 2 else fmt_date(d, True)), [
+                    row(v, e(x["title"]), "", "Classical" if x.get("kind") == "classical" else "", dn_of(d)) for v, x in rows])
         reg = [(v, w) for v in V if not closed(v) for w in weekly(v) if is_kind(w, ("music",))]
         if reg:
-            out += "<h2>Regular live music nights</h2><ul class=\"list\">" + "".join(
-                row(v, e(w["title"]), "Every " + DAYLONG.get(w["day"], w["day"])) for v, w in reg) + "</ul>"
+            out += grp("Regular live music nights", [
+                row(v, e(w["title"]), "Every " + DAYLONG.get(w["day"], w["day"]), day=w.get("day")) for v, w in reg])
         return out
 
     add("/live-music/", "Live music", "Live music in Cambridge pubs and venues: gigs for the next two weeks",
@@ -360,13 +393,21 @@ def guide_spec():
     roast = re.compile(r"roast|carvery|sunday lunch", re.I)
 
     def b_roast(ld):
-        rows = [(v, w) for v in V if not closed(v) for w in weekly(v) if w.get("day") == "Sun" and roast.search(w["title"])]
-        rows += [(v, {"title": o}) for v in V if not closed(v) for o in offers(v) if roast.search(o) and not any(r[0] is v for r in rows)]
-        return '<ul class="list">' + "".join(row(v, e(w["title"]) + f" · {addr(v)}") for v, w in rows) + "</ul>"
+        out = ""
+        seen = set()
+        for dn in ["Sun", "Sat", "Mon", "Tue", "Wed", "Thu", "Fri"]:
+            rows = [(v, w) for v in V if not closed(v) for w in weekly(v) if w.get("day") == dn and roast.search(w["title"])]
+            seen |= {v["id"] for v, _ in rows}
+            if rows:
+                out += grp(f"{DAYLONG[dn]} roasts", [row(v, e(w["title"]) + f" · {addr(v)}", day=dn) for v, w in rows])
+        more = [(v, o) for v in V if not closed(v) and v["id"] not in seen for o in offers(v) if roast.search(o)]
+        if more:
+            out += grp("More roasts (check which days)", [row(v, e(o) + f" · {addr(v)}", day="all") for v, o in more])
+        return out
 
     add("/sunday-roasts/", "Sunday roasts", "Sunday roasts in Cambridge pubs",
         "Where to get a Sunday roast in a Cambridge pub, with prices and serving times where the pub lists them.",
-        "Cambridge pubs serving a Sunday roast, with prices and kitchen times where the pub lists them. Booking is a good idea at the popular ones.", b_roast)
+        "Cambridge pubs serving a roast, by day, with prices and kitchen times where the pub lists them. Booking is a good idea at the popular ones.", b_roast)
 
     def amen_page(path, label, title, desc, intro, test, extra=lambda v: ""):
         def b(ld):
@@ -420,10 +461,10 @@ def guide_spec():
         for dn in DAYS:
             rows = [(v, w) for v in V if not closed(v) for w in weekly(v) if w.get("day") == dn and is_kind(w, ("offer",))]
             if rows:
-                out += f"<h2>{DAYLONG[dn]}</h2><ul class=\"list\">" + "".join(row(v, e(w["title"])) for v, w in rows) + "</ul>"
+                out += grp(DAYLONG[dn], [row(v, e(w["title"]), day=dn) for v, w in rows])
         rest = [(v, o) for v in V if not closed(v) for o in offers(v) if not re.search(r"christmas|festive|new year", o, re.I)]
         if rest:
-            out += "<h2>Other deals</h2><ul class=\"list\">" + "".join(row(v, e(o)) for v, o in rest) + "</ul>"
+            out += grp("Deals on any day", [row(v, e(o), day="all") for v, o in rest])
         return out
 
     add("/pub-deals/", "Pub deals", "Food and drink deals in Cambridge pubs, day by day",
@@ -553,7 +594,8 @@ def main():
         f.write(CSS.strip() + "\n")
     for path, label, title, desc, intro, build in specs:
         ld = []
-        body = f"<h1>{e(title)}</h1><p class=\"lede\">{e(intro)}</p>" + build(ld)
+        main_html = build(ld)
+        body = f"<h1>{e(title)}</h1><p class=\"lede\">{e(intro)}</p>" + daybar(main_html) + main_html
         body += f'<div class="box pop"><p><strong>See it all on the map:</strong> gigs, quizzes and deals for every Cambridge pub, with what&rsquo;s open now. <a href="/">Open Smiff&rsquo;s Compass</a></p></div>'
         write(path, shell(path, title, desc, body, crumbs=[(label, None)]))
         pages.append(path)
