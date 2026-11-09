@@ -1,7 +1,7 @@
 {
  "meta": {
-  "checked": "2026-11-06",
-  "checkedLabel": "Fri 6 Nov 2026"
+  "checked": "2026-11-09",
+  "checkedLabel": "Mon 9 Nov 2026"
  },
  "venues": [
   {
@@ -882,11 +882,6 @@
    "lng": 0.13977,
    "events": [
     {
-     "date": "2026-11-08",
-     "title": "Nick Barraclough and friends (Free)",
-     "kind": "music"
-    },
-    {
      "date": "2026-11-09",
      "title": "Pub quiz (second Monday of the month)",
      "kind": "quiz"
@@ -999,16 +994,6 @@
    "pos": "exact",
    "events": [
     {
-     "date": "2026-11-07",
-     "title": "Karen McWhinnie and friends, 8.30-11pm",
-     "kind": "music"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Palestine Fundraiser, 4.30-11pm (collection, bring cash)",
-     "kind": "event"
-    },
-    {
      "date": "2026-11-11",
      "title": "Language Swap, 7.30pm (free)",
      "kind": "event"
@@ -1055,11 +1040,6 @@
     }
    ],
    "events": [
-    {
-     "date": "2026-11-08",
-     "title": "Ted Morcaldi solo (8-10pm)",
-     "kind": "music"
-    },
     {
      "date": "2026-11-10",
      "title": "Sean O'Hanrahan's Flying Hammond Trio (8.30-10.30pm, £7, students £5)",
@@ -1379,16 +1359,6 @@
     "Mikkeller Running Club (first Saturday of the month): 10% off tap beer and soft drinks afterwards"
    ],
    "events": [
-    {
-     "date": "2026-11-07",
-     "title": "Mikkeller Running Club, 3pm (10% off tap beer and soft drinks after)",
-     "kind": "event"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Smash+Grab Smash Burgers",
-     "kind": "event"
-    },
     {
      "date": "2026-11-12",
      "title": "Useless Quiz (£2pp, teams up to 4; winning team's tab on the house)",
@@ -2131,11 +2101,6 @@
    "offers": [],
    "events": [
     {
-     "date": "2026-11-06",
-     "title": "The Calling goth club night (first Friday, sometimes until 2am)",
-     "kind": "club"
-    },
-    {
      "date": "2026-11-17",
      "title": "The Cam Creatives and Cambridge Game Makers (third Tuesday)",
      "kind": "event"
@@ -2480,41 +2445,6 @@
     "Club nights"
    ],
    "events": [
-    {
-     "date": "2026-11-06",
-     "title": "An Evening with Katey Brooks, joined by How Dare She",
-     "kind": "music"
-    },
-    {
-     "date": "2026-11-06",
-     "title": "The Brass Funkeys",
-     "kind": "music"
-    },
-    {
-     "date": "2026-11-06",
-     "title": "Bongo's Bingo",
-     "kind": "event"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Kings Of The Rollers (last few tickets)",
-     "kind": "club"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Cambridge Dance (sold out)",
-     "kind": "club"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "The Mystery of Cambridge Junction (family)",
-     "kind": "event"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Dan Schreiber: This Changes Everything",
-     "kind": "comedy"
-    },
     {
      "date": "2026-11-09",
      "title": "Professional Dance Class (workshop, to 7 Dec)",
@@ -3780,11 +3710,6 @@
    ],
    "events": [
     {
-     "date": "2026-11-07",
-     "title": "Romesh Ranganathan (comedy, sold out)",
-     "kind": "comedy"
-    },
-    {
      "date": "2026-11-13",
      "title": "Tony Hadley",
      "kind": "music"
@@ -3873,11 +3798,6 @@
     "Classical concert hall"
    ],
    "events": [
-    {
-     "date": "2026-11-07",
-     "title": "Rhapsody for a Rascal (Cambridge Philharmonic)",
-     "kind": "classical"
-    },
     {
      "date": "2026-11-10",
      "title": "CU Lunchtime Concert: Brahms String Sextet No.2",
@@ -4443,11 +4363,6 @@
    ],
    "events": [
     {
-     "date": "2026-11-06",
-     "title": "A Night of Elton – live music (until 13 Nov)",
-     "kind": "music"
-    },
-    {
      "date": "2026-11-17",
      "title": "A Night of Madonna – live music (17–27 Nov)",
      "kind": "music"
@@ -4473,11 +4388,6 @@
    "lat": 52.200454,
    "lng": 0.138464,
    "events": [
-    {
-     "date": "2026-11-06",
-     "title": "In the Global Groove: Will Lord, Gwydir Street (£8)",
-     "kind": "music"
-    },
     {
      "date": "2026-11-12",
      "title": "Kevin Flanagan Trio",
@@ -4813,16 +4723,6 @@
     "Pub Perks card: free hot drink refill daily; 200 bonus points per pint of cask"
    ],
    "events": [
-    {
-     "date": "2026-11-07",
-     "title": "Live music: Queen Bee Blues Band (8:30pm)",
-     "kind": "music"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Folk Jam Sundays (8pm, every other Sunday)",
-     "kind": "music"
-    },
     {
      "date": "2026-11-22",
      "title": "Folk Jam Sundays (8pm, every other Sunday)",
@@ -5673,11 +5573,6 @@
    ],
    "events": [
     {
-     "date": "2026-11-06",
-     "title": "Happiest Hour last day: selected drinks £5 incl. Birra Moretti, house wine, 4–7pm",
-     "kind": "offer"
-    },
-    {
      "date": "2027-03-17",
      "title": "St Patrick's Day",
      "kind": "event"
@@ -6308,11 +6203,6 @@
    ],
    "events": [
     {
-     "date": "2026-11-06",
-     "title": "A taste of Piemonte: fine wine dinner at Market House, 12 Market Hill, 6:45pm aperitif, 7:15pm dinner (£120)",
-     "kind": "event"
-    },
-    {
      "date": "2026-12-10",
      "title": "Autreau de Champillon Champagne masterclass, 8pm (£40)",
      "kind": "event"
@@ -6534,11 +6424,6 @@
    ],
    "offers": [],
    "events": [
-    {
-     "date": "2026-11-06",
-     "title": "Autumn Internationals rugby screenings (6–27 Nov)",
-     "kind": "sport"
-    },
     {
      "date": "2026-11-18",
      "title": "Star Wars themed quiz, 8pm (£3 cash entry, £100 bar tab prize)",
@@ -6772,93 +6657,7 @@
      "kind": "offer"
     }
    ],
-   "events": [
-    {
-     "date": "2026-11-06",
-     "title": "Derby County v Bolton Wanderers, 8pm (Sky Sports 3)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-06",
-     "title": "Everton v Coventry City, 8pm (Sky Sports 1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-06",
-     "title": "Rugby: Ireland v Argentina, 8:10pm (ITV1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Rugby: Italy v South Africa, 11:40am (ITV1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Wrexham v Wolves, 12:30pm (Sky Sports 1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Leeds United v Tottenham Hotspur, 12:30pm (TNT Sports 1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Rugby: Scotland v New Zealand, 2:10pm (ITV1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Rugby: Wales v Japan, 4:40pm (ITV1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Nottingham Forest v Manchester City, 5:30pm (Sky Sports 1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Rugby: France v Fiji, 8:10pm (ITV1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Brighton v Brentford, 2pm (Sky Sports Plus)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Crystal Palace v Liverpool, 2pm (Sky Sports 1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Ipswich Town v Bournemouth, 2pm (Sky Sports 4)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Sunderland v Chelsea, 2pm (Sky Sports 2)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Rugby: England v Australia, 3:10pm (Sky Sports 1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Manchester United v Aston Villa, 4:30pm (Sky Sports 1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "F1 Brazilian Grand Prix, 5pm (Sky Sports F1)",
-     "kind": "sport"
-    }
-   ],
+   "events": [],
    "offers": [
     "Lunch deal £10",
     "Kids meal deal £5.50",
@@ -7176,13 +6975,7 @@
      "kind": "event"
     }
    ],
-   "events": [
-    {
-     "date": "2026-11-07",
-     "title": "Bottomless brunch, 1:30-5:30pm (£70 prosecco / £115 champagne; £15pp deposit)",
-     "kind": "offer"
-    }
-   ],
+   "events": [],
    "offers": [
     "Christmas party bookings 20 Nov - 24 Dec 2026 (min 6 people)"
    ],
@@ -7264,103 +7057,7 @@
     "Pool and darts"
    ],
    "weekly": [],
-   "events": [
-    {
-     "date": "2026-11-06",
-     "title": "Derby County v Bolton Wanderers, 8pm (Sky Sports 3)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-06",
-     "title": "Everton v Coventry City, 8pm (Sky Sports 1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-06",
-     "title": "Ireland v Argentina, 8:10pm (rugby international)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Italy v South Africa, 11:40am (rugby international)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Wrexham v Wolves, 12:30pm (Sky Sports 1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Leeds United v Tottenham Hotspur, 12:30pm (TNT Sports 1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Chelsea Women v Everton Women, 12:45pm (WSL)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Scotland v New Zealand, 2:10pm (rugby international)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Wales v Japan, 4:40pm (rugby international)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Nottingham Forest v Manchester City, 5:30pm (Sky Sports 1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "St Mirren v Rangers, 8pm (Scottish Premiership)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "France v Fiji, 8:10pm (rugby international)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Brighton v Brentford, 2pm (Sky Sports Plus)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Crystal Palace v Liverpool, 2pm (Sky Sports 1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Ipswich Town v Bournemouth, 2pm (Sky Sports 4)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Sunderland v Chelsea, 2pm (Sky Sports 2)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "England v Australia, 3:10pm (rugby international)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Manchester United v Aston Villa, 4:30pm (Sky Sports 1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "F1 Brazilian Grand Prix, 5pm",
-     "kind": "sport"
-    }
-   ],
+   "events": [],
    "offers": [],
    "notes": [],
    "src": "https://camra.org.uk/pubs/131277",
@@ -7592,46 +7289,6 @@
     }
    ],
    "events": [
-    {
-     "date": "2026-11-06",
-     "title": "Everton v Coventry City, 8pm (Premier League)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Leeds United v Tottenham Hotspur, 12:30pm (Premier League)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-07",
-     "title": "Nottingham Forest v Manchester City, 5:30pm (Premier League)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Crystal Palace v Liverpool, 2pm (Premier League)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Sunderland v Chelsea, 2pm (Premier League)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Brighton v Brentford, 2pm (Premier League)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Ipswich Town v Bournemouth, 2pm (Premier League)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Manchester United v Aston Villa, 4:30pm (Premier League)",
-     "kind": "sport"
-    },
     {
      "date": "2026-11-21",
      "title": "Manchester City v Fulham, 12:30pm (Premier League)",
@@ -8188,13 +7845,7 @@
     "Vinyl and books"
    ],
    "weekly": [],
-   "events": [
-    {
-     "date": "2026-11-08",
-     "title": "SANCHA City Pop Up",
-     "kind": "event"
-    }
-   ],
+   "events": [],
    "offers": [],
    "notes": [
     "Sunday hours aren't listed on their website"
@@ -8234,11 +7885,6 @@
     "Free entry to services"
    ],
    "events": [
-    {
-     "date": "2026-11-06",
-     "title": "Concert: Mozart & Handel",
-     "kind": "classical"
-    },
     {
      "date": "2026-11-15",
      "title": "Organ recital: Alexis Grizard (2025 St Albans International Organ Competition winner)",
@@ -8301,11 +7947,6 @@
     "Free entry to services (no tickets required)"
    ],
    "events": [
-    {
-     "date": "2026-11-08",
-     "title": "Sunday Organ Recital: Thomas Watkin (Junior Organ Scholar), 6pm",
-     "kind": "classical"
-    },
     {
      "date": "2026-11-15",
      "title": "Sunday Organ Recital: Pascal Bachmann (Herbert Howells Organ Scholar), 6pm",
@@ -8389,16 +8030,6 @@
     "Public welcome at services"
    ],
    "events": [
-    {
-     "date": "2026-11-08",
-     "title": "Remembrance Sunday: Act of Remembrance and Mattins with choir, 10.55am (free, be seated by 10.45am)",
-     "kind": "classical"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Remembrance Sunday: Sung Requiem Eucharist, 6.15pm",
-     "kind": "classical"
-    },
     {
      "date": "2026-11-11",
      "title": "Remembrance Day: two-minute silence with short prayers, 10.55am",
@@ -8491,26 +8122,6 @@
    ],
    "events": [
     {
-     "date": "2026-11-06",
-     "title": "Lunchtime concert: Jungmin Gregory Ha, piano (Mompou, Carl Vine), 1pm (free, retiring collection)",
-     "kind": "classical"
-    },
-    {
-     "date": "2026-11-06",
-     "title": "Michaelhouse Singers, 2.30pm",
-     "kind": "classical"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Remembrance Sunday: Service of Remembrance and Reconciliation, 10.50am (be seated by 10.40am)",
-     "kind": "event"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Remembrance Sunday Choral Evensong, 4pm",
-     "kind": "classical"
-    },
-    {
      "date": "2026-11-15",
      "title": "All Together Eucharist with Parish Choir and Junior Choir, 10am",
      "kind": "classical"
@@ -8565,11 +8176,6 @@
     "Season subscription (15 concerts, £250 / £70 students)"
    ],
    "events": [
-    {
-     "date": "2026-11-07",
-     "title": "Guided House Tour (£18.50)",
-     "kind": "event"
-    },
     {
      "date": "2026-11-12",
      "title": "Raphael Wallfisch (cello) & Simon Callaghan (piano), 8pm (sold out)",
@@ -8687,16 +8293,6 @@
     "Visitors welcome at services"
    ],
    "events": [
-    {
-     "date": "2026-11-06",
-     "title": "Commemoration of John Cosin (evening office), 6.45pm",
-     "kind": "event"
-    },
-    {
-     "date": "2026-11-08",
-     "title": "Remembrance Sunday: Act of Remembrance at Choral Evensong (preacher Prof Ben Quash), 6pm",
-     "kind": "classical"
-    },
     {
      "date": "2026-11-12",
      "title": "Corporate Communion followed by supper (book via Upay), 6pm",
