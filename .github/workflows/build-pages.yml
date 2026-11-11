@@ -4,7 +4,7 @@ name: Build guide pages
 on:
   push:
     branches: [main]
-    paths: [venues.json, tools/build_pages.py]
+    paths: [venues.json, newsletter.json, tools/build_pages.py]
   schedule:
     - cron: "17 5 * * *"
   workflow_dispatch:

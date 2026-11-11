@@ -1,0 +1,47 @@
+{
+  "_note": "The latest newsletter issue, shown on smiffs.uk/newsletter/. Replace this each Friday after the email goes out; the page rebuilds on push.",
+  "subscribe_url": "https://justins-newsletter-bec391.beehiiv.com/subscribe",
+  "sent": "2026-11-06",
+  "title": "Blues, reggae and a goth night: your week in Cambridge pubs",
+  "range": "Friday 6 to Thursday 12 November",
+  "web_url": "https://justins-newsletter-bec391.beehiiv.com/p/cambridge-pubs-6-12-november",
+  "pick": {
+    "what": "Queen Bee Blues Band",
+    "venue": "earl-beaconsfield",
+    "venue_name": "the Earl of Beaconsfield",
+    "detail": "Saturday 7 November, 8.30pm. Live blues at a proper local on Mill Road."
+  },
+  "days": [
+    {"day": "Friday 6 Nov", "items": [
+      {"what": "Katey Brooks, joined by How Dare She", "venue": "junction", "venue_name": "Cambridge Junction", "detail": ""},
+      {"what": "Greek night", "venue": "old-spring", "venue_name": "The Old Spring", "detail": "from 6pm"},
+      {"what": "The Calling goth club night", "venue": "blue-moon", "venue_name": "The Blue Moon", "detail": "first Friday of the month, sometimes until 2am"}
+    ]},
+    {"day": "Saturday 7 Nov", "items": [
+      {"what": "Karen McWhinnie and friends", "venue": "six-bells", "venue_name": "The Six Bells", "detail": "8.30 to 11pm"},
+      {"what": "Reggae night", "venue": "carlton-arms", "venue_name": "The Carlton Arms", "detail": ""},
+      {"what": "Mikkeller Running Club", "venue": "thirsty", "venue_name": "Thirsty", "detail": "3pm: a group run, then 10% off tap beer and soft drinks afterwards"}
+    ]},
+    {"day": "Sunday 8 Nov", "items": [
+      {"what": "Nick Barraclough and friends", "venue": "kingston-arms", "venue_name": "The Kingston Arms", "detail": "free"}
+    ]},
+    {"day": "Monday 9 Nov", "items": [
+      {"what": "Speed quizzing", "venue": "cambridge-tap", "venue_name": "The Cambridge Tap", "detail": "8pm"}
+    ]},
+    {"day": "Tuesday 10 Nov", "items": [
+      {"what": "Sean O'Hanrahan's Flying Hammond Trio", "venue": "geldart", "venue_name": "The Geldart", "detail": "8.30 to 10.30pm (£7, students £5)"}
+    ]},
+    {"day": "Wednesday 11 Nov", "items": [
+      {"what": "Barbican Estate", "venue": "portland-arms", "venue_name": "The Portland Arms", "detail": "live"}
+    ]},
+    {"day": "Thursday 12 Nov", "items": [
+      {"what": "Useless Quiz", "venue": "thirsty", "venue_name": "Thirsty", "detail": "£2 each, teams of up to 4, and the winning team's tab is on the house"}
+    ]}
+  ],
+  "deal": {
+    "what": "Curry night",
+    "venue": "alma",
+    "venue_name": "The Alma",
+    "detail": "every Tuesday: a choice of seven curries for £7.50, with a drink"
+  }
+}

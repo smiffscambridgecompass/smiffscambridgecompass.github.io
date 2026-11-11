@@ -782,6 +782,58 @@ var h=location.hash.slice(1);if(h&&s.querySelector('option[value="'+h+'"]')){{s.
     pages.append(path)
 
 
+# ---------- newsletter: sign-up at the top, latest issue below (from newsletter.json) ----------
+def build_newsletter(pages):
+    fp = os.path.join(ROOT, "newsletter.json")
+    if not os.path.exists(fp):
+        return
+    n = json.load(open(fp, encoding="utf-8"))
+    path = "/newsletter/"
+    sub = n.get("subscribe_url") or "https://justins-newsletter-bec391.beehiiv.com/subscribe"
+    ids = {v["id"] for v in V}
+
+    def place(it):
+        vid, name = it.get("venue", ""), it.get("venue_name", "")
+        if vid in ids:
+            return f'<a href="/pubs/{e(vid)}/">{e(name)}</a>'
+        return e(name)
+
+    def item(it):
+        d = it.get("detail", "")
+        return (f'<li><span class="n">{e(it["what"])}</span> at {place(it)}'
+                + (f'<span class="sub">{e(d)}</span>' if d else "") + "</li>")
+
+    signup = f"""<a class="cta nl-btn" href="{e(sub)}" target="_blank" rel="noopener">Sign up free &rarr;</a>"""
+    body = f"""<h1>Smiff&rsquo;s weekly newsletter</h1>
+<div class="box">
+<p class="lede" style="margin-top:4px">Every Friday morning I send out the best of what&rsquo;s on in Cambridge pubs for the week ahead. It&rsquo;s free, short, and written by a local.</p>
+<ul class="nl-what"><li><strong>Smiff&rsquo;s pick</strong>: the one thing I&rsquo;d go to this week</li><li>The best gigs, quizzes and nights out for Friday and Saturday</li><li>A highlight for every day through to Thursday</li><li>A deal of the week</li></ul>
+<p style="margin:16px 0 8px">{signup}</p>
+<p class="meta" style="font-size:.88rem">No spam. Unsubscribe any time with one click.</p>
+</div>"""
+    sent = dt.date.fromisoformat(n["sent"])
+    body += f'<h2>Latest issue: {e(n["title"])}</h2><p class="meta">Sent {e(fmt_date(sent, long=True))} &middot; {e(n.get("range", ""))}</p>'
+    p = n.get("pick")
+    if p:
+        body += (f'<div class="box pop"><p style="font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700">&#9733; Smiff&rsquo;s pick</p>'
+                 f'<p style="font:800 1.3rem/1.2 var(--display);margin:4px 0 6px">{e(p["what"])} at {place(p)}</p><p>{e(p.get("detail", ""))}</p></div>')
+    for d in n.get("days", []):
+        body += grp(e(d["day"]), [item(it) for it in d["items"]])
+    dl = n.get("deal")
+    if dl:
+        body += (f'<div class="box" style="border-style:dashed"><p><strong>Deal of the week:</strong> {e(dl["what"])} at {place(dl)}, {e(dl.get("detail", ""))}.</p></div>')
+    body += (f'<p>Everything else, from quizzes and roasts to live sport, is <a href="/">on the map</a>. Know a gig or quiz I&rsquo;ve missed? Email <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>'
+             f'<p>Cheers,<br><strong>Smiff</strong></p>')
+    if n.get("web_url"):
+        body += f'<p class="meta"><a href="{e(n["web_url"])}" target="_blank" rel="noopener">Read this issue as it was emailed</a></p>'
+    body += f'<div class="box pop" style="text-align:center"><p style="font:800 1.3rem/1.2 var(--display);margin:4px 0 12px">Get next Friday&rsquo;s in your inbox</p><p>{signup.replace("cta nl-btn", "cta nl-btn inv")}</p></div>'
+    body += "<style>.nl-what{margin:10px 0 0;padding-left:1.2em}.nl-what li{margin:4px 0}.nl-btn{font-size:1.1rem;padding:11px 24px}.nl-btn.inv{background:var(--panel);color:var(--ink)}</style>"
+    write(path, shell(path, "Smiff's Compass newsletter: what's on in Cambridge pubs every Friday",
+                      "A free weekly email every Friday morning with the best gigs, quiz nights and deals in Cambridge pubs, picked by a local. Read the latest issue and sign up.",
+                      body, crumbs=[("Newsletter", None)]))
+    pages.append(path)
+
+
 # ---------- site menu (used on every guide page and injected into the app's header) ----------
 NAV_CSS = """
 .sn-btn{display:inline-grid;place-items:center;width:44px;height:44px;flex:none;border:2px solid var(--edge,#161616);border-radius:12px;background:var(--panel,#FFFDF8);color:var(--ink,#161616);cursor:pointer;padding:0}
@@ -842,6 +894,7 @@ def nav_html():
         ("Areas", "/areas/", [("/areas/near-the-station/", "Near the station", False)] +
          [(f"/areas/{s}/", l, False) for s, l, *_ in AREAS]),
         ("Every pub A to Z", "/pubs/", None),
+        ("Weekly newsletter", "/newsletter/", None),
         ("For pubs: get a badge", "/for-pubs/", None),
     ]
     lis = ""
@@ -905,6 +958,7 @@ def main():
     pages.append("/pubs/")
     build_areas(pages)
     build_for_pubs(pages)
+    build_newsletter(pages)
     for v in V:
         path, doc = venue_page(v)
         write(path, doc)
