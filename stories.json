@@ -1,0 +1,679 @@
+{
+ "_note": "Pub history and lore shown as 'The story behind...' on pub pages. Only sourced facts; legends are marked as legend. themes: ghosts (listed on /pub-ghosts/).",
+ "pubs": {
+  "eagle": {
+   "hook": "Where DNA was announced, and a window that must never be shut",
+   "story": [
+    "The Eagle opened in 1667 as a coaching inn, which makes it one of the oldest pubs in town. Scientists from the old Cavendish Laboratory round the corner used it as their local.",
+    "On 28 February 1953 Francis Crick walked in at lunchtime and told everyone that he and James Watson had \"discovered the secret of life\": the double helix structure of DNA. A plaque by the door marks it, and since 2023 it also credits Rosalind Franklin and Maurice Wilkins.",
+    "Head to the back bar and look up. During the Second World War, RAF and other Allied airmen wrote their names and squadron numbers on the ceiling using candles, lighters and lipstick. It's still there."
+   ],
+   "legend": "Three children are said to have died in a fire here around 300 years ago, and a window above the garden is kept permanently open so their spirits can come and go. Close it, the story goes, and the room feels like it's suffocating. Some also tell of two Second World War airmen haunting the place.",
+   "themes": [
+    "ghosts"
+   ],
+   "sources": [
+    [
+     "Wikipedia",
+     "https://en.wikipedia.org/wiki/The_Eagle,_Cambridge"
+    ],
+    [
+     "Historic England",
+     "https://historicengland.org.uk/listing/missing-pieces/historic-pub-walks/cambridge"
+    ],
+    [
+     "Greene King: haunted pubs",
+     "https://www.greeneking.co.uk/behind-the-bar/cambridge-spookiest-pubs"
+    ]
+   ]
+  },
+  "pickerel": {
+   "hook": "Licensed since 1608, and said to have a landlady who never left",
+   "story": [
+    "The Pickerel has held a licence since 1608, making it the oldest licensed pub in Cambridge. Parts of the building go back to the 1500s.",
+    "In the 1800s the Bullen family brewed their own beer on site, and from 1888 to 1933 the Silk family ran it, with a funeral carriage business out the back. In 1922 Fred Silk's motorbike blew up in the yard while he was cleaning it; a Magdalene porter put the fire out.",
+    "At one time it was on the list of pubs students were banned from, and one undergraduate was gated by a proctor just for playing trumpet in a jazz band here. C.S. Lewis is said to have been a regular."
+   ],
+   "legend": "The pub is said to be haunted by a former landlady who drowned in the Cam. Staff have reported feeling her presence.",
+   "themes": [
+    "ghosts"
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/centre/magdalene-street/30-magdalene-street-pickerel-inn/"
+    ],
+    [
+     "Historic England",
+     "https://historicengland.org.uk/listing/missing-pieces/historic-pub-walks/cambridge"
+    ],
+    [
+     "Varsity",
+     "https://www.varsity.co.uk/interviews/26019"
+    ]
+   ]
+  },
+  "anchor": {
+   "hook": "The pub that's said to have brought punting to Cambridge",
+   "story": [
+    "The Anchor was first licensed in 1872. Its landlord was also a builder and ran boats from the yard, which for years was the only boatyard in the area.",
+    "The yard's manager, Mr Prime, is said to have introduced punts to Cambridge after seeing them raced at Henley. So every punt you see on the Cam might trace back to this spot.",
+    "In 1892 the pub even had its own team: there's a photo of the Anchor Cricket Club with the players named."
+   ],
+   "legend": "In 1954 a Queens' College student followed an old man along the street here, only for the figure to vanish when he was two paces away. He reported it to the Society for Psychical Research, whose president found him sincere.",
+   "themes": [
+    "ghosts"
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/centre/silver-street/13-silver-street/"
+    ]
+   ]
+  },
+  "fort-st-george": {
+   "hook": "The oldest pub on the river, named after a fort in India",
+   "story": [
+    "Fort St George is the oldest pub on the Cam, a timber-framed building with parts dating back to the 1500s, sitting right on Midsummer Common where the cows graze.",
+    "Its name is said to come from the look of the East India Company's Fort St George in Madras (now Chennai). Duck into the snug by the entrance for the old panelling and tiled floor."
+   ],
+   "sources": [
+    [
+     "Wikipedia",
+     "https://en.wikipedia.org/wiki/Fort_St_George_In_England"
+    ],
+    [
+     "Greene King",
+     "https://www.greeneking.co.uk/behind-the-bar/oldest-pubs-cambridge"
+    ]
+   ]
+  },
+  "champion": {
+   "hook": "Named by a sculling champion who wanted his post addressed to his title",
+   "story": [
+    "The name comes from an oarsman who won a sculling race on the Thames and moved to Cambridge in 1860. He asked for his post to be addressed to \"The Champion of the River Thames, King Street, Cambridge\". It stuck.",
+    "Inside is a little-changed late-Victorian interior. Tom Sharpe made it the favourite pub of Skullion in Porterhouse Blue, renamed \"The Thames Boatman\".",
+    "Since 1992 the Champion has played St Radegund down the road every year for the King Street Trophy, and in 2024 local CAMRA named it Cambridge's Pub of the Year."
+   ],
+   "sources": [
+    [
+     "Wikipedia",
+     "https://en.wikipedia.org/wiki/The_Champion_of_the_Thames"
+    ]
+   ]
+  },
+  "st-radegund": {
+   "hook": "Cambridge's smallest pub, and home of the King Street Run",
+   "story": [
+    "At just over 20 square metres, the Rad is popularly reckoned to be the smallest pub in Cambridge. It's named after the Frankish saint linked to Jesus College up the road.",
+    "It was the start and finish of the King Street Run, home to a hash running club and a rowing club, and its cricket team has played the Champion of the Thames every year since 1992. A cricket tour to Croatia in 2003 even became a book, The Ascent of Mount Hum.",
+    "In 2007 someone noticed the pub sign actually showed the coat of arms of Sankt Radegund, a small town in Austria, rather than the saint."
+   ],
+   "sources": [
+    [
+     "Wikipedia",
+     "https://en.wikipedia.org/wiki/St_Radegund,_Cambridge"
+    ]
+   ]
+  },
+  "maypole": {
+   "hook": "Once run by one of the greatest long-distance runners of his age",
+   "story": [
+    "The pub started life around 1839 as the Paul Pry and became the Maypole in 1852.",
+    "From about 1897 to 1903 the landlord was Charles Rowell, a Victorian superstar of six-day races. He won the famous Astley Belt outright and in 1882 ran 100 miles in 13 hours 26 minutes.",
+    "His time behind the bar ended less gloriously: in 1902 he was charged with pocketing £38 from the Maypole Self-Help Club. Friends paid it back and the case was dropped."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/centre/portugal-place/maypole-paul-pry"
+    ]
+   ]
+  },
+  "mitre": {
+   "hook": "Survived the 1665 plague and two German bombs",
+   "story": [
+    "There's been an inn here since at least the 1610s, when it was the Blackamoor's Head.",
+    "In 1665 the landlord's son died of plague and the inn had to shut for 40 days. The family gave it up afterwards. The Mitre name only arrived in the late 1800s; a mitre is a bishop's hat, an easy sign for people who couldn't read.",
+    "In 1942, after an air raid, an unexploded German incendiary bomb was found in a basement wall, and another in the Mitre's outbuildings."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/centre/bridge-street/17-bridge-street-the-mitre/"
+    ],
+    [
+     "Historic England",
+     "https://historicengland.org.uk/listing/missing-pieces/historic-pub-walks/cambridge"
+    ]
+   ]
+  },
+  "baron-of-beef": {
+   "hook": "Douglas Adams drank here, and the Doctor stayed",
+   "story": [
+    "The pub was built around 1842 by a brewer, William Ekin, who sold his \"Ekin's Brilliant Ales\" here until 1887. It's been the Baron of Beef since 1871.",
+    "Douglas Adams, who wrote The Hitchhiker's Guide to the Galaxy, is said to have drunk here, and Tom Baker stayed while filming Shada, a Doctor Who story Adams wrote.",
+    "In 1933 a midnight fire swept through the yard behind and partly destroyed the pub."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/centre/bridge-street/19-bridge-street-baron-of-beef/"
+    ],
+    [
+     "Historic England",
+     "https://historicengland.org.uk/listing/missing-pieces/historic-pub-walks/cambridge"
+    ]
+   ]
+  },
+  "bath-house": {
+   "hook": "1600s panelling, and a name with a long memory",
+   "story": [
+    "The Bath House, once the Bath Hotel, is a listed 17th-century building, re-fronted in the 1700s. Inside there's reused wood panelling from around 1600.",
+    "It sits right opposite the Corpus Clock and a few steps from Great St Mary's, where many of the city's ghost tours begin."
+   ],
+   "sources": [
+    [
+     "Historic England",
+     "https://historicengland.org.uk/listing/missing-pieces/historic-pub-walks/cambridge"
+    ],
+    [
+     "Greene King",
+     "https://www.greeneking.co.uk/behind-the-bar/oldest-pubs-cambridge"
+    ]
+   ]
+  },
+  "pint-shop": {
+   "hook": "Once the home of novelist E.M. Forster",
+   "story": [
+    "This listed building on Peas Hill was once the home of E.M. Forster, author of A Room with a View and Howards End.",
+    "Before it was a pub it was offices for Francis & Co., solicitors, whose senior partner Walter Francis was Mayor of Cambridge before the First World War."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/centre/peas-hill/10-peas-hill/"
+    ],
+    [
+     "Historic England",
+     "https://historicengland.org.uk/listing/missing-pieces/historic-pub-walks/cambridge"
+    ]
+   ]
+  },
+  "free-press": {
+   "hook": "Home of possibly the smallest pub room in Cambridgeshire",
+   "story": [
+    "The Free Press is on CAMRA's list of historic pub interiors, with fittings that are either original from the 1940s or faithful copies.",
+    "Look for the tiny snug: at about 30 square feet it's been described as \"surely the smallest pub room in Cambridgeshire\"."
+   ],
+   "sources": [
+    [
+     "Wikipedia",
+     "https://en.wikipedia.org/wiki/The_Free_Press,_Cambridge"
+    ]
+   ]
+  },
+  "kingston-arms": {
+   "hook": "A home of Mill Road's reggae and soul scene",
+   "story": [
+    "The Kingston Arms was built in 1871 as a small brewery with an off-licence, and soon became a proper pub as Mill Road grew around it.",
+    "In the 1970s it was part of a cluster of Mill Road pubs, with the Midland Tavern (now the Devonshire Arms) and the White Swan, that became the centre of Cambridge's Caribbean and Black music scene. Windrush elder Victor Ramsey, who brought steel drums to Cambridge, remembered the owner starting \"Black music\" nights here.",
+    "After closing in the pandemic, it reopened in 2023 and won CAMRA's Pub of the Year in 2025."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge: Legacies of Windrush",
+     "https://www.capturingcambridge.org/legacies-of-windrush-in-cambridge/legacies-of-windrush-kingston-arms-33-kingston-street-cambridge/"
+    ]
+   ]
+  },
+  "devonshire-arms": {
+   "hook": "Home to Cambridge's first Black landlord",
+   "story": [
+    "In 1971 this pub, then the Midland Tavern, was taken over by Albert Gordon, a Jamaican-born landlord said to be Cambridge's first Black publican. The local paper headline read \"West Indian is new City landlord\".",
+    "He served Caribbean food, ran packed dances on Friday and Saturday nights, and the pub became home to the Cambridge West Indian Cricket Club. \"Customers are more friendly because of their differences,\" he told the Cambridge Evening News.",
+    "Its story featured in the Museum of Cambridge's Legacies of Windrush exhibition in 2025."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/petersfield/devonshire-road/1-devonshire-road-midland-tavern/"
+    ]
+   ]
+  },
+  "earl-beaconsfield": {
+   "hook": "Owned by a scruffy millionaire landlord who left it to Addenbrooke's",
+   "story": [
+    "First recorded as a beerhouse in 1882, it was run from 1884 by Joe Bailey, who owned many of the houses round Mill Road but collected his rents in an old tweed jacket, carrying a fish basket.",
+    "The story goes that he once earned sixpence minding a gent's horses at the London Motor Show, then paid cash from his fish basket for a brand new car.",
+    "When the Mill Road bridge went up in 1889 and blocked the pub's view, he complained to the railway about lost trade and got them to raise their compensation. He left the pub to Stephen Thompson on condition it would one day go to Addenbrooke's Hospital, and the hospital did get the money in the end."
+   ],
+   "sources": [
+    [
+     "Mill Road Cemetery: pub history",
+     "https://millroadcemetery.org.uk/wp-content/uploads/2016/04/Earl-of-Beaconsfield-History-research-Stephen-Thompson-copy.pdf"
+    ]
+   ]
+  },
+  "six-bells": {
+   "hook": "Scandal, stolen cricket bats and an unrepentant landlady",
+   "story": [
+    "The Six Bells has stood on Covent Garden since at least 1838.",
+    "In 1843 landlord Israel Haggis tracked his wife Sarah to a Hammersmith lodging house, where she'd run off with his former manservant and some of his cricket kit. In court she said she'd never been \"so happy in my life before\". The jury acquitted the manservant.",
+    "Regulars from the 1960s remember packed New Year's Eves in the front bar, with landlady Em pouring Greene King."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/petersfield/covent-garden/six-bells/"
+    ]
+   ]
+  },
+  "alma": {
+   "hook": "Named after a Crimean War battle, and run by CAMRA itself",
+   "story": [
+    "A brewery stood here from 1835, one of the first buildings on what became Russell Street. It brewed three barrels for Queen Victoria's coronation feast in 1838.",
+    "The pub is named after the Battle of the Alma in 1854. When news of the victory reached Cambridge, the bells rang and bonfires were lit on Parker's Piece.",
+    "Brewing stopped in 1909 and the old brewery became a fruit store and then a sweet factory. In 1982 the pub reopened as a free house run by CAMRA."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/newtown/russell-street/58-russell-street-the-alma/"
+    ]
+   ]
+  },
+  "panton-arms": {
+   "hook": "The last trace of the Panton Brewery",
+   "story": [
+    "This was the tap of the Panton Brewery, founded in 1869. In 1906 it grew so big it sank three boreholes deep into the ground for water.",
+    "Greene King took it over in 1925. One manager's son remembered that the staff \"tea break\" was actually a beer break. Brewing stopped in 1957, and the brewery was knocked down in 1968, leaving the pub."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/newtown/panton-street/43-panton-street-panton-arms/"
+    ]
+   ]
+  },
+  "old-bicycle-shop": {
+   "hook": "For 173 years, one of the oldest bike shops in the country",
+   "story": [
+    "Before it was a pub, this was Howes Cycles, founded by John Howes in 1840 and run by the same family on Regent Street for 173 years.",
+    "It closed in 2013 when Michael Howes, the great-great-great-grandson, retired. \"If you're not named Howes, you're not taking over,\" he said. The pub opened in 2016, and the vintage delivery bike above the door is a nod to the old shop."
+   ],
+   "sources": [
+    [
+     "road.cc",
+     "https://road.cc/index.php/news/178323-former-howes-cycles-premises-cambridge-become-pub/"
+    ]
+   ]
+  },
+  "tram-depot": {
+   "hook": "Where Cambridge's horse-drawn trams were kept",
+   "story": [
+    "This building was a depot for the Cambridge Street Tramways Company, which ran horse-drawn trams around the city from 1880 to 1914.",
+    "The company was wound up in 1914 and its 24 horses and eight tram cars were sold. The last tram ran on 18 February 1914, driven by Ben Sharpe to King's Parade. Within a year, many of the drivers were serving in France."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/the-kite/dover-street/tram-shed-5-dover-street/"
+    ]
+   ]
+  },
+  "regal": {
+   "hook": "The Beatles and the Rolling Stones played here",
+   "story": [
+    "Before it was a Wetherspoon, the Regal was a cinema and gig venue. The Beatles played here twice in 1963, first supporting Chris Montez and Tommy Roe and then headlining.",
+    "The Rolling Stones played their only show here in 1965. Stevie Wonder came in 1969, followed a month later by Fleetwood Mac with B.B. King. The Kinks, Cilla Black and the Bee Gees all played here too."
+   ],
+   "sources": [
+    [
+     "Varsity",
+     "https://varsity.co.uk/music/28060"
+    ]
+   ]
+  },
+  "tivoli": {
+   "hook": "A brewery, then a 1920s cinema, then back to beer",
+   "story": [
+    "The Spring Brewery stood here from around 1855. Most of it was knocked down to build the Tivoli, which opened on 16 March 1925 as Cambridge's second purpose-built cinema.",
+    "The cinema closed in 1956. The building went on to be a warehouse, an electrical wholesaler and a cocktail bar before a major fire in 2015. It was restored as the pub you see now."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/chesterton-2/chesterton-road/14-chesterton-roadspring-brewery-tivoli-cinema"
+    ]
+   ]
+  },
+  "green-man-trumpington": {
+   "hook": "A pub since the 1400s, and its sign was stolen by a poet",
+   "story": [
+    "The Green Man has been a pub since the 15th century. Hidden behind the brickwork is the timber frame of a medieval hall house, split into two floors in the 1500s.",
+    "In the 1850s it was famous for its horse shows. The poet and wit Charles Stuart Calverley is said to have stolen the pub sign as a Cambridge undergraduate, and in the 1960s the landlord was bandleader Charles Shadwell."
+   ],
+   "sources": [
+    [
+     "Wikipedia",
+     "https://en.wikipedia.org/wiki/Green_Man,_Trumpington"
+    ]
+   ]
+  },
+  "green-dragon": {
+   "hook": "A 1500s timber-framed inn by the old Chesterton ferry",
+   "story": [
+    "The Green Dragon is a listed timber-framed building from the 16th century, with a jettied upper floor, 18th-century bay windows and an original central chimney stack.",
+    "Look for the carriageway running right through the building, from the days when coaches pulled in off Water Street."
+   ],
+   "sources": [
+    [
+     "British Listed Buildings",
+     "https://britishlistedbuildings.co.uk/101126024-5-green-dragon-inn-and-7-11-water-street-cambridge-east-chesterton-ward"
+    ]
+   ]
+  },
+  "granta": {
+   "hook": "Born with its own brewery, and flooded to the waist in 1879",
+   "story": [
+    "The Granta opened in 1865 with a brewery next door, on the edge of the mill pond.",
+    "On 3 August 1879 a flood hit the Granta Brewery. A photo from the day shows men and boys standing waist-deep in front of the brewery, with one person rowing past in a boat."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/newnham/newnham-road/14-newnham-road-granta-hotel-inn/"
+    ]
+   ]
+  },
+  "royal-standard": {
+   "hook": "Nicknamed Apthorpe's Folly for being built too far out of town",
+   "story": [
+    "When brewer William Apthorpe put up this pub, people thought he'd built it too early and too far out of town, with fields all around, so they called it \"Apthorpe's Folly\". The city soon grew up around it.",
+    "In 1900 a horse-drawn bus bolted outside while the driver chatted on the pavement. Two women jumped off the top deck before it crashed into two carts."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/mill-road-area/mill-road/292-mill-road-the-royal-standard/"
+    ]
+   ]
+  },
+  "golden-hind": {
+   "hook": "A 1930s roadhouse built for the new estates",
+   "story": [
+    "The Golden Hind was proposed in 1936 by the Star Brewery to serve the 1,000 new houses that had sprung up along Milton Road since 1927.",
+    "To get the licence, the brewery offered to give up two older pubs, the Racehorse and the Plume of Feathers. The Women's Total Abstinence Union objected."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/chesterton-2/milton-road/golden-hind/"
+    ]
+   ]
+  },
+  "red-lion-grantchester": {
+   "hook": "From the Axe and Saw to Churchill on the wireless",
+   "story": [
+    "A pub has stood here since at least 1777, when it was the Axe and Saw. In the 1800s it had a tea garden and a bowling green.",
+    "The building you see now was built in 1936 for Greene King, designed by Basil Oliver, who also designed the Portland Arms.",
+    "In June 1941 a crowd gathered here to listen to Churchill's broadcast promising to help Russia, as one local wrote in his diary."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/places-in-south-cambridgeshire/grantchester-places-in-south-cambridgeshire/red-lion-grantchester"
+    ]
+   ]
+  },
+  "green-man-grantchester": {
+   "hook": "A 17th-century coaching inn on the site of an older pub",
+   "story": [
+    "The Green Man is a listed 17th-century timber-framed house. An earlier pub, the Three Tuns, stood on the site until the early 1800s.",
+    "It's recorded as a pub and coaching inn from 1847. In 1974 a 500-year-old elm tree outside was split in two by the wind."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/places-in-south-cambridgeshire/grantchester-places-in-south-cambridgeshire/green-man-grantchester"
+    ],
+    [
+     "Trumpington Local History Group",
+     "https://trumpingtonlocalhistorygroup.org/wp-content/uploads/trails_trail9.html"
+    ]
+   ]
+  },
+  "rupert-brooke": {
+   "hook": "Home of a Boxing Day barrel race",
+   "story": [
+    "This was the Rose and Crown, which survived a fire in 1867. It now takes its name from the poet Rupert Brooke, who lived in Grantchester from 1909.",
+    "In the 1950s the landlord started a Boxing Day barrel-rolling race between teams from four village pubs."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/places-in-south-cambridgeshire/grantchester-places-in-south-cambridgeshire/rose-and-crown-rupert-brooke-grantchester"
+    ],
+    [
+     "Trumpington Local History Group",
+     "https://trumpingtonlocalhistorygroup.org/wp-content/uploads/trails_trail9.html"
+    ]
+   ]
+  },
+  "blue-ball": {
+   "hook": "An 1893 village local, almost unchanged",
+   "story": [
+    "The Blue Ball was rebuilt in 1893 and its original layout survives, which has earned it a place on CAMRA's list of historic pub interiors in East Anglia."
+   ],
+   "sources": [
+    [
+     "Wikipedia",
+     "https://en.wikipedia.org/wiki/Blue_Ball_Inn"
+    ]
+   ]
+  },
+  "lord-byron": {
+   "hook": "The Unicorn for 170 years, then renamed after Byron",
+   "story": [
+    "This was the Unicorn for about 170 years, from around the 1840s, until it was renamed the Lord Byron Inn in 2012. An early photo shows it thatched, with the Trumpington Brass Band outside.",
+    "Trinity Hall owned it in the early 1900s, and it's the only surviving Trumpington pub that isn't on the main road."
+   ],
+   "sources": [
+    [
+     "Trumpington Local History Group",
+     "https://trumpingtonlocalhistorygroup.org/?p=5153"
+    ]
+   ]
+  },
+  "red-lion-cherry-hinton": {
+   "hook": "A 16th-century timber-framed village inn",
+   "story": [
+    "The Red Lion is a listed timber-framed building from the 1500s, with 18th-century and later additions. Look for the old chimney stack at the east end."
+   ],
+   "sources": [
+    [
+     "British Listed Buildings",
+     "https://britishlistedbuildings.co.uk/101126139-the-red-lion-public-house-cambridge-cherry-hinton-ward"
+    ]
+   ]
+  },
+  "kings-head-fen-ditton": {
+   "hook": "A 1600s timber-framed inn",
+   "story": [
+    "The King's Head is a listed timber-framed inn from the 1600s. In 1861 it was run by William Pampling, a Fen Ditton man, with his wife Eliza and daughter Sarah."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/places-in-south-cambridgeshire/fen-ditton/high-street-fen-ditton/50-high-street-kings-head-public-house/"
+    ]
+   ]
+  },
+  "plough-fen-ditton": {
+   "hook": "Front-row seats for the Bumps",
+   "story": [
+    "The Plough's riverside garden is one of the best spots to watch the Bumps, the college rowing races where crews chase each other down the Cam and try to hit the boat in front. Generations of rowers have gone past its lawn."
+   ],
+   "sources": [
+    [
+     "Retired Martin",
+     "https://retiredmartin.com/2020/06/20/fen-dittons-bumpy-ride/"
+    ]
+   ]
+  },
+  "waterman": {
+   "hook": "Once the only building between Cambridge and Chesterton",
+   "story": [
+    "In 1850 the Jolly Waterman, as it was then, was said to be the only building between Cambridge and Chesterton.",
+    "By 1981 the local paper called it \"the unofficial community centre\" for the people living in the flats and bedsits on the traffic island."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/chesterton-2/chesterton-road/32-chesterton-road-the-jolly-waterman"
+    ]
+   ]
+  },
+  "seven-stars": {
+   "hook": "Run by a veteran of the Crimean War",
+   "story": [
+    "One of the Seven Stars' landlords, Charles Stearn, who died in 1910, fought at the battles of the Alma and Inkerman in the Crimean War.",
+    "He also survived a shipwreck when his regiment's ship hit a rock off Newfoundland and sank within half an hour. He got his wife and youngest son into the lifeboats."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/barnwell/newmarket-road/249-newmarket-road/"
+    ]
+   ]
+  },
+  "salisbury-arms": {
+   "hook": "Bought by CAMRA in 1975 to save real ale",
+   "story": [
+    "This began as the Salisbury Hotel, then a commercial hotel, before becoming a pub.",
+    "In 1975 the Campaign for Real Ale bought it to turn it into one of its own real ale pubs, back when cask beer was fighting for survival."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/petersfield/tenison-road/76-tenison-road-and-wilkin-street"
+    ]
+   ]
+  },
+  "cambridge-blue": {
+   "hook": "Once the Dew Drop Inn, run by a dairyman",
+   "story": [
+    "For a century this was the Dew Drop Inn. Its first known licensee, in 1871, was Thomas Stratton, a dairyman.",
+    "In the 1880s landlord Joseph Strange also ran a milk round. In 1889 alone he was fined for \"furious driving\" on Hills Road, his horse threw a boy who broke his arm, and his milk cart knocked down a street sweeper."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/petersfield/gwydir-street/85-87-gwydir-street-the-dewdrop-inn-the-cambridge-blue"
+    ]
+   ]
+  },
+  "mill": {
+   "hook": "An 18th-century building that was once the Hazard Arms",
+   "story": [
+    "The building dates from the 1700s. In 1871 the pub was called the Hazard Arms, possibly after Henry Hazard who lived on Mill Lane, before becoming the Mill in 1881."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/centre/mill-lane/14-mill-lane-the-mill/"
+    ]
+   ]
+  },
+  "castle-inn": {
+   "hook": "Who's the man in the powdered wig?",
+   "story": [
+    "The Castle Inn is a listed building from the early 1800s.",
+    "Inside hangs a portrait of an 18th-century man in a powdered wig. Nobody knows who he is, or whether he's always hung here. Any ideas?"
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/castle/castle-street/38-castle-street-castle-inn/"
+    ]
+   ]
+  },
+  "cricketers": {
+   "hook": "Headquarters of the Society of Old Friends",
+   "story": [
+    "The pub has been the Cricketers since at least 1871. In 1861 it was run by Simon Samborn, a German-born publican.",
+    "By 1913 it was the headquarters of \"The Society of Old Friends\"."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/the-kite/melbourne-place/the-cricketers/"
+    ]
+   ]
+  },
+  "millworks": {
+   "hook": "Newnham Mill, and a Darwin who couldn't buy the water",
+   "story": [
+    "The Millworks is in the old Newnham Mill, a listed 19th-century brick mill on the mill pond.",
+    "In 1888, with the river low and smelly, George Darwin, son of Charles, offered the mill's owner money to open the gates for an hour a day. He was turned down."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/newnham/newnham-road/newnham-mill/"
+    ]
+   ]
+  },
+  "engineers-house": {
+   "hook": "Home of the man who kept Cambridge's sewage moving",
+   "story": [
+    "This Victorian house was built in 1898 for the engineer in charge of the pumping station next door, whose steam engines moved the city's sewage until 1968.",
+    "It's now part of the Cambridge Museum of Technology, reunited with the old pumping station."
+   ],
+   "sources": [
+    [
+     "Cambridge Network",
+     "https://cambridgenetwork.co.uk/news/council-leases-engineers-house-cambridge-museum-technology"
+    ]
+   ]
+  },
+  "byrons-bear": {
+   "hook": "Named after the bear Lord Byron kept at Trinity",
+   "story": [
+    "The name nods to one of Cambridge's best-loved stories: when Lord Byron was at Trinity, the college banned dogs, so he kept a pet bear instead."
+   ],
+   "sources": [
+    [
+     "University of Cambridge",
+     "https://cam.ac.uk/subjects/bear"
+    ]
+   ]
+  },
+  "sir-isaac-newton": {
+   "hook": "Its first landlady also kept cows",
+   "story": [
+    "In 1861 this pub was run by Sarah Richardson, who was both publican and cow keeper. By 1891 it had taken the name of Cambridge's most famous scientist."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/castle/castle-street/96-98-castle-street-sir-isaac-newton/"
+    ]
+   ]
+  },
+  "alexandra-arms": {
+   "hook": "Victorian court cases from the bar",
+   "story": [
+    "The Alexandra Arms has been pulling pints since at least 1871, and it shows up in the local court reports.",
+    "In 1883 the landlord was fined for opening late on a Sunday. In 1900 a bricklayer was fined for refusing to leave, and in 1908 a man accused of raiding the till was let off for lack of evidence."
+   ],
+   "sources": [
+    [
+     "Capturing Cambridge",
+     "https://capturingcambridge.org/petersfield/gwydir-street/22-gwydir-street-alexandra-arms/"
+    ]
+   ]
+  }
+ }
+}

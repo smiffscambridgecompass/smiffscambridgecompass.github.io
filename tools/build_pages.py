@@ -55,6 +55,8 @@ def when_label(d):
 # ---------- data ----------
 DATA = json.load(open(os.path.join(ROOT, "venues.json"), encoding="utf-8"))
 V = sorted(DATA["venues"], key=lambda v: re.sub(r"^the ", "", v["name"].lower()))
+_SP = os.path.join(ROOT, "stories.json")
+STORIES = json.load(open(_SP, encoding="utf-8")).get("pubs", {}) if os.path.exists(_SP) else {}
 BYID = {v["id"]: v for v in V}
 CHECKED = DATA.get("meta", {}).get("checkedLabel", "")
 
@@ -551,6 +553,46 @@ def guide_spec():
 
 
 # ---------- venue page ----------
+STORY_CSS = ("<style>.story{margin:22px 0;border:2px solid var(--edge);border-radius:14px;background:var(--soft);box-shadow:3px 3px 0 var(--hard)}"
+             ".story summary{list-style:none;cursor:pointer;padding:12px 14px;display:grid;gap:3px}.story summary::-webkit-details-marker{display:none}"
+             ".story .k{font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}"
+             ".story .h{font:800 1.08rem/1.25 var(--display)}.story .go{font-size:.86rem;font-weight:700;text-decoration:underline;text-decoration-color:var(--pop);text-decoration-thickness:3px;text-underline-offset:3px}"
+             ".story[open] .go{display:none}.story .in{padding:0 14px 12px}.story .leg{border:2px dashed var(--edge);border-radius:12px;padding:10px 12px;margin:0 0 12px;background:var(--panel)}"
+             ".story .src{font-size:.82rem;color:var(--muted)}</style>")
+
+
+def story_html(v, st, open_=False):
+    src = " · ".join(f'<a href="{e(u)}" rel="noopener nofollow">{e(t)}</a>' for t, u in st.get("sources", []) if https(u))
+    leg = f'<div class="leg"><p style="margin:0 0 4px"><strong>&#128123; Local legend</strong></p><p style="margin:0">{e(st["legend"])}</p></div>' if st.get("legend") else ""
+    more = '<p><a href="/pub-ghosts/">More Cambridge pub ghosts &rsaquo;</a></p>' if "ghosts" in st.get("themes", []) else ""
+    return (STORY_CSS + f'<details class="story"{" open" if open_ else ""}><summary><span class="k">&#128220; Pub lore</span><span class="h">{e(st["hook"])}</span>'
+            f'<span class="go">Read the story behind {e(v["name"])} &rsaquo;</span></summary><div class="in"><h2 style="margin-top:4px">The story behind {e(v["name"])}</h2>'
+            + "".join(f"<p>{e(p)}</p>" for p in st.get("story", [])) + leg + more
+            + (f'<p class="src">Sources: {src}</p>' if src else "") + "</div></details>")
+
+
+# ---------- Cambridge pub ghosts (pubs whose stories carry the "ghosts" theme) ----------
+def build_ghosts(pages):
+    path = "/pub-ghosts/"
+    ghosts = [(v, STORIES[v["id"]]) for v in V if "ghosts" in STORIES.get(v["id"], {}).get("themes", [])]
+    if not ghosts:
+        return
+    body = ("<h1>Cambridge pub ghosts</h1><p class=\"lede\">A window that must never be shut, a landlady who never left, and an old man who vanished on Silver Street. "
+            "These are the pub ghost stories that come with a source. They're local legend, so believe as much as you like, then go and have a pint and decide for yourself.</p>")
+    for v, st in ghosts:
+        src = " · ".join(f'<a href="{e(u)}" rel="noopener nofollow">{e(t)}</a>' for t, u in st.get("sources", []) if https(u))
+        body += (f'<div class="box"><h2 style="margin-top:0"><a href="/pubs/{e(v["id"])}/">{e(v["name"])}</a></h2>'
+                 f'<p class="meta">{addr(v)}</p><p>{e(st["legend"])}</p>'
+                 f'<p><a href="/pubs/{e(v["id"])}/">The full story, and what&rsquo;s on at {e(v["name"])} &rsaquo;</a></p>'
+                 + (f'<p class="meta" style="font-size:.85rem">Sources: {src}</p>' if src else "") + "</div>")
+    body += (f'<p>Know a Cambridge pub ghost story we&rsquo;ve missed? Email <a href="mailto:{EMAIL}">{EMAIL}</a> and tell Smiff.</p>'
+             '<p class="cta-row"><a class="cta" href="/">Open the map</a></p>')
+    write(path, shell(path, "Cambridge pub ghosts: haunted pubs and their stories",
+                      "The ghost stories behind Cambridge pubs: the Eagle's window that must stay open, the Pickerel's drowned landlady and the vanishing man by the Anchor.",
+                      body, crumbs=[("Pub ghosts", None)]))
+    pages.append(path)
+
+
 def venue_page(v):
     path = f"/pubs/{v['id']}/"
     kp = kind_of_place(v)
@@ -623,6 +665,9 @@ def venue_page(v):
     notes = [n for n in v.get("notes", []) if n not in of and n not in give]
     if notes:
         body += "<h3>Notes</h3><ul class=\"list\">" + "".join(f"<li>{e(n)}</li>" for n in notes) + "</ul>"
+    st = STORIES.get(v["id"])
+    if st:
+        body += story_html(v, st)
     near = sorted((dist_m(v, o), o) for o in V if o is not v and not closed(o))[:6]
     body += f"<h2>Near {e(name)}</h2><ul class=\"list\">" + "".join(
         row(o, e(walk(d)) + (f" · {e(nx['title'])} ({e(when_label(nx['date']))})" if (nx := (dated(o, 7) or [None])[0]) else "")) for d, o in near) + "</ul>"
@@ -894,6 +939,7 @@ def nav_html():
         ("Areas", "/areas/", [("/areas/near-the-station/", "Near the station", False)] +
          [(f"/areas/{s}/", l, False) for s, l, *_ in AREAS]),
         ("Every pub A to Z", "/pubs/", None),
+        ("Cambridge pub ghosts", "/pub-ghosts/", None),
         ("Weekly newsletter", "/newsletter/", None),
         ("For pubs: get a badge", "/for-pubs/", None),
     ]
@@ -959,6 +1005,7 @@ def main():
     build_areas(pages)
     build_for_pubs(pages)
     build_newsletter(pages)
+    build_ghosts(pages)
     for v in V:
         path, doc = venue_page(v)
         write(path, doc)
