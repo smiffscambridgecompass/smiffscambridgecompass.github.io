@@ -923,6 +923,22 @@ form.add .status{font-size:.82rem;color:var(--muted);min-height:1.2em;margin:0}
 .c-btns button,.c-btns a{font:inherit;font-size:.84rem;font-weight:700;border-radius:8px;padding:7px 12px;cursor:pointer;text-decoration:none;line-height:1.2}
 .c-btns button{background:var(--ink);color:var(--panel);border:0}
 .c-btns a{border:1px solid var(--line);color:var(--ink);background:var(--bg)}
+.c-btns button.c-crawl{background:var(--panel);color:var(--ink);border:2px solid var(--edge,var(--ink));padding:5px 10px}
+.c-btns button.c-crawl[aria-pressed="true"]{background:var(--pop,#FFD23F);color:var(--on-pop,#161616)}
+/* the event tapped in What's on, at the top of the venue page */
+.evhl{border:2px solid var(--edge,var(--ink));border-left:8px solid var(--c);border-radius:14px;background:var(--panel);box-shadow:3px 3px 0 var(--hard,#161616);padding:12px 14px;margin:10px 0 16px}
+.evhl p{margin:0}
+.evhl-l{font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.evhl-t{font:800 1.25rem/1.2 var(--display,inherit);margin:4px 0 2px!important}
+.evhl-s{color:var(--muted);font-size:.9rem}
+.evhl-a{display:inline-block;margin-top:10px;font-weight:700;font-size:.88rem;text-decoration:none;color:var(--on-pop,#161616);background:var(--pop,#FFD23F);border:2px solid var(--edge,#161616);border-radius:999px;padding:6px 14px}
+/* desktop: one header row (logo, quick filters, search), tabs underneath */
+@media (min-width:861px){
+  .top{grid-template-columns:auto 1fr auto;row-gap:6px;padding-block:10px 6px}
+  .top .chips#quick{grid-column:2;grid-row:1;align-self:center;padding-left:8px}
+  .top .search{grid-column:3;grid-row:1;width:min(340px,28vw)}
+  .top .tabs{padding-top:6px}
+}
 .leaflet-popup-content-wrapper{background:var(--panel);color:var(--ink);border-radius:14px;border:1px solid var(--line);box-shadow:0 6px 24px rgb(0 0 0/.18)}
 .leaflet-popup-content{margin:14px 16px;width:280px!important;max-height:340px;overflow:auto}
 .leaflet-popup-tip{background:var(--panel);border:1px solid var(--line)}
@@ -1308,7 +1324,29 @@ function gc(path){
 }
 /* pub links: ?p=<venue id> opens that pub's page; &s=poster marks a scan of a printed poster */
 const QS=(()=>{try{return new URLSearchParams(location.search)}catch(e){return null}})();
-function syncUrl(){if(!PUBLIC)return;try{const u=S.view==="detail"&&S.sel?location.pathname+"?p="+encodeURIComponent(S.sel):location.pathname;if(location.pathname+location.search!==u)history.replaceState(null,"",u)}catch(e){}}
+/* browser back/forward: each tab and each venue page is its own history step */
+let NAV_POP=false;
+function navKey(){return S.view==="detail"&&S.sel?"d:"+S.sel+(S.ev?"|"+S.ev.t:""):"v:"+S.view}
+function syncUrl(){
+  if(NAV_POP)return;
+  try{
+    const st=history.state||{},k=navKey();
+    if(st.k===k)return;
+    const det=S.view==="detail"&&S.sel;
+    const ns={k,view:S.view,sel:det?S.sel:null,prev:S.prev,ev:det?S.ev||null:null,i:st.k?(st.i||0)+1:0};
+    const u=PUBLIC?location.pathname+(det?"?p="+encodeURIComponent(S.sel):""):location.href;
+    if(st.k)history.pushState(ns,"",u);else history.replaceState(ns,"",u);
+  }catch(e){}
+}
+addEventListener("popstate",e=>{
+  const st=e.state;if(!st||!st.k||!V.length)return;
+  NAV_POP=true;
+  try{
+    if(map)map.closePopup();
+    if(st.view==="detail"&&st.sel&&BYID[st.sel]){S.prev=st.prev||"whatson";openVenue(st.sel,true,st.ev)}
+    else{S.sel=null;if(st.view==="map")S.prev=st.prev||"whatson";setView(st.view||"whatson");render();drawPins()}
+  }finally{NAV_POP=false}
+});
 function ownerLine(v){return PUBLIC?`<p class="ownr">Run ${esc(v.name)}? <a href="${esc(mailHref("Run "+v.name+": events and Featured spot"))}" data-gc="owner/${esc(v.id)}">Send your events, or ask about a Featured spot</a>. Your listing is free.</p>`:""}
 function isFav(v){return FAVS?FAVS.has(v.id):!!v.fav}
 let V=[], BYID={}, META={}, UPD=null, db=null, canWrite=false;
@@ -1529,9 +1567,10 @@ let qt;$("q").addEventListener("input",e=>{clearTimeout(qt);qt=setTimeout(()=>{S
 /* ---------- tabs ---------- */
 function setView(v){
   if(v!=="detail"&&v!=="map")S.prev=v;
+  if(v!=="detail")S.ev=null;
   const changed=S.view!==v;
   S.view=v;
-  if(v!=="map")syncUrl();
+  syncUrl();
   $("top").classList.remove("tuck");
   if(changed&&v!=="map"){const pn=$("pane");pn.classList.remove("enter");void pn.offsetWidth;pn.classList.add("enter")}
   const app=$("app");
@@ -1772,7 +1811,7 @@ function render(){
 function itemRow(v,e,showDay){
   const k=e.kind||"event";const c=catColor(KIND_CAT[k]||"pub");
   const extra=(e.weekly?`<span class="badge">${showDay?"Every "+esc(e.day):"Weekly"}</span>`:"")+(e.manual?`<span class="badge you">${YOU_ADDED}</span>`:e.by==="J"?`<span class="badge you">${FROM_YOU}</span>`:"");
-  return `<li class="item"><button data-v="${esc(v.id)}" style="--c:${c}"><span class="bar"></span><span><span class="t">${esc(e.title)}</span>${extra}<br><span class="v">${esc(v.name)} · ${esc(v.address)}${distLabel(v)?` <span class="dist">· ${distLabel(v)}</span>`:""}</span></span><span class="tag">${esc(KIND_LABEL[k]||"Event")}</span></button></li>`;
+  return `<li class="item"><button data-v="${esc(v.id)}" data-et="${esc(e.title)}" data-ed="${esc(e.weekly?"w:"+(e.day||""):e.date||"")}" data-ek="${esc(k)}" style="--c:${c}"><span class="bar"></span><span><span class="t">${esc(e.title)}</span>${extra}<br><span class="v">${esc(v.name)} · ${esc(v.address)}${distLabel(v)?` <span class="dist">· ${distLabel(v)}</span>`:""}</span></span><span class="tag">${esc(KIND_LABEL[k]||"Event")}</span></button></li>`;
 }
 function kindPass(e){if(e.kind==="sport")return false;return S.kind==="all"||e.kind===S.kind||(S.kind==="event"&&(e.kind==="event"||e.kind==="comedy"))||(S.kind==="music"&&e.kind==="classical")}
 /* the map follows the What's on filter (Live music, Quizzes...) as well as the venue filters */
@@ -1913,16 +1952,16 @@ $("pane").addEventListener("click",e=>{
   if(e.target.closest("[data-daypick]")){openCal();return}
   if(e.target.closest("[data-dayclear]")){setDay(null);const b=$("pane").querySelector("[data-daypick]");if(b)b.focus({preventScroll:true});return}
   const k=e.target.closest("[data-kind]");if(k){S.kind=(k.classList.contains("tn")&&S.kind===k.dataset.kind)?"all":k.dataset.kind;render();drawPins();announce();const again=$("pane").querySelector((k.classList.contains("tn")?".tn":".kinds .chip")+'[data-kind="'+k.dataset.kind+'"]');if(again)again.focus({preventScroll:true});return}
-  const b=e.target.closest("[data-v]");if(b){openVenue(b.dataset.v,true);return}
+  const b=e.target.closest("[data-v]");if(b){openVenue(b.dataset.v,true,b.dataset.et?{t:b.dataset.et,d:b.dataset.ed||"",k:b.dataset.ek||""}:null);return}
   if(e.target.closest(".back")){S.sel=null;setView(S.prev);render();drawPins();return}
   const d=e.target.closest(".del");if(d){removeUpdate(d.dataset.id,d);return}
   const c=e.target.closest("[data-crawl]");if(c){crawlAction(c.dataset.crawl,c.dataset.id,c);return}
 });
 $("pane").addEventListener("change",e=>{if(e.target.id==="crawl-fromme"){CRAWL_FROM_ME=e.target.checked;if(CRAWL_AUTO)CRAWL=orderCrawl(CRAWL);saveCrawl();render();drawPins()}});
 
-function openVenue(id,fly){
+function openVenue(id,fly,ev){
   const v=BYID[id];if(!v)return;
-  S.sel=id;setView("detail");$("mcard").hidden=true;
+  S.sel=id;S.ev=ev||null;setView("detail");$("mcard").hidden=true;
   renderDetail(v);drawPins();gc("page/"+id);
   if(fly&&map&&!isMobile()) moveMap([v.lat,v.lng],Math.max(map.getZoom(),16));
   $("panel").scrollTop=0;
@@ -1996,11 +2035,19 @@ function accessShort(v){
   return `<p class="c-acc">${ICO("♿")} ${esc(b.join(" · "))}</p>`;
 }
 function hostOf(u){try{return new URL(u).hostname.replace(/^www\./,"")}catch(e){return "source"}}
+/* the event that was tapped in What's on, shown at the top of its venue's page */
+function evHighlight(v){
+  const ev=S.ev;if(!ev||!ev.t)return "";
+  const d=ev.d||"";
+  const when=d.startsWith("w:")?(DAYLONG[d.slice(2)]?"Every "+DAYLONG[d.slice(2)].replace(/s$/,""):"Weekly"):d===T0?"Tonight":d?fmt(pd(d),{weekday:"long",day:"numeric",month:"long"}):"";
+  const link=httpsUrl(v.eventsUrl)||httpsUrl(v.website);
+  return `<div class="evhl" style="--c:${catColor(KIND_CAT[ev.k]||"pub")}"><p class="evhl-l">${esc(KIND_LABEL[ev.k]||"Event")}${when?" · "+esc(when):""}</p><p class="evhl-t">${esc(ev.t)}</p><p class="evhl-s">at ${esc(v.name)}</p>${link?`<a class="evhl-a" href="${esc(link)}" target="_blank" rel="noopener" data-gc="event-info/${esc(v.id)}">More info and tickets ↗</a>`:""}</div>`;
+}
 function renderDetail(v){
   if(!v)return;
   const cats=(v.cats||[]).map(c=>`<span style="--c:${catColor(c)}">${esc(CATS.find(x=>x[0]===c)?.[1]||c)}</span>`).join("");
-  let h=`<button class="back">← ${S.prev==="venues"?"All venues":"What's on"}</button>
-  <div class="d-head"><h2>${esc(v.name)}${SHAM(v)}</h2>${featOf(v)?`<p class="d-ad">${AD}<span>Featured pub${featOf(v).blurb?" · "+esc(featOf(v).blurb):""}</span></p>`:""}<div class="d-cats">${cats}</div><p class="d-addr">${esc(v.address)}, ${esc(v.postcode)}</p>${guinnessHtml(v)}${v.indie===true?`<p class="d-group"><span class="indie">Independent</span>${v.group?" · "+esc(v.group):""}</p>`:v.group?`<p class="d-group">${esc(v.group.startsWith("Greene King-owned")?v.group:v.group+" pub")}</p>`:""}${favBtn(v)}</div>
+  let h=`<button class="back">← ${S.prev==="venues"?"All venues":S.prev==="crawl"?"Your crawl":"What's on"}</button>
+  ${evHighlight(v)}<div class="d-head"><h2>${esc(v.name)}${SHAM(v)}</h2>${featOf(v)?`<p class="d-ad">${AD}<span>Featured pub${featOf(v).blurb?" · "+esc(featOf(v).blurb):""}</span></p>`:""}<div class="d-cats">${cats}</div><p class="d-addr">${esc(v.address)}, ${esc(v.postcode)}</p>${guinnessHtml(v)}${v.indie===true?`<p class="d-group"><span class="indie">Independent</span>${v.group?" · "+esc(v.group):""}</p>`:v.group?`<p class="d-group">${esc(v.group.startsWith("Greene King-owned")?v.group:v.group+" pub")}</p>`:""}${favBtn(v)}</div>
   ${statusHtml(v,true)}
   <div class="links">${crawlBtn(v)}${featOf(v)&&httpsUrl(featOf(v).book)?`<a href="${esc(httpsUrl(featOf(v).book))}" target="_blank" rel="noopener sponsored" data-gc="book/${esc(v.id)}">Book ↗</a>`:""}<a href="${esc(mapsLink(v))}" target="_blank" rel="noopener" data-gc="directions/${esc(v.id)}">Directions ↗</a>${v.website?`<a href="${esc(v.website)}" target="_blank" rel="noopener" data-gc="website/${esc(v.id)}">Website ↗</a>`:""}${v.eventsUrl&&v.eventsUrl!==v.website?`<a href="${esc(v.eventsUrl)}" target="_blank" rel="noopener" data-gc="whatson/${esc(v.id)}">What's on ↗</a>`:""}</div>`;
   if(closedNote(v)) h+=`<p class="notice"><b>${esc(closedNote(v))}</b>Temporarily closed; due to reopen on or before then.</p>`;
@@ -2213,7 +2260,8 @@ function cardHtml(v){
     else if(wk) h+=`<p class="c-next">${esc(DAYLONG[wk.day]||wk.day)}: ${esc(wk.title)}</p>`;
   }
   {const gs=closedNote(v)?null:gardenSun(v);if(gs&&gs.short)h+=`<p class="c-sun">${SUN_ICO}${esc(gs.short)}</p>`}
-  h+=`<div class="c-btns"><button data-open="${esc(v.id)}">Details</button>${bk?`<a href="${esc(bk)}" target="_blank" rel="noopener sponsored" data-gc="book/${esc(v.id)}">Book ↗</a>`:""}<a href="${esc(mapsLink(v))}" target="_blank" rel="noopener" data-gc="directions/${esc(v.id)}">Directions ↗</a></div></div>`;
+  const onC=CRAWL.includes(v.id);
+  h+=`<div class="c-btns"><button data-open="${esc(v.id)}">Details</button><button class="c-crawl" data-crawladd="${esc(v.id)}" aria-pressed="${onC}">${onC?"✓ On your crawl":"+ Add to crawl"}</button>${bk?`<a href="${esc(bk)}" target="_blank" rel="noopener sponsored" data-gc="book/${esc(v.id)}">Book ↗</a>`:""}<a href="${esc(mapsLink(v))}" target="_blank" rel="noopener" data-gc="directions/${esc(v.id)}">Directions ↗</a></div></div>`;
   return h;
 }
 function favBtn(v){
@@ -2397,6 +2445,7 @@ function boot(data){
   BYID={};V.forEach(v=>BYID[v.id]=v);
   $("updated").innerHTML=`<span class="tagl">Cambridge pubs, gigs, quizzes and deals</span><span class="upd"> · updated ${esc((META.checkedLabel||"").replace(/ \d{4}$/,""))}</span>`;
   renderChips();render();drawPins();
+  syncUrl(); /* first history step: the list, so back from a shared pub link lands on What's on */
   /* opened from a pub link or a poster's QR code */
   if(QS){
     const pid=QS.get("p"),src=QS.get("s"),f=QS.get("f");
