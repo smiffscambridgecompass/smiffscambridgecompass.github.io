@@ -158,7 +158,7 @@ def https(u):
 
 # ---------- page shell ----------
 CSS = """
-:root{--bg:#FFF6E3;--panel:#FFFDF8;--ink:#161616;--muted:#55524B;--line:#DDD5C4;--soft:#F5EFE2;--pop:#FFD23F;--on-pop:#161616;--edge:#161616;--hard:#161616;
+:root{--bg:#E9E2D6;--panel:#F2EDE4;--ink:#2F3D2C;--muted:#56634F;--line:#D2C9B9;--soft:#E6DFD3;--pop:#FFD23F;--on-pop:#1F2A1D;--edge:#2F3D2C;--hard:#2F3D2C;
 --display:"Gluten","Arial Rounded MT Bold",system-ui,sans-serif;--body:"Fredoka",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:light}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111111;--panel:#1A1A1A;--ink:#F6F1E6;--muted:#B9B2A5;--line:#34312C;--soft:#242220;--edge:#6E6960;--hard:#000;color-scheme:dark}}
 *{box-sizing:border-box}
@@ -250,7 +250,7 @@ def shell(path, title, desc, body, crumbs=None, ld=None, map_link="/"):
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=6">
-<meta name="theme-color" content="#FFFDF8">
+<meta name="theme-color" content="#F2EDE4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gluten:wght@800&family=Fredoka:wght@400;600;700&display=swap">

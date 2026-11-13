@@ -23,7 +23,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Smiff's Compass">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFDF8">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F2EDE4">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1A1A1A">
 <link rel="icon" type="image/svg+xml" href="favicon.svg?v=6">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}*{box-sizing:border-box}</style>
@@ -1122,10 +1122,11 @@ a.a2-go{text-decoration:none;display:inline-block}
 /* Poster look: paper, black ink and a yellow highlighter, matching the posters and flyers.
    Thick ink outlines and hard offset shadows instead of soft pills and blurry shadows. */
 :root{
-  --bg:#FFF6E3; --panel:#FFFDF8; --ink:#161616; --muted:#55524B; --line:#DDD5C4; --soft:#F5EFE2;
-  --accent:#161616; --fav:#A86F00; --warn:#8A4B00; --warn-bg:#FFE9A8;
-  --edge:#161616; --pop:#FFD23F; --on-pop:#161616; --hard:#161616; --pin-edge:#161616;
-  --land:#F7F3EA; --dots:#E4DDCE; --road:#FFFFFF; --road-edge:#D3CCBD; --green:#CFE8BE; --water:#8CC9EA; --label:#4B514C;
+  /* mushroom paper with dark green ink (the poster colours), yellow highlighter on top */
+  --bg:#E9E2D6; --panel:#F2EDE4; --ink:#2F3D2C; --muted:#56634F; --line:#D2C9B9; --soft:#E6DFD3;
+  --accent:#2F3D2C; --fav:#9C6F00; --warn:#8A4B00; --warn-bg:#F7E3C6;
+  --edge:#2F3D2C; --pop:#FFD23F; --on-pop:#1F2A1D; --hard:#2F3D2C; --pin-edge:#2F3D2C;
+  --land:#ECE6DB; --dots:#D3CBBD; --road:#FBF8F2; --road-edge:#D2C9B9; --green:#CFDDC6; --water:#93BDD0; --label:#5F6958;
   --display:"Gluten", "Arial Rounded MT Bold", system-ui, sans-serif;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
@@ -1147,8 +1148,8 @@ a.a2-go{text-decoration:none;display:inline-block}
 .chip[aria-pressed="true"] .fcount{background:var(--on-pop);color:var(--pop)}
 .tonight{background:var(--pop);color:var(--on-pop);border:2px solid var(--edge);border-radius:14px;box-shadow:3px 3px 0 var(--hard)}
 .tonight .tq{color:var(--on-pop)}
-.tonight .tn{background:#FFFDF8;color:#161616;border-color:#161616}
-.tonight .tn[aria-pressed="true"]{background:#161616;color:#FFD23F;box-shadow:none}
+.tonight .tn{background:var(--panel);color:var(--ink);border-color:var(--edge)}
+.tonight .tn[aria-pressed="true"]{background:var(--ink);color:#FFD23F;box-shadow:none}
 .day h2{font-size:1.4rem}
 .items{border-top:2px solid var(--edge)}
 .item{border-bottom:1.5px dashed var(--line)}
