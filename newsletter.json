@@ -1,47 +1,46 @@
 {
   "_note": "The latest newsletter issue, shown on smiffs.uk/newsletter/. Replace this each Friday after the email goes out; the page rebuilds on push.",
   "subscribe_url": "https://justins-newsletter-bec391.beehiiv.com/subscribe",
-  "sent": "2026-11-06",
-  "title": "Blues, reggae and a goth night: your week in Cambridge pubs",
-  "range": "Friday 6 to Thursday 12 November",
-  "web_url": "https://justins-newsletter-bec391.beehiiv.com/p/cambridge-pubs-6-12-november",
+  "sent": "2026-11-13",
+  "title": "Outlook's down. The pub isn't: your week in Cambridge pubs",
+  "range": "Friday 13 to Thursday 19 November",
   "pick": {
-    "what": "Queen Bee Blues Band",
-    "venue": "earl-beaconsfield",
-    "venue_name": "the Earl of Beaconsfield",
-    "detail": "Saturday 7 November, 8.30pm. Live blues at a proper local on Mill Road."
+    "what": "Jack Grace Band",
+    "venue": "geldart",
+    "venue_name": "The Geldart",
+    "detail": "Tuesday 17 November, 8.30pm (£10). Live music in a cosy back-street local, just the thing for a midweek pint."
   },
   "days": [
-    {"day": "Friday 6 Nov", "items": [
-      {"what": "Katey Brooks, joined by How Dare She", "venue": "junction", "venue_name": "Cambridge Junction", "detail": ""},
-      {"what": "Greek night", "venue": "old-spring", "venue_name": "The Old Spring", "detail": "from 6pm"},
-      {"what": "The Calling goth club night", "venue": "blue-moon", "venue_name": "The Blue Moon", "detail": "first Friday of the month, sometimes until 2am"}
+    {"day": "Friday 13 Nov", "items": [
+      {"what": "The Fiver", "venue": "junction", "venue_name": "Cambridge Junction", "detail": ""},
+      {"what": "All That Jazz", "venue": "parkers-tavern", "venue_name": "Parker's Tavern", "detail": "9 to 11.30pm (no booking needed)"},
+      {"what": "Live music", "venue": "burleigh-arms", "venue_name": "The Burleigh Arms", "detail": "Friday evening"}
     ]},
-    {"day": "Saturday 7 Nov", "items": [
-      {"what": "Karen McWhinnie and friends", "venue": "six-bells", "venue_name": "The Six Bells", "detail": "8.30 to 11pm"},
-      {"what": "Reggae night", "venue": "carlton-arms", "venue_name": "The Carlton Arms", "detail": ""},
-      {"what": "Mikkeller Running Club", "venue": "thirsty", "venue_name": "Thirsty", "detail": "3pm: a group run, then 10% off tap beer and soft drinks afterwards"}
+    {"day": "Saturday 14 Nov", "items": [
+      {"what": "Live music", "venue": "grapes", "venue_name": "The Grapes", "detail": ""},
+      {"what": "Swiftogeddon: 20 years of Taylor (early show)", "venue": "kiki", "venue_name": "Kiki", "detail": "4pm (from £8.82)"},
+      {"what": "Grace Jarvis: Getting Dragged Backwards Through a Hedge", "venue": "junction", "venue_name": "Cambridge Junction", "detail": "comedy"}
     ]},
-    {"day": "Sunday 8 Nov", "items": [
-      {"what": "Nick Barraclough and friends", "venue": "kingston-arms", "venue_name": "The Kingston Arms", "detail": "free"}
+    {"day": "Sunday 15 Nov", "items": [
+      {"what": "The Rabbitts and Fran Lusty", "venue": "portland-arms", "venue_name": "The Portland Arms", "detail": "live"}
     ]},
-    {"day": "Monday 9 Nov", "items": [
-      {"what": "Speed quizzing", "venue": "cambridge-tap", "venue_name": "The Cambridge Tap", "detail": "8pm"}
+    {"day": "Monday 16 Nov", "items": [
+      {"what": "Pub quiz", "venue": "earl-beaconsfield", "venue_name": "the Earl of Beaconsfield", "detail": "8pm (£2 entry, cash prizes)"}
     ]},
-    {"day": "Tuesday 10 Nov", "items": [
-      {"what": "Sean O'Hanrahan's Flying Hammond Trio", "venue": "geldart", "venue_name": "The Geldart", "detail": "8.30 to 10.30pm (£7, students £5)"}
+    {"day": "Tuesday 17 Nov", "items": [
+      {"what": "Comical Reactions comedy night", "venue": "thirsty", "venue_name": "Thirsty", "detail": "8pm (doors 7.30pm)"}
     ]},
-    {"day": "Wednesday 11 Nov", "items": [
-      {"what": "Barbican Estate", "venue": "portland-arms", "venue_name": "The Portland Arms", "detail": "live"}
+    {"day": "Wednesday 18 Nov", "items": [
+      {"what": "Star Wars themed quiz", "venue": "byrons-bear", "venue_name": "Byron's Bear", "detail": "8pm: £3 entry and a £100 bar tab up for grabs"}
     ]},
-    {"day": "Thursday 12 Nov", "items": [
-      {"what": "Useless Quiz", "venue": "thirsty", "venue_name": "Thirsty", "detail": "£2 each, teams of up to 4, and the winning team's tab is on the house"}
+    {"day": "Thursday 19 Nov", "items": [
+      {"what": "El Hombre sin Nombre, free flamenco", "venue": "geldart", "venue_name": "The Geldart", "detail": "8 to 9pm"}
     ]}
   ],
   "deal": {
-    "what": "Curry night",
-    "venue": "alma",
-    "venue_name": "The Alma",
-    "detail": "every Tuesday: a choice of seven curries for £7.50, with a drink"
+    "what": "Sunday roasts",
+    "venue": "free-press",
+    "venue_name": "The Free Press",
+    "detail": "all £16, with the kitchen open 12 to 4pm"
   }
 }
