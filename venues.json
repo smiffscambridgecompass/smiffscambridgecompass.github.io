@@ -1334,17 +1334,22 @@
     },
     {
      "date": "2026-11-17",
-     "title": "Comical Reactions comedy night, 8pm (doors 7:30pm)",
+     "title": "Comical Reactions stand-up: science and politics themed comedy, 8–10pm (doors 7:30pm, £7.25)",
      "kind": "comedy"
     },
     {
      "date": "2026-11-18",
-     "title": "Pomona Island 9th birthday tap showcase",
+     "title": "Pomona Island 9th birthday tap showcase: four new collab beers (Imperial Stout, Smoothie Sour, IPA, DIPA)",
      "kind": "event"
     },
     {
      "date": "2026-11-19",
      "title": "Hitwrap food truck (from 5:30pm)",
+     "kind": "event"
+    },
+    {
+     "date": "2026-11-19",
+     "title": "Beaujolais Nouveau: two new wines by the glass (one chilled), plus bottles to take home",
      "kind": "event"
     },
     {
@@ -1359,12 +1364,12 @@
     },
     {
      "date": "2026-11-24",
-     "title": "Titanic Whisky tasting, 7:30pm (book via shop)",
+     "title": "Titanic Distillers Irish whiskey tasting, 7:30pm (£25, 18+, book ahead)",
      "kind": "event"
     },
     {
      "date": "2026-11-26",
-     "title": "Useless Quiz, teams up to 4 (£2 a head; winners get their tab paid)",
+     "title": "Useless Quiz in the Den, teams up to 4 (£2 a head; winners get their whole tab paid). Book via ben@wearethirsty.co.uk",
      "kind": "quiz"
     },
     {
@@ -1394,7 +1399,7 @@
     },
     {
      "date": "2026-12-01",
-     "title": "First Laughs comedy, 7:45pm (free, donations)",
+     "title": "First Laughs indie comedy in the Den, 7:45pm (free, donations at the end; reserve via ben@wearethirsty.co.uk)",
      "kind": "comedy"
     },
     {
@@ -1409,7 +1414,7 @@
     },
     {
      "date": "2026-12-05",
-     "title": "Mikkeller running club, 3pm: 5k run then 10% off tap beer and soft drinks",
+     "title": "Mikkeller Christmas Run, 3pm: 5k in fancy dress (prizes), then 10% off tap beer and soft drinks",
      "kind": "event"
     },
     {
@@ -1449,7 +1454,7 @@
     },
     {
      "date": "2026-12-31",
-     "title": "NYE Taco Party with Tacoman, 18+: nachos on arrival 7pm, unlimited tacos 8:30-11pm, party until 1am (from £40 incl. welcome drink)",
+     "title": "NYE Taco Party with Tacoman, 7pm on, 18+: nachos on arrival, tacos 8:30–11pm, welcome drink and a guaranteed seat (£40pp, book ahead)",
      "kind": "event"
     },
     {
@@ -1458,7 +1463,8 @@
      "kind": "event"
     }
    ],
-   "indie": true
+   "indie": true,
+   "eventsUrl": "https://www.wearethirsty.co.uk/events"
   },
   {
    "id": "town-gown",
