@@ -1,46 +1,123 @@
 {
   "_note": "The latest newsletter issue, shown on smiffs.uk/newsletter/. Replace this each Friday after the email goes out; the page rebuilds on push.",
   "subscribe_url": "https://justins-newsletter-bec391.beehiiv.com/subscribe",
-  "sent": "2026-11-13",
-  "title": "Outlook's down. The pub isn't: your week in Cambridge pubs",
-  "range": "Friday 13 to Thursday 19 November",
+  "sent": "2026-11-20",
+  "title": "Lights on, live blues and a free bar tab: your week in Cambridge pubs",
+  "range": "Friday 20 to Thursday 26 November",
+  "web_url": "https://justins-newsletter-bec391.beehiiv.com/p/comedy-flamenco-and-a-star-wars-quiz-your-week-in-cambridge-pubs-1",
   "pick": {
-    "what": "Jack Grace Band",
-    "venue": "geldart",
-    "venue_name": "The Geldart",
-    "detail": "Tuesday 17 November, 8.30pm (£10). Live music in a cosy back-street local, just the thing for a midweek pint."
+    "what": "Charly Says",
+    "venue": "earl-beaconsfield",
+    "venue_name": "the Earl of Beaconsfield",
+    "detail": "Saturday 21 November, 8.30pm. A high-energy live band for fans of The Prodigy, EMF and The Chemical Brothers. The perfect way to kick off a Saturday night on Mill Road."
   },
   "days": [
-    {"day": "Friday 13 Nov", "items": [
-      {"what": "The Fiver", "venue": "junction", "venue_name": "Cambridge Junction", "detail": ""},
-      {"what": "All That Jazz", "venue": "parkers-tavern", "venue_name": "Parker's Tavern", "detail": "9 to 11.30pm (no booking needed)"},
-      {"what": "Live music", "venue": "burleigh-arms", "venue_name": "The Burleigh Arms", "detail": "Friday evening"}
-    ]},
-    {"day": "Saturday 14 Nov", "items": [
-      {"what": "Live music", "venue": "grapes", "venue_name": "The Grapes", "detail": ""},
-      {"what": "Swiftogeddon: 20 years of Taylor (early show)", "venue": "kiki", "venue_name": "Kiki", "detail": "4pm (from £8.82)"},
-      {"what": "Grace Jarvis: Getting Dragged Backwards Through a Hedge", "venue": "junction", "venue_name": "Cambridge Junction", "detail": "comedy"}
-    ]},
-    {"day": "Sunday 15 Nov", "items": [
-      {"what": "The Rabbitts and Fran Lusty", "venue": "portland-arms", "venue_name": "The Portland Arms", "detail": "live"}
-    ]},
-    {"day": "Monday 16 Nov", "items": [
-      {"what": "Pub quiz", "venue": "earl-beaconsfield", "venue_name": "the Earl of Beaconsfield", "detail": "8pm (£2 entry, cash prizes)"}
-    ]},
-    {"day": "Tuesday 17 Nov", "items": [
-      {"what": "Comical Reactions comedy night", "venue": "thirsty", "venue_name": "Thirsty", "detail": "8pm (doors 7.30pm)"}
-    ]},
-    {"day": "Wednesday 18 Nov", "items": [
-      {"what": "Star Wars themed quiz", "venue": "byrons-bear", "venue_name": "Byron's Bear", "detail": "8pm: £3 entry and a £100 bar tab up for grabs"}
-    ]},
-    {"day": "Thursday 19 Nov", "items": [
-      {"what": "El Hombre sin Nombre, free flamenco", "venue": "geldart", "venue_name": "The Geldart", "detail": "8 to 9pm"}
-    ]}
+    {
+      "day": "Friday 20 Nov",
+      "items": [
+        {
+          "what": "King Street Christmas Switch-On",
+          "venue": "brew-house",
+          "venue_name": "King Street Brew House",
+          "detail": ""
+        },
+        {
+          "what": "Freedom Sound: Jazz Dance Night (Cambridge Jazz Festival)",
+          "venue": "hot-numbers",
+          "venue_name": "Hot Numbers",
+          "detail": "Gwydir St (£8)"
+        },
+        {
+          "what": "Elephant Sessions",
+          "venue": "junction",
+          "venue_name": "Cambridge Junction",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "day": "Saturday 21 Nov",
+      "items": [
+        {
+          "what": "The Silverbacks Blues Band",
+          "venue": "six-bells",
+          "venue_name": "The Six Bells",
+          "detail": "8.30pm (free)"
+        },
+        {
+          "what": "The Zangwills, with The Ariston and Oli Harris",
+          "venue": "portland-arms",
+          "venue_name": "The Portland Arms",
+          "detail": ""
+        },
+        {
+          "what": "Silent disco",
+          "venue": "town-gown",
+          "venue_name": "Town & Gown",
+          "detail": "9pm"
+        }
+      ]
+    },
+    {
+      "day": "Sunday 22 Nov",
+      "items": [
+        {
+          "what": "Downpipe live",
+          "venue": "geldart",
+          "venue_name": "The Geldart",
+          "detail": "8.30pm (£5)"
+        }
+      ]
+    },
+    {
+      "day": "Monday 23 Nov",
+      "items": [
+        {
+          "what": "Speed quizzing",
+          "venue": "cambridge-tap",
+          "venue_name": "The Cambridge Tap",
+          "detail": "8pm"
+        }
+      ]
+    },
+    {
+      "day": "Tuesday 24 Nov",
+      "items": [
+        {
+          "what": "Boozy Book Club",
+          "venue": "alexandra-arms",
+          "venue_name": "The Alexandra Arms",
+          "detail": "7 to 9pm"
+        }
+      ]
+    },
+    {
+      "day": "Wednesday 25 Nov",
+      "items": [
+        {
+          "what": "Chouffe Belgian beer party",
+          "venue": "maypole",
+          "venue_name": "The Maypole",
+          "detail": "with instant prizes to win"
+        }
+      ]
+    },
+    {
+      "day": "Thursday 26 Nov",
+      "items": [
+        {
+          "what": "Useless Quiz",
+          "venue": "thirsty",
+          "venue_name": "Thirsty",
+          "detail": "teams of up to 4, £2 a head, and the winners get their whole tab paid. Book via ben@wearethirsty.co.uk"
+        }
+      ]
+    }
   ],
   "deal": {
-    "what": "Sunday roasts",
-    "venue": "free-press",
-    "venue_name": "The Free Press",
-    "detail": "all £16, with the kitchen open 12 to 4pm"
+    "what": "Wing Wednesday",
+    "venue": "anchor",
+    "venue_name": "The Anchor",
+    "detail": "five full wings for £5, then £1 for each extra wing."
   }
 }
