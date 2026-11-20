@@ -867,7 +867,7 @@ def build_newsletter(pages):
     dl = n.get("deal")
     if dl:
         body += (f'<div class="box" style="border-style:dashed"><p><strong>Deal of the week:</strong> {e(dl["what"])} at {place(dl)}, {e(dl.get("detail", ""))}.</p></div>')
-    body += (f'<p>Everything else, from quizzes and roasts to live sport, is <a href="/">on the map</a>. Know a gig or quiz I&rsquo;ve missed? Email <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>'
+    body += (f'<p>Everything else, from quiz nights to Sunday roasts, is <a href="/">on the map</a>. Know a gig or quiz I&rsquo;ve missed? Email <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>'
              f'<p>Cheers,<br><strong>Smiff</strong></p>')
     if n.get("web_url"):
         body += f'<p class="meta"><a href="{e(n["web_url"])}" target="_blank" rel="noopener">Read this issue as it was emailed</a></p>'
