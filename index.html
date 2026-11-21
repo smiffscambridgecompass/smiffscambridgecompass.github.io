@@ -932,6 +932,62 @@ form.add .status{font-size:.82rem;color:var(--muted);min-height:1.2em;margin:0}
 .evhl-t{font:800 1.25rem/1.2 var(--display,inherit);margin:4px 0 2px!important}
 .evhl-s{color:var(--muted);font-size:.9rem}
 .evhl-a{display:inline-block;margin-top:10px;font-weight:700;font-size:.88rem;text-decoration:none;color:var(--on-pop,#161616);background:var(--pop,#FFD23F);border:2px solid var(--edge,#161616);border-radius:999px;padding:6px 14px}
+
+/* ---------- landing screen ---------- */
+.landing{position:fixed;inset:0;z-index:1500;background:var(--bg);color:var(--ink);overflow:auto;overscroll-behavior:contain}
+.landing[hidden]{display:none}
+html.ld-open body{overflow:hidden}
+.ld-in{position:relative;min-height:100%;max-width:520px;margin:0 auto;display:flex;flex-direction:column;justify-content:space-between;padding:max(18px,env(safe-area-inset-top)) 18px max(18px,env(safe-area-inset-bottom))}
+.ld-menu{position:absolute;top:max(14px,env(safe-area-inset-top));right:14px;width:46px;height:46px;border-radius:14px;border:2px solid var(--edge,var(--ink));background:var(--panel);display:grid;place-items:center;box-shadow:2px 2px 0 var(--hard,#161616);cursor:pointer}
+.ld-menu svg{width:22px;height:22px;stroke:var(--ink);stroke-width:2.4;fill:none;stroke-linecap:round}
+.ld-brand{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;margin:4px 0 16px}
+.ld-duo{display:flex;align-items:flex-end;gap:18px}
+.ld-logo{width:62px;height:62px}
+.ld-chars{display:inline-flex;align-items:flex-end;gap:6px}
+.ld-chars i{display:block;height:70px;background:var(--ink);-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+.ld-pint{--m:url(landing-pint.png);width:44px;transform:rotate(-6deg)}
+.ld-wine{--m:url(landing-wine.png);width:37px;transform:rotate(7deg)}
+.ld-brand h1{font:900 1.65rem/1.05 var(--display,inherit);margin:6px 0 0}
+.ld-brand p{margin:0;color:var(--muted)}
+.ld-hl{background:linear-gradient(transparent 55%,var(--pop,#FFD23F) 55%,var(--pop,#FFD23F) 92%,transparent 92%);padding:0 3px;color:var(--ink)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .ld-hl{background:var(--pop,#FFD23F);color:#1F2A1D;border-radius:4px}}
+:root[data-theme="dark"] .ld-hl{background:var(--pop,#FFD23F);color:#1F2A1D;border-radius:4px}
+.ld-q,.ld-h{font:800 1.22rem/1.2 var(--display,inherit);margin:0 0 10px}
+.ld-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px}
+.ld-t{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-height:96px;padding:11px 11px 10px;border:2px solid var(--edge,var(--ink));border-radius:18px;background:var(--panel);color:var(--ink);box-shadow:3px 3px 0 var(--hard,#161616);text-align:left;font:inherit;cursor:pointer}
+.ld-t:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--hard,#161616)}
+.ld-e{font-size:1.5rem;line-height:1}
+.ld-t b{font:800 1.08rem/1.15 var(--display,inherit);margin-top:auto}
+.ld-t small{font-size:.85rem;color:var(--muted)}
+.ld-n{position:absolute;top:10px;right:10px;font-weight:700;font-size:.8rem;background:var(--pop,#FFD23F);color:var(--on-pop,#1F2A1D);border:1.5px solid var(--edge,var(--ink));border-radius:999px;padding:1px 8px}
+.ld-days{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;margin:0 -18px 16px;padding:0 18px 4px;scroll-padding-inline:18px;scroll-snap-type:x proximity}
+.ld-days::-webkit-scrollbar{display:none}
+.ld-d{flex:none;width:56px;border:1.5px solid var(--edge,var(--ink));border-radius:14px;background:var(--panel);color:var(--ink);display:grid;justify-items:center;padding:8px 0 7px;gap:1px;font:inherit;cursor:pointer;scroll-snap-align:start}
+.ld-d small{font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.ld-d b{font:900 1.2rem/1 var(--display,inherit)}
+.ld-d i{font-style:normal;font-size:.66rem;color:var(--muted)}
+.ld-d[aria-pressed="true"]{background:var(--pop,#FFD23F);color:var(--on-pop,#1F2A1D);border-width:2px;box-shadow:2px 2px 0 var(--hard,#161616)}
+.ld-d[aria-pressed="true"] small,.ld-d[aria-pressed="true"] i{color:var(--on-pop,#1F2A1D);opacity:.8}
+.ld-cal{width:56px;align-content:center}.ld-cal b{font-size:1.15rem}
+.ld-feat{display:flex;align-items:center;gap:12px;border:2px dashed var(--edge,var(--ink));border-radius:16px;padding:11px 14px;margin:0 0 14px;color:var(--ink);text-decoration:none}
+.ld-fe{font-size:1.5rem}.ld-feat b{display:block;font:800 1.02rem/1.2 var(--display,inherit)}.ld-feat small{color:var(--muted);font-size:.86rem}
+.ld-fa{margin-left:auto;font:800 1.4rem var(--display,inherit)}
+.ld-all{display:block;width:100%;text-align:center;font-family:inherit;font-weight:700;font-size:1.05rem;background:var(--pop,#FFD23F);color:var(--on-pop,#1F2A1D);border:2.5px solid var(--edge,var(--ink));border-radius:999px;padding:14px;box-shadow:3px 3px 0 var(--hard,#161616);cursor:pointer}
+.ld-custom{display:block;margin:10px auto 0;background:none;border:0;font-family:inherit;font-weight:600;font-size:1rem;color:var(--ink);text-decoration:underline;text-decoration-color:var(--pop,#FFD23F);text-decoration-thickness:3px;text-underline-offset:4px;cursor:pointer;padding:4px}
+.ld-skip{display:flex;align-items:center;justify-content:center;gap:8px;font-size:.84rem;color:var(--muted);margin-top:8px}
+.ld-skip input{width:17px;height:17px;accent-color:var(--ink)}
+.ld-cs{justify-content:flex-start}
+.ld-cs-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.ld-back{background:none;border:0;font-family:inherit;font-weight:600;font-size:1rem;color:var(--muted);padding:8px 0;cursor:pointer}
+.ld-logo-s{width:40px;height:40px}
+.ld-h{font-size:1.6rem;margin-bottom:16px}
+.ld-lab{font:800 1.02rem var(--display,inherit);margin:0 0 8px}.ld-lab small{font-family:inherit;font-weight:500;font-size:.8rem;color:var(--muted)}
+.ld-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.ld-c{border:1.5px solid var(--edge,var(--ink));border-radius:999px;padding:7px 14px;background:var(--panel);color:var(--ink);font-family:inherit;font-weight:600;font-size:.95rem;cursor:pointer}
+.ld-c[aria-pressed="true"]{background:var(--pop,#FFD23F);color:var(--on-pop,#1F2A1D);border-width:2px;box-shadow:2px 2px 0 var(--hard,#161616)}
+.ld-go{margin-top:auto}
+@media (max-height:700px){.ld-in{padding-top:12px;padding-bottom:10px}.ld-brand{margin:0 0 8px;gap:2px}.ld-logo{width:44px;height:44px}.ld-chars i{height:48px}.ld-pint{width:30px}.ld-wine{width:26px}.ld-brand h1{font-size:1.3rem;margin-top:2px}.ld-brand p{font-size:.92rem}.ld-q{font-size:1.08rem;margin-bottom:6px}.ld-t{min-height:84px;padding:9px 10px 8px}.ld-e{font-size:1.25rem}.ld-t b{font-size:.96rem}.ld-t small{font-size:.8rem}.ld-grid{gap:8px;margin-bottom:10px}.ld-days{margin-bottom:10px}.ld-d{padding:4px 0 3px}.ld-d b{font-size:1.05rem}.ld-feat{margin-bottom:10px;padding:7px 12px}.ld-fe{font-size:1.25rem}.ld-feat b{font-size:.95rem}.ld-feat small{font-size:.8rem}.ld-all{padding:11px}.ld-custom{margin-top:4px}.ld-skip{margin-top:2px}.ld-menu{width:40px;height:40px;top:10px;right:12px}}
+@media (min-width:700px){.ld-in{justify-content:center;gap:0}}
 /* pub lore card and pop-out */
 .storycard{display:grid;gap:3px;width:100%;text-align:left;margin:14px 0 4px;padding:12px 14px;border:2px solid var(--edge,var(--ink));border-radius:14px;background:var(--soft);color:var(--ink);box-shadow:3px 3px 0 var(--hard,#161616);cursor:pointer;font:inherit}
 .storycard:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--hard,#161616)}
@@ -2487,6 +2543,104 @@ let wasMobile=isMobile();
 addEventListener("resize",()=>{const m=isMobile();if(m!==wasMobile){wasMobile=m;if(!m&&S.view==="map")setView(S.prev);if(map)map.invalidateSize()}placeLabels()});
 
 /* ---------- boot ---------- */
+
+/* ---------- landing screen: the calm front door when someone opens smiffs.uk directly ---------- */
+const LAND_SKIP="smiff-skip-landing";
+const LAND=(()=>{
+  if(!PUBLIC)return false;
+  if(!/^\/(index\.html)?$/.test(location.pathname)||location.search||location.hash)return false;
+  try{if(localStorage.getItem(LAND_SKIP)==="1")return false}catch(e){}
+  return true;
+})();
+function landCount(dd,pick){let n=0;V.forEach(v=>{if(closedNote(v))return;onDay(v,dd).forEach(e=>{if(e.kind!=="sport"&&pick(e))n++})});return n}
+function landHtml(){
+  const ready=V.length>0;
+  const isK=k=>e=>k==="music"?(e.kind==="music"||e.kind==="classical"):e.kind===k;
+  const c=k=>ready?landCount(TODAY,isK(k)):0;
+  const music=c("music"),offer=c("offer"),quiz=c("quiz"),club=c("club");
+  const tiles=[
+    {a:"music",e:"🎸",t:"Live music tonight",s:"Gigs, bands and jazz",n:music},
+    {a:"offer",e:"🍺",t:"Pub deals today",s:"Offers on now",n:offer},
+    quiz?{a:"quiz",e:"🧠",t:"Pub quiz tonight",s:"Get a team together",n:quiz}
+      :club?{a:"club",e:"🪩",t:"Club nights tonight",s:"Dance till late",n:club}
+      :{a:"all",e:"🎉",t:"Everything tonight",s:"All of it, one list",n:ready?landCount(TODAY,()=>true):0},
+    {a:"near",e:"📍",t:"Near me",s:"What's close by",n:0}
+  ];
+  const days=[];for(let i=0;i<14;i++){const d=addDays(TODAY,i);days.push({k:ymd(d),w:i?fmt(d,{weekday:"short"}):fmt(d,{weekday:"short"}),n:d.getDate(),c:ready?landCount(d,()=>true):null,t:i===0})}
+  return `<div class="ld-in">
+  <button class="ld-menu" data-land="menu" aria-label="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <div class="ld-brand"><div class="ld-duo"><img src="favicon.svg" alt="" class="ld-logo"><span class="ld-chars" aria-hidden="true"><i class="ld-pint"></i><i class="ld-wine"></i></span></div>
+  <h1>Smiff&rsquo;s Cambridge Compass</h1><p>What&rsquo;s on in Cambridge pubs, <span class="ld-hl">tonight</span></p></div>
+  <h2 class="ld-q">What are you after?</h2>
+  <div class="ld-grid">${tiles.map(t=>`<button class="ld-t" data-land="${t.a}"><span class="ld-e" aria-hidden="true">${t.e}</span>${t.n?`<span class="ld-n">${t.n}</span>`:""}<b>${esc(t.t)}</b></button>`).join("")}</div>
+  <div class="ld-days" role="group" aria-label="Pick a day">${days.map(d=>`<button class="ld-d" data-land="day" data-d="${d.k}" aria-pressed="${d.t}"><small>${esc(d.w)}</small><b>${d.n}</b></button>`).join("")}<button class="ld-d ld-cal" data-land="cal" aria-label="More dates"><b aria-hidden="true">📅</b></button></div>
+  <a class="ld-feat" href="mailto:${"smiffscompass@gmail.com"}?subject=${encodeURIComponent("I want to feature on the page")}" data-gc="landing/feature"><span class="ld-fe" aria-hidden="true">📣</span><span><b>Run a pub or venue?</b><small>Want to feature here? Get in touch</small></span><span class="ld-fa" aria-hidden="true">›</span></a>
+  <button class="ld-all" data-land="all-days">Show me everything</button>
+  <button class="ld-custom" data-land="custom">🔍 Custom search</button>
+  <label class="ld-skip"><input type="checkbox" id="ld-skip"> Skip this next time</label>
+  </div>`;
+}
+function customHtml(){
+  const K=[["all","Anything"],["music","🎸 Live music"],["club","🪩 Club nights"],["quiz","🧠 Quizzes"],["offer","🍺 Deals"],["event","😂 Comedy & events"],["sport","⚽ Live sport"]];
+  const D=[["","Any day"],[T0,"Tonight"],[ymd(addDays(TODAY,1)),"Tomorrow"]];
+  for(let i=2;i<7;i++){const d=addDays(TODAY,i);D.push([ymd(d),fmt(d,{weekday:"long"})])}
+  const st=LC;const ch=(grp,v,l,on)=>`<button class="ld-c" data-cs="${grp}" data-v="${esc(v)}" aria-pressed="${on}">${esc(l)}</button>`;
+  return `<div class="ld-in ld-cs">
+  <div class="ld-cs-top"><button class="ld-back" data-land="back">← Back</button><img src="favicon.svg" alt="" class="ld-logo-s"></div>
+  <h2 class="ld-h">Find something <span class="ld-hl">specific</span></h2>
+  <p class="ld-lab">What?</p><div class="ld-chips">${K.map(([k,l])=>ch("k",k,l,st.k===k)).join("")}</div>
+  <p class="ld-lab">When?</p><div class="ld-chips">${D.map(([k,l])=>ch("d",k,l,st.d===k)).join("")}${ch("d","pick","📅 Pick a date",false)}</div>
+  <p class="ld-lab">Where?</p><div class="ld-chips">${ch("n","0","Anywhere",!st.n)}${ch("n","1","📍 Closest first",!!st.n)}</div>
+  <p class="ld-lab">Extras <small>optional</small></p><div class="ld-chips">${QF.filter(([k])=>k!=="sunny"&&k!=="sport").map(([k,l,i])=>ch("a",k,(i?i+" ":"")+l,!!st.a[k])).join("")}</div>
+  <button class="ld-all ld-go" data-land="go">${customLabel()}</button>
+  </div>`;
+}
+let LC={k:"all",d:"",n:0,a:{}};
+function customLabel(){
+  if(!V.length)return "Show me";
+  if(LC.k==="sport")return "Show me the sport";
+  const keep={kind:S.kind,am:S.am};S.am=Object.assign({},LC.a);S.kind=LC.k;
+  let n=0;const vs=visible();
+  const days=LC.d?[pd(LC.d)]:Array.from({length:14},(_,i)=>addDays(TODAY,i));
+  days.forEach(d=>vs.forEach(v=>{if(closedNote(v))return;onDay(v,d).forEach(e=>{if(kindPass(e))n++})}));
+  S.kind=keep.kind;S.am=keep.am;
+  return n?`Show me ${n} thing${n===1?"":"s"} ›`:"Nothing matches yet. Try fewer extras";
+}
+function landShow(){
+  let el=$("landing");
+  if(!el){el=document.createElement("div");el.id="landing";el.className="landing";el.setAttribute("role","dialog");el.setAttribute("aria-label","Welcome to Smiff's Compass");document.body.appendChild(el);
+    el.addEventListener("click",landClick);
+    el.addEventListener("change",e=>{if(e.target.id==="ld-skip"){try{e.target.checked?localStorage.setItem(LAND_SKIP,"1"):localStorage.removeItem(LAND_SKIP)}catch(err){}gc("landing/skip-"+(e.target.checked?"on":"off"))}});}
+  el.innerHTML=landHtml();el.hidden=false;document.documentElement.classList.add("ld-open");
+  try{const sk=localStorage.getItem(LAND_SKIP)==="1";const cb=$("ld-skip");if(cb)cb.checked=sk}catch(e){}
+}
+function landClose(){const el=$("landing");if(el)el.hidden=true;document.documentElement.classList.remove("ld-open");$("panel")&&($("panel").scrollTop=0)}
+function landGo(o){
+  /* start from a clean slate, then apply what they picked */
+  S.kind=o.kind||"all";S.day=o.day||null;S.cat="all";S.q="";S.open=false;S.am=Object.assign({},o.am||{});
+  if(S.view!=="whatson")setView("whatson");
+  landClose();renderChips();render();drawPins();announce();
+  if(o.near)locate(true);
+}
+function landClick(e){
+  const b=e.target.closest("[data-land],[data-cs]");if(!b)return;
+  if(b.dataset.cs){const g=b.dataset.cs,v=b.dataset.v;
+    if(g==="k")LC.k=v;else if(g==="d"){if(v==="pick"){landClose();landGo({kind:LC.k==="sport"?"all":LC.k,am:LC.a,near:!!LC.n});openCal();return}LC.d=v}
+    else if(g==="n")LC.n=+v;else if(g==="a"){LC.a[v]=!LC.a[v];if(!LC.a[v])delete LC.a[v]}
+    $("landing").innerHTML=customHtml();return}
+  const a=b.dataset.land;gc("landing/"+a);
+  if(a==="menu"){const m=$("sn-btn");if(m)m.click();return}
+  if(a==="custom"){$("landing").innerHTML=customHtml();$("landing").scrollTop=0;return}
+  if(a==="back"){$("landing").innerHTML=landHtml();try{$("ld-skip").checked=localStorage.getItem(LAND_SKIP)==="1"}catch(err){}return}
+  if(a==="go"){landGo({kind:LC.k,day:LC.k==="sport"?null:(LC.d||null),am:LC.a,near:!!LC.n});return}
+  if(a==="all-days"){landGo({});return}
+  if(a==="near"){landGo({near:true});return}
+  if(a==="day"){landGo({day:b.dataset.d});return}
+  if(a==="cal"){landGo({});openCal();return}
+  if(a==="all"){landGo({day:T0});return}
+  landGo({kind:a,day:T0});
+}
+if(LAND)landShow();
 function boot(data){
   V=data.venues||[];META=data.meta||{};
   /* classical isn't its own type of place: concert venues count as live music, and concerts still show in What's on */
@@ -2506,6 +2660,7 @@ function boot(data){
     if(f==="open"&&!(pid&&BYID[pid])){S.open=true;setView("venues");renderChips();render();drawPins();gc("link/open-now")}
     if(pid&&BYID[pid])openVenue(pid,true);else if(src||f)syncUrl();
   }
+  if(LAND&&$("landing")&&!$("landing").hidden&&!$("landing").querySelector(".ld-cs"))landShow(); /* fill in tonight's real numbers */
 }
 initMap();
 fetch("stories.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.pubs){STORIES=j.pubs;if(S.view==="detail"&&S.sel)renderDetail(BYID[S.sel])}}).catch(()=>{});
