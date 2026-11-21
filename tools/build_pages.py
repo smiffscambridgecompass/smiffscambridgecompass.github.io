@@ -572,6 +572,39 @@ def story_html(v, st, open_=False):
 
 
 # ---------- Cambridge pub ghosts (pubs whose stories carry the "ghosts" theme) ----------
+def build_picks(pages):
+    """Smiff's hand-picked best beer and best wine pages (picks.json)."""
+    fp = os.path.join(ROOT, "picks.json")
+    if not os.path.exists(fp):
+        return
+    P = json.load(open(fp, encoding="utf-8"))
+    byid = {v["id"]: v for v in V}
+    for key, slug, icon in (("beer", "best-beer", "&#127866;"), ("wine", "best-wine", "&#127863;")):
+        L = P.get(key)
+        if not L:
+            continue
+        path = f"/{slug}/"
+        other = ("wine", "/best-wine/", "Smiff&rsquo;s best wine") if key == "beer" else ("beer", "/best-beer/", "Smiff&rsquo;s best beer")
+        body = f'<h1>{icon} {e(L["title"]).replace("Smiff&#x27;s", "Smiff&rsquo;s")}</h1><p class="lede">{e(L["lede"])}</p>'
+        rows = []
+        for i, (vid, why) in enumerate(L["picks"], 1):
+            v = byid.get(vid)
+            if not v or closed(v):
+                continue
+            rows.append(f'<div class="box"><h2 style="margin-top:0"><span class="pk">{i}</span> <a href="/pubs/{e(vid)}/">{e(v["name"])}</a></h2>'
+                        f'<p>{e(why)}</p><p class="meta">{addr(v)}</p>'
+                        f'<p><a href="/?p={e(vid)}">See it on the map, and what&rsquo;s on &rsaquo;</a></p></div>')
+        body += "".join(rows)
+        body += (f'<p>Also try <a href="{other[1]}">{other[2]} in Cambridge</a>. Think Smiff&rsquo;s missed somewhere? Email <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>'
+                 '<p class="cta-row"><a class="cta" href="/">Open the map</a></p>'
+                 '<style>.pk{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border-radius:50%;background:var(--pop);color:var(--on-pop);border:2px solid var(--edge);font-size:.8em;vertical-align:.1em;margin-right:4px}</style>')
+        nice = L["title"].replace("Smiff's ", "")
+        write(path, shell(path, f'{L["title"]}: where to drink in Cambridge',
+                          f'{nice[0].upper()+nice[1:]}, picked by a local: ' + ", ".join(byid[i]["name"] for i, _ in L["picks"][:4] if i in byid) + " and more.",
+                          body, crumbs=[(L["title"], None)]))
+        pages.append(path)
+
+
 def build_ghosts(pages):
     path = "/pub-ghosts/"
     ghosts = [(v, STORIES[v["id"]]) for v in V if "ghosts" in STORIES.get(v["id"], {}).get("themes", [])]
@@ -939,6 +972,8 @@ def nav_html():
         ("Areas", "/areas/", [("/areas/near-the-station/", "Near the station", False)] +
          [(f"/areas/{s}/", l, False) for s, l, *_ in AREAS]),
         ("Every pub A to Z", "/pubs/", None),
+        ("Smiff's best beer", "/best-beer/", None),
+        ("Smiff's best wine", "/best-wine/", None),
         ("Cambridge pub ghosts", "/pub-ghosts/", None),
         ("Weekly newsletter", "/newsletter/", None),
         ("For pubs: get a badge", "/for-pubs/", None),
@@ -1006,6 +1041,7 @@ def main():
     build_for_pubs(pages)
     build_newsletter(pages)
     build_ghosts(pages)
+    build_picks(pages)
     for v in V:
         path, doc = venue_page(v)
         write(path, doc)

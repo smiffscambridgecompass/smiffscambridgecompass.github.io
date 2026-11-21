@@ -1,0 +1,32 @@
+{
+  "_note": "Smiff's hand-picked lists, built into /best-beer/ and /best-wine/ (linked from the pint and wine glass on the landing page). Order matters.",
+  "beer": {
+    "title": "Smiff's best beer in Cambridge",
+    "lede": "Where to go when the beer matters: real ale, craft taps, brewery taprooms and a couple of proper back-street locals.",
+    "picks": [
+      ["cambridge-blue", "Up to 12 real ales on at once, plus regular beer festivals."],
+      ["free-press", "Award-winning beer in a tiny, historic back-street pub."],
+      ["calverleys", "Drink it where it's brewed, in the brewery's own taproom."],
+      ["handsome-prince", "Baron Brewing's taproom: 18 craft taps and a bottle shop."],
+      ["old-ticket-office", "5 hand pumps and 16 keg taps at the station, with regular tap takeovers."],
+      ["pint-shop", "Craft beer on Peas Hill, right in the middle of town."],
+      ["elm-tree", "Belgian beers in a proper back-street local."],
+      ["brew-house", "Beer brewed on site on King Street."],
+      ["maypole", "A long-standing favourite that runs its own beer festivals."],
+      ["live-let-live", "Real cider and a real fire."]
+    ]
+  },
+  "wine": {
+    "title": "Smiff's best wine in Cambridge",
+    "lede": "Where to go for a good glass: wine bars, wine shops you can drink in, and the best wine deal in town.",
+    "picks": [
+      ["king-street-cellar", "Smiff's favourite. An independent wine shop and bar with natural wine and craft beer."],
+      ["cwm-kings-parade", "Wine bar with tastings and meet-the-producer evenings."],
+      ["bridge-street-wine-bar", "Pick any bottle off the shelf to drink in, with outside tables."],
+      ["cwm-cherry-hinton-road", "A cosy neighbourhood wine bar you can book for tastings."],
+      ["darrys", "Upstairs wine and cocktail bar on King Street."],
+      ["douce", "Café, bar and hair salon in one, with wine, vinyl and books."],
+      ["earl-beaconsfield", "Thursday to Saturday, 5 to 8pm: buy two large glasses and get the rest of the bottle free."]
+    ]
+  }
+}
