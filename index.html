@@ -934,6 +934,10 @@ form.add .status{font-size:.82rem;color:var(--muted);min-height:1.2em;margin:0}
 .evhl-a{display:inline-block;margin-top:10px;font-weight:700;font-size:.88rem;text-decoration:none;color:var(--on-pop,#161616);background:var(--pop,#FFD23F);border:2px solid var(--edge,#161616);border-radius:999px;padding:6px 14px}
 
 /* ---------- landing screen ---------- */
+.ld-sbox{display:flex;align-items:center;gap:10px;border:2px solid var(--edge,var(--ink));border-radius:14px;background:var(--panel);padding:0 14px;margin:0 0 18px;box-shadow:2px 2px 0 var(--hard,#161616)}
+.ld-sbox svg{width:20px;height:20px;flex:none;stroke:var(--muted);stroke-width:2.2;fill:none;stroke-linecap:round}
+.ld-sbox input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font-family:inherit;font-size:1.05rem;padding:13px 0;outline:none}
+.ld-sbox:focus-within{outline:3px solid var(--pop,#FFD23F);outline-offset:2px}
 .landing{position:fixed;inset:0;z-index:1500;background:var(--bg);color:var(--ink);overflow:auto;overscroll-behavior:contain}
 .landing[hidden]{display:none}
 html.ld-open body{overflow:hidden}
@@ -985,7 +989,8 @@ html.ld-open body{overflow:hidden}
 .ld-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
 .ld-c{border:1.5px solid var(--edge,var(--ink));border-radius:999px;padding:7px 14px;background:var(--panel);color:var(--ink);font-family:inherit;font-weight:600;font-size:.95rem;cursor:pointer}
 .ld-c[aria-pressed="true"]{background:var(--pop,#FFD23F);color:var(--on-pop,#1F2A1D);border-width:2px;box-shadow:2px 2px 0 var(--hard,#161616)}
-.ld-go{margin-top:auto}
+.ld-gobar{position:sticky;bottom:0;z-index:2;margin:auto -18px calc(-1 * max(18px,env(safe-area-inset-bottom)));padding:22px 18px max(14px,env(safe-area-inset-bottom));background:linear-gradient(to bottom,transparent,var(--bg) 22px)}
+.ld-cs .ld-chips:last-of-type{margin-bottom:22px}
 @media (max-height:700px){.ld-in{padding-top:12px;padding-bottom:10px}.ld-brand{margin:0 0 8px;gap:2px}.ld-logo{width:44px;height:44px}.ld-chars i{height:48px}.ld-pint{width:30px}.ld-wine{width:26px}.ld-brand h1{font-size:1.3rem;margin-top:2px}.ld-brand p{font-size:.92rem}.ld-q{font-size:1.08rem;margin-bottom:6px}.ld-t{min-height:84px;padding:9px 10px 8px}.ld-e{font-size:1.25rem}.ld-t b{font-size:.96rem}.ld-t small{font-size:.8rem}.ld-grid{gap:8px;margin-bottom:10px}.ld-days{margin-bottom:10px}.ld-d{padding:4px 0 3px}.ld-d b{font-size:1.05rem}.ld-feat{margin-bottom:10px;padding:7px 12px}.ld-fe{font-size:1.25rem}.ld-feat b{font-size:.95rem}.ld-feat small{font-size:.8rem}.ld-all{padding:11px}.ld-custom{margin-top:4px}.ld-skip{margin-top:2px}.ld-menu{width:40px;height:40px;top:10px;right:12px}}
 @media (min-width:700px){.ld-in{justify-content:center;gap:0}}
 /* pub lore card and pop-out */
@@ -2588,28 +2593,31 @@ function customHtml(){
   return `<div class="ld-in ld-cs">
   <div class="ld-cs-top"><button class="ld-back" data-land="back">← Back</button><img src="favicon.svg" alt="" class="ld-logo-s"></div>
   <h2 class="ld-h">Find something <span class="ld-hl">specific</span></h2>
+  <div class="ld-sbox"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="ld-q" type="search" enterkeyhint="search" placeholder="Pubs, bands, streets, anything…" aria-label="Search for anything" autocomplete="off" value="${esc(LC.q)}"></div>
   <p class="ld-lab">What?</p><div class="ld-chips">${K.map(([k,l])=>ch("k",k,l,st.k===k)).join("")}</div>
   <p class="ld-lab">When?</p><div class="ld-chips">${D.map(([k,l])=>ch("d",k,l,st.d===k)).join("")}${ch("d","pick","📅 Pick a date",false)}</div>
   <p class="ld-lab">Where?</p><div class="ld-chips">${ch("n","0","Anywhere",!st.n)}${ch("n","1","📍 Closest first",!!st.n)}</div>
   <p class="ld-lab">Extras <small>optional</small></p><div class="ld-chips">${QF.filter(([k])=>k!=="sunny"&&k!=="sport").map(([k,l,i])=>ch("a",k,(i?i+" ":"")+l,!!st.a[k])).join("")}</div>
-  <button class="ld-all ld-go" data-land="go">${customLabel()}</button>
+  <div class="ld-gobar"><button class="ld-all ld-go" data-land="go">${customLabel()}</button></div>
   </div>`;
 }
-let LC={k:"all",d:"",n:0,a:{}};
+let LC={k:"all",d:"",n:0,a:{},q:""};
 function customLabel(){
   if(!V.length)return "Show me";
   if(LC.k==="sport")return "Show me the sport";
-  const keep={kind:S.kind,am:S.am};S.am=Object.assign({},LC.a);S.kind=LC.k;
+  const keep={kind:S.kind,am:S.am,q:S.q};S.am=Object.assign({},LC.a);S.kind=LC.k;S.q=LC.q;
   let n=0;const vs=visible();
   const days=LC.d?[pd(LC.d)]:Array.from({length:14},(_,i)=>addDays(TODAY,i));
   days.forEach(d=>vs.forEach(v=>{if(closedNote(v))return;onDay(v,d).forEach(e=>{if(kindPass(e))n++})}));
-  S.kind=keep.kind;S.am=keep.am;
-  return n?`Show me ${n} thing${n===1?"":"s"} ›`:"Nothing matches yet. Try fewer extras";
+  S.kind=keep.kind;S.am=keep.am;S.q=keep.q;
+  return n?`Show me ${n} thing${n===1?"":"s"} ›`:"Nothing matches. Try fewer filters";
 }
 function landShow(){
   let el=$("landing");
   if(!el){el=document.createElement("div");el.id="landing";el.className="landing";el.setAttribute("role","dialog");el.setAttribute("aria-label","Welcome to Smiff's Compass");document.body.appendChild(el);
     el.addEventListener("click",landClick);
+    let lqt;el.addEventListener("input",e=>{if(e.target.id!=="ld-q")return;LC.q=e.target.value.trim();clearTimeout(lqt);lqt=setTimeout(()=>{const g=el.querySelector(".ld-go");if(g)g.textContent=customLabel()},150)});
+    el.addEventListener("keydown",e=>{if(e.target.id==="ld-q"&&e.key==="Enter"){e.preventDefault();LC.q=e.target.value.trim();e.target.blur();landGo({kind:LC.k,day:LC.k==="sport"?null:(LC.d||null),am:LC.a,near:!!LC.n,q:LC.q})}});
     el.addEventListener("change",e=>{if(e.target.id==="ld-skip"){try{e.target.checked?localStorage.setItem(LAND_SKIP,"1"):localStorage.removeItem(LAND_SKIP)}catch(err){}gc("landing/skip-"+(e.target.checked?"on":"off"))}});}
   el.innerHTML=landHtml();el.hidden=false;document.documentElement.classList.add("ld-open");
   try{const sk=localStorage.getItem(LAND_SKIP)==="1";const cb=$("ld-skip");if(cb)cb.checked=sk}catch(e){}
@@ -2617,7 +2625,7 @@ function landShow(){
 function landClose(){const el=$("landing");if(el)el.hidden=true;document.documentElement.classList.remove("ld-open");$("panel")&&($("panel").scrollTop=0)}
 function landGo(o){
   /* start from a clean slate, then apply what they picked */
-  S.kind=o.kind||"all";S.day=o.day||null;S.cat="all";S.q="";S.open=false;S.am=Object.assign({},o.am||{});
+  S.kind=o.kind||"all";S.day=o.day||null;S.cat="all";S.q=o.q||"";S.open=false;S.am=Object.assign({},o.am||{});const qi=$("q");if(qi)qi.value=S.q;
   if(S.view!=="whatson")setView("whatson");
   landClose();renderChips();render();drawPins();announce();
   if(o.near)locate(true);
@@ -2625,14 +2633,14 @@ function landGo(o){
 function landClick(e){
   const b=e.target.closest("[data-land],[data-cs]");if(!b)return;
   if(b.dataset.cs){const g=b.dataset.cs,v=b.dataset.v;
-    if(g==="k")LC.k=v;else if(g==="d"){if(v==="pick"){landClose();landGo({kind:LC.k==="sport"?"all":LC.k,am:LC.a,near:!!LC.n});openCal();return}LC.d=v}
+    if(g==="k")LC.k=v;else if(g==="d"){if(v==="pick"){landClose();landGo({kind:LC.k==="sport"?"all":LC.k,am:LC.a,near:!!LC.n,q:LC.q});openCal();return}LC.d=v}
     else if(g==="n")LC.n=+v;else if(g==="a"){LC.a[v]=!LC.a[v];if(!LC.a[v])delete LC.a[v]}
     $("landing").innerHTML=customHtml();return}
   const a=b.dataset.land;gc("landing/"+a);
   if(a==="menu"){const m=$("sn-btn");if(m)m.click();return}
   if(a==="custom"){$("landing").innerHTML=customHtml();$("landing").scrollTop=0;return}
   if(a==="back"){$("landing").innerHTML=landHtml();try{$("ld-skip").checked=localStorage.getItem(LAND_SKIP)==="1"}catch(err){}return}
-  if(a==="go"){landGo({kind:LC.k,day:LC.k==="sport"?null:(LC.d||null),am:LC.a,near:!!LC.n});return}
+  if(a==="go"){landGo({kind:LC.k,day:LC.k==="sport"?null:(LC.d||null),am:LC.a,near:!!LC.n,q:LC.q});return}
   if(a==="all-days"){landGo({});return}
   if(a==="near"){landGo({near:true});return}
   if(a==="day"){landGo({day:b.dataset.d});return}
