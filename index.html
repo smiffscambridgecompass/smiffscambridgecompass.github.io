@@ -1431,6 +1431,11 @@ function syncUrl(){
 addEventListener("popstate",e=>{
   const sd=$("storydlg");if(sd&&sd.open){DLG_POP=true;sd.close();DLG_POP=false;return}
   const st=e.state;if(!st||!st.k||!V.length)return;
+  /* the landing page and its Search screen are their own history steps */
+  if(st.k==="landing"||st.k==="landing-custom"){landShow(st.k==="landing-custom");return}
+  const lo=$("landing");
+  if(lo&&!lo.hidden){landClose();if(st.f){S.kind=st.f.kind||"all";S.day=st.f.day||null;S.q=st.f.q||"";S.am=Object.assign({},st.f.am||{});const qi=$("q");if(qi)qi.value=S.q}
+    if(st.k===navKey()){renderChips();render();drawPins();return}}
   if(st.k===navKey())return; /* e.g. back from a closed pop-out: same page, nothing to redraw */
   NAV_POP=true;
   try{
@@ -2622,14 +2627,14 @@ function customLabel(){
   S.kind=keep.kind;S.am=keep.am;S.q=keep.q;
   return n?`Show me ${n} thing${n===1?"":"s"} ›`:"Nothing matches. Try fewer filters";
 }
-function landShow(){
+function landShow(custom){
   let el=$("landing");
   if(!el){el=document.createElement("div");el.id="landing";el.className="landing";el.setAttribute("role","dialog");el.setAttribute("aria-label","Welcome to Smiff's Compass");document.body.appendChild(el);
     el.addEventListener("click",landClick);
     let lqt;el.addEventListener("input",e=>{if(e.target.id!=="ld-q")return;LC.q=e.target.value.trim();clearTimeout(lqt);lqt=setTimeout(()=>{const g=el.querySelector(".ld-go");if(g)g.textContent=customLabel()},150)});
     el.addEventListener("keydown",e=>{if(e.target.id==="ld-q"&&e.key==="Enter"){e.preventDefault();LC.q=e.target.value.trim();e.target.blur();landGo({kind:LC.k,day:LC.k==="sport"?null:(LC.d||null),am:LC.a,near:!!LC.n,q:LC.q})}});
     el.addEventListener("change",e=>{if(e.target.id==="ld-skip"){try{e.target.checked?localStorage.setItem(LAND_SKIP,"1"):localStorage.removeItem(LAND_SKIP)}catch(err){}gc("landing/skip-"+(e.target.checked?"on":"off"))}});}
-  el.innerHTML=landHtml();el.hidden=false;document.documentElement.classList.add("ld-open");
+  el.innerHTML=custom?customHtml():landHtml();el.hidden=false;el.scrollTop=0;document.documentElement.classList.add("ld-open");
   try{const sk=localStorage.getItem(LAND_SKIP)==="1";const cb=$("ld-skip");if(cb)cb.checked=sk}catch(e){}
 }
 function landClose(){const el=$("landing");if(el)el.hidden=true;document.documentElement.classList.remove("ld-open");$("panel")&&($("panel").scrollTop=0)}
@@ -2638,6 +2643,7 @@ function landGo(o){
   S.kind=o.kind||"all";S.day=o.day||null;S.cat="all";S.q=o.q||"";S.open=false;S.am=Object.assign({},o.am||{});const qi=$("q");if(qi)qi.value=S.q;
   if(S.view!=="whatson")setView("whatson");
   landClose();renderChips();render();drawPins();announce();
+  try{history.pushState({k:navKey(),view:S.view,sel:null,prev:S.prev,ev:null,i:1,f:{kind:S.kind,day:S.day,q:S.q,am:S.am}},"",location.pathname)}catch(e){}
   if(o.near)locate(true);
 }
 function landClick(e){
@@ -2648,8 +2654,8 @@ function landClick(e){
     $("landing").innerHTML=customHtml();return}
   const a=b.dataset.land;gc("landing/"+a);
   if(a==="menu"){const m=$("sn-btn");if(m)m.click();return}
-  if(a==="custom"){$("landing").innerHTML=customHtml();$("landing").scrollTop=0;return}
-  if(a==="back"){$("landing").innerHTML=landHtml();try{$("ld-skip").checked=localStorage.getItem(LAND_SKIP)==="1"}catch(err){}return}
+  if(a==="custom"){$("landing").innerHTML=customHtml();$("landing").scrollTop=0;try{history.pushState({k:"landing-custom",i:1},"",location.pathname)}catch(err){}return}
+  if(a==="back"){try{if(history.state&&history.state.k==="landing-custom"){history.back();return}}catch(err){}landShow(false);return}
   if(a==="go"){landGo({kind:LC.k,day:LC.k==="sport"?null:(LC.d||null),am:LC.a,near:!!LC.n,q:LC.q});return}
   if(a==="all-days"){landGo({});return}
   if(a==="near"){landGo({near:true});return}
@@ -2679,6 +2685,7 @@ function boot(data){
     if(pid&&BYID[pid])openVenue(pid,true);else if(src||f)syncUrl();
   }
   if(LAND&&$("landing")&&!$("landing").hidden&&!$("landing").querySelector(".ld-cs"))landShow(); /* fill in tonight's real numbers */
+  if(LAND)try{history.replaceState({k:"landing",i:0},"",location.pathname)}catch(e){}
 }
 initMap();
 fetch("stories.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.pubs){STORIES=j.pubs;if(S.view==="detail"&&S.sel)renderDetail(BYID[S.sel])}}).catch(()=>{});
