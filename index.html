@@ -965,7 +965,7 @@ html.ld-open body{overflow:hidden}
 :root[data-theme="dark"] .ld-hl{background:var(--pop,#FFD23F);color:#1F2A1D;border-radius:4px}
 .ld-q,.ld-h{font:800 1.22rem/1.2 var(--display,inherit);margin:0 0 10px}
 .ld-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px}
-.ld-t{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-height:96px;padding:11px 11px 10px;border:2px solid var(--edge,var(--ink));border-radius:18px;background:var(--panel);color:var(--ink);box-shadow:3px 3px 0 var(--hard,#161616);text-align:left;font:inherit;cursor:pointer}
+.ld-t{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-height:84px;padding:11px 11px 10px;border:2px solid var(--edge,var(--ink));border-radius:18px;background:var(--panel);color:var(--ink);box-shadow:3px 3px 0 var(--hard,#161616);text-align:left;font:inherit;cursor:pointer}
 .ld-t:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--hard,#161616)}
 .ld-e{font-size:1.5rem;line-height:1}
 .ld-t b{font:800 1.08rem/1.15 var(--display,inherit);margin-top:auto}
@@ -998,7 +998,7 @@ html.ld-open body{overflow:hidden}
 .ld-c[aria-pressed="true"]{background:var(--pop,#FFD23F);color:var(--on-pop,#1F2A1D);border-width:2px;box-shadow:2px 2px 0 var(--hard,#161616)}
 .ld-gobar{position:sticky;bottom:0;z-index:2;margin:auto -18px calc(-1 * max(18px,env(safe-area-inset-bottom)));padding:22px 18px max(14px,env(safe-area-inset-bottom));background:linear-gradient(to bottom,transparent,var(--bg) 22px)}
 .ld-cs .ld-chips:last-of-type{margin-bottom:22px}
-@media (max-height:700px){.ld-in{padding-top:12px;padding-bottom:10px}.ld-brand{margin:0 0 8px;gap:2px}.ld-logo{width:52px;height:52px}.ld-corner i{height:52px}.ld-pint{width:33px}.ld-wine{width:28px}.ld-brand h1{font-size:1.3rem;margin-top:2px}.ld-brand p{font-size:.92rem}.ld-q{font-size:1.08rem;margin-bottom:6px}.ld-t{min-height:84px;padding:9px 10px 8px}.ld-e{font-size:1.25rem}.ld-t b{font-size:.96rem}.ld-t small{font-size:.8rem}.ld-grid{gap:8px;margin-bottom:10px}.ld-days{margin-bottom:10px}.ld-d{padding:4px 0 3px}.ld-d b{font-size:1.05rem}.ld-feat{margin-bottom:10px;padding:7px 12px}.ld-fe{font-size:1.25rem}.ld-feat b{font-size:.95rem}.ld-feat small{font-size:.8rem}.ld-all{padding:11px}.ld-custom{margin-top:4px}.ld-skip{margin-top:2px}.ld-menu{width:40px;height:40px;top:10px;right:12px}}
+@media (max-height:700px){.ld-in{padding-top:12px;padding-bottom:10px}.ld-brand{margin:0 0 8px;gap:2px}.ld-logo{width:52px;height:52px}.ld-corner i{height:52px}.ld-pint{width:33px}.ld-wine{width:28px}.ld-brand h1{font-size:1.3rem;margin-top:2px}.ld-brand p{font-size:.92rem}.ld-q{font-size:1.08rem;margin-bottom:6px}.ld-t{min-height:70px;padding:8px 10px 7px}.ld-e{font-size:1.25rem}.ld-t b{font-size:.96rem}.ld-t small{font-size:.8rem}.ld-grid{gap:8px;margin-bottom:10px}.ld-days{margin-bottom:10px}.ld-d{padding:4px 0 3px}.ld-d b{font-size:1.05rem}.ld-feat{margin-bottom:10px;padding:7px 12px}.ld-fe{font-size:1.25rem}.ld-feat b{font-size:.95rem}.ld-feat small{font-size:.8rem}.ld-all{padding:11px}.ld-custom{margin-top:4px}.ld-skip{margin-top:2px}.ld-menu{width:40px;height:40px;top:10px;right:12px}}
 @media (min-width:700px){.ld-in{justify-content:center;gap:0}}
 /* pub lore card and pop-out */
 .storycard{display:grid;gap:3px;width:100%;text-align:left;margin:14px 0 4px;padding:12px 14px;border:2px solid var(--edge,var(--ink));border-radius:14px;background:var(--soft);color:var(--ink);box-shadow:3px 3px 0 var(--hard,#161616);cursor:pointer;font:inherit}
@@ -2577,7 +2577,7 @@ const LAND=(()=>{
   try{if(localStorage.getItem(LAND_SKIP)==="1")return false}catch(e){}
   return true;
 })();
-function landCount(dd,pick){let n=0;V.forEach(v=>{if(closedNote(v))return;onDay(v,dd).forEach(e=>{if(e.kind!=="sport"&&pick(e))n++})});return n}
+function landCount(dd,pick,sport){let n=0;V.forEach(v=>{if(closedNote(v))return;onDay(v,dd).forEach(e=>{if(sport?e.kind==="sport":(e.kind!=="sport"&&pick(e)))n++})});return n}
 function landHtml(){
   const ready=V.length>0;
   const isK=k=>e=>k==="music"?(e.kind==="music"||e.kind==="classical"):e.kind===k;
@@ -2589,6 +2589,8 @@ function landHtml(){
     quiz?{a:"quiz",e:"🧠",t:"Pub quiz tonight",s:"Get a team together",n:quiz}
       :club?{a:"club",e:"🪩",t:"Club nights tonight",s:"Dance till late",n:club}
       :{a:"all",e:"🎉",t:"Everything tonight",s:"All of it, one list",n:ready?landCount(TODAY,()=>true):0},
+    {a:"sport",e:"⚽",t:"Live sport today",s:"",n:ready?landCount(TODAY,null,true):0},
+    {a:"games",e:"🎱",t:"Pool, darts & games",s:"",n:ready?V.filter(v=>!closedNote(v)&&gamesOf(v).length).length:0},
     {a:"near",e:"📍",t:"Near me",s:"What's close by",n:0}
   ];
   const days=[];for(let i=0;i<14;i++){const d=addDays(TODAY,i);days.push({k:ymd(d),w:i?fmt(d,{weekday:"short"}):fmt(d,{weekday:"short"}),n:d.getDate(),c:ready?landCount(d,()=>true):null,t:i===0})}
@@ -2649,9 +2651,10 @@ function landClose(){const el=$("landing");if(el)el.hidden=true;document.documen
 function landGo(o){
   /* start from a clean slate, then apply what they picked */
   S.kind=o.kind||"all";S.day=o.day||null;S.cat="all";S.q=o.q||"";S.open=false;S.am=Object.assign({},o.am||{});const qi=$("q");if(qi)qi.value=S.q;
-  if(S.view!=="whatson")setView("whatson");
+  const vw=o.view||"whatson";if(S.view!==vw)setView(vw);
   landClose();renderChips();render();drawPins();announce();
-  try{history.pushState({k:navKey(),view:S.view,sel:null,prev:S.prev,ev:null,i:1,f:{kind:S.kind,day:S.day,q:S.q,am:S.am}},"",location.pathname)}catch(e){}
+  try{const ns={k:navKey(),view:S.view,sel:null,prev:S.prev,ev:null,i:1,f:{kind:S.kind,day:S.day,q:S.q,am:S.am}},hs=history.state;
+    if(hs&&hs.k===ns.k)history.replaceState(ns,"",location.pathname);else history.pushState(ns,"",location.pathname)}catch(e){}
   if(o.near)locate(true);
 }
 function landClick(e){
@@ -2670,6 +2673,8 @@ function landClick(e){
   if(a==="day"){landGo({day:b.dataset.d});return}
   if(a==="cal"){landGo({});openCal();return}
   if(a==="all"){landGo({day:T0});return}
+  if(a==="sport"){landGo({kind:"sport",day:T0});return}
+  if(a==="games"){landGo({am:{games:true},view:"venues"});return}
   landGo({kind:a,day:T0});
 }
 if(LAND)landShow();
