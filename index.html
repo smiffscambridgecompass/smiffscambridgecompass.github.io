@@ -933,6 +933,7 @@ form.add .status{font-size:.82rem;color:var(--muted);min-height:1.2em;margin:0}
 .evhl-s{color:var(--muted);font-size:.9rem}
 .evhl-a{display:inline-block;margin-top:10px;font-weight:700;font-size:.88rem;text-decoration:none;color:var(--on-pop,#161616);background:var(--pop,#FFD23F);border:2px solid var(--edge,#161616);border-radius:999px;padding:6px 14px}
 
+.gsub{margin:0 0 12px}.gsub .gn{font-size:.78rem;font-weight:800;opacity:.7;margin-left:2px}
 /* ---------- landing screen ---------- */
 .ld-sbox{display:flex;align-items:center;gap:10px;border:2px solid var(--edge,var(--ink));border-radius:14px;background:var(--panel);padding:0 14px;margin:0 0 18px;box-shadow:2px 2px 0 var(--hard,#161616)}
 .ld-sbox svg{width:20px;height:20px;flex:none;stroke:var(--muted);stroke-width:2.2;fill:none;stroke-linecap:round}
@@ -1381,6 +1382,18 @@ const AMEN=[["garden","Beer garden","🌳"],["fire","Real fire","🔥"],["sport"
 const QF=AMEN.concat([["guinness","Guinness","☘️"],["games","Pool, darts & games","🎱"],["step","Step-free","♿"],["sunny","Garden in the sun now","☀"]]);
 /* pool, darts and pub games, read from what each pub lists (features, weekly leagues, offers) */
 const GAME_RX=[["Pool",/\bpool\b/i],["Darts",/\bdarts\b/i],["Bar billiards",/bar billiards/i],["Skittles",/skittles/i],["Shuffleboard",/shuffleboard/i],["Pinball",/pinball/i],["Board games",/board games/i],["Retro games",/retro (gaming|computers)/i],["Indoor golf",/indoor golf/i],["Games",/\bgames\b/i]];
+/* once Pool, darts & games is on: narrow to one kind of game */
+const GAME_SUB=[["pool","🎱 Pool",["Pool"]],["darts","🎯 Darts",["Darts"]],["billiards","Bar billiards",["Bar billiards"]],["board","🎲 Board games",["Board games","Retro games","Games"]],["more","More games",["Skittles","Shuffleboard","Pinball","Indoor golf"]]];
+function gameSubPass(v,k){const g=GAME_SUB.find(x=>x[0]===k);return !g||gamesOf(v).some(l=>g[2].includes(l))}
+function gameRow(){
+  if(!S.am.games)return "";
+  const keep=S.game;S.game="";const base=visible();S.game=keep;
+  const opts=GAME_SUB.map(([k,l])=>[k,l,base.filter(v=>gameSubPass(v,k)).length]).filter(o=>o[2]);
+  if(opts.length<2)return "";
+  return `<div class="kinds gsub" role="group" aria-label="Which games">`+
+    `<button class="chip" data-game="" aria-pressed="${!S.game}">All <span class="gn">${base.length}</span></button>`+
+    opts.map(([k,l,n])=>`<button class="chip" data-game="${k}" aria-pressed="${S.game===k}">${esc(l)} <span class="gn">${n}</span></button>`).join("")+`</div>`;
+}
 function gamesOf(v){
   if(v._games)return v._games;
   const t=[...(v.features||[]),...(v.weekly||[]).map(w=>w.title||""),...(v.offers||[]).map(o=>typeof o==="string"?o:(o&&o.title)||"")].join(" | ").replace(/gaelic games/ig,"").replace(/liverpool/ig,"");
@@ -1510,6 +1523,7 @@ function venuePass(v){
   if(S.fav&&!isFav(v)) return false;
   if(S.indie&&v.indie!==true) return false;
   for(const [k] of QF){if(S.am[k]&&!hasAm(v,k))return false}
+  if(S.am.games&&S.game&&!gameSubPass(v,S.game))return false;
   if(S.open){const st=openStatus(v);if(!st||!st.open)return false}
   if(S.q){const words=S.q.toLowerCase().split(/\s+/).filter(Boolean);const t=venueText(v);if(!words.every(w=>t.includes(w)))return false}
   return true;
@@ -1649,7 +1663,7 @@ $("fsheet").addEventListener("click",e=>{
   if(a==="close"){closeSheet(false);return}
   if(a==="go"){closeSheet(true);return}
   if(a==="cat")S.cat=b.dataset.k;
-  else if(a==="am")S.am[b.dataset.k]=!S.am[b.dataset.k];
+  else if(a==="am"){S.am[b.dataset.k]=!S.am[b.dataset.k];if(b.dataset.k==="games")S.game=""}
   else if(a==="fav")S.fav=!S.fav;
   else if(a==="indie"){S.indie=!S.indie;if(S.indie)gc("filter/independent")}
   else if(a==="socials")S.socials=!S.socials;
@@ -1947,7 +1961,7 @@ function featuredSlot(onlyKind){
 }
 function renderWhatson(p){
   if(S.day&&S.day<T0)S.day=null;
-  const vs=visible();let out=sunBar()+tonightHtml(vs)+`<div class="kinds" role="group" aria-label="Filter listings">${KINDS.map(([k,l])=>`<button class="chip" data-kind="${k}" aria-pressed="${S.kind===k}">${l}</button>`).join("")}<button class="chip daypick" data-daypick aria-haspopup="dialog" aria-pressed="${!!S.day}">${CAL_ICO}${S.day?esc(dayName(S.day)):"Pick a day"}</button>${S.day?`<button class="chip dayx" data-dayclear aria-label="Show all upcoming days">&times;</button>`:""}</div>`+featuredSlot(true);
+  const vs=visible();let out=gameRow()+sunBar()+tonightHtml(vs)+`<div class="kinds" role="group" aria-label="Filter listings">${KINDS.map(([k,l])=>`<button class="chip" data-kind="${k}" aria-pressed="${S.kind===k}">${l}</button>`).join("")}<button class="chip daypick" data-daypick aria-haspopup="dialog" aria-pressed="${!!S.day}">${CAL_ICO}${S.day?esc(dayName(S.day)):"Pick a day"}</button>${S.day?`<button class="chip dayx" data-dayclear aria-label="Show all upcoming days">&times;</button>`:""}</div>`+featuredSlot(true);
   if(S.day&&S.kind!=="sport"){
     const d=pd(S.day),rows=[];
     vs.forEach(v=>onDay(v,d).forEach(e=>{if(kindPass(e))rows.push([v,e])}));
@@ -2034,9 +2048,9 @@ function renderVenues(p){
   const near=S.near&&LOC;
   const gl=S.am.guinness&&!near;
   const vs=visible().slice().sort((a,b)=>gl?((guinnessOf(b).harp?1:0)-(guinnessOf(a).harp?1:0)||a.name.replace(/^The /,"").localeCompare(b.name.replace(/^The /,""))):near?distM(a)-distM(b):((isFav(b)?1:0)-(isFav(a)?1:0)||(onDay(b,TODAY).length?1:0)-(onDay(a,TODAY).length?1:0)||a.name.localeCompare(b.name)));
-  const bits=[];if(S.cat!=="all")bits.push((CATS.find(x=>x[0]===S.cat)||["",""])[1].toLowerCase());if(S.fav)bits.push(PUBLIC?"Smiff's favourites":"favourites");if(S.indie)bits.push("independent pubs");if(S.open)bits.push("open now");QF.forEach(([k,l])=>{if(S.am[k])bits.push(k==="guinness"?"pour Guinness":l.toLowerCase())});
+  const bits=[];if(S.cat!=="all")bits.push((CATS.find(x=>x[0]===S.cat)||["",""])[1].toLowerCase());if(S.fav)bits.push(PUBLIC?"Smiff's favourites":"favourites");if(S.indie)bits.push("independent pubs");if(S.open)bits.push("open now");QF.forEach(([k,l])=>{if(S.am[k])bits.push(k==="guinness"?"pour Guinness":k==="games"&&S.game?(GAME_SUB.find(x=>x[0]===S.game)||["","",""])[1].replace(/^[^A-Za-z]+/,"").toLowerCase():l.toLowerCase())});
   ANN=`${vs.length} venue${vs.length===1?"":"s"}${bits.length?", "+bits.join(", "):""}`;
-  let out=`<p class="count">${vs.length} venue${vs.length===1?"":"s"}${bits.length?" · "+esc(bits.join(", ")):""}${S.socials?" to check on Instagram or Facebook":""} · ${near?"nearest first":gl?"Harp Guide pick first, then A to Z":"favourites, then on tonight, first"}</p>${featuredSlot(false)}<ul class="vlist">`;
+  let out=`<p class="count">${vs.length} venue${vs.length===1?"":"s"}${bits.length?" · "+esc(bits.join(", ")):""}${S.socials?" to check on Instagram or Facebook":""} · ${near?"nearest first":gl?"Harp Guide pick first, then A to Z":"favourites, then on tonight, first"}</p>${gameRow()}${featuredSlot(false)}<ul class="vlist">`;
   out+=vs.map(v=>{const pc=primary(v);const nu=nextUp(v);
     return `<li class="vrow"><button data-v="${esc(v.id)}" style="--c:${catColor(pc)}"><span class="pin"></span><span><span class="n">${isFav(v)?'<span class="star" aria-hidden="true">★</span><span class="sr-only">Favourite: </span>':""}${esc(v.name)}${SHAM(v)}</span><br><span class="a">${esc(v.address)}</span>${S.am.guinness&&guinnessOf(v)?`<div class="gnote">${esc(guinnessOf(v).note)}</div>`:""}${nu?`<div class="now">${nu}</div>`:""}${closedNote(v)?"":statusHtml(v)}${v.checkSocials&&!PUBLIC?`<div class="flag">Check socials · ${esc(v.checkSocials)}</div>`:""}</span><span class="cats">${(v.cats||[]).map(c=>`<i style="--c:${catColor(c)}" title="${esc(CATS.find(x=>x[0]===c)?.[1]||c)}"></i>`).join("")}</span></button></li>`}).join("");
   out+=`</ul>`;
@@ -2054,6 +2068,7 @@ function footer(){
   return tip+guides+`<p class="foot">${ads}Pub details from CAMRA; listings from venue websites, Songkick, DesignMyNight and Eventslist; ${PUBLIC?"tips marked “Smiff's tip” come from Smiff":"weekly nights marked “From you” come from you"}. Opening hours can change, so check before a big night out. Checked ${esc(META.checkedLabel||"")}; rechecked every Monday and Thursday. ${USE_TILES?"Street map © OpenStreetMap contributors. ":"Map is a simplified drawing. "}Pin positions from CAMRA, Songkick and DesignMyNight, otherwise by postcode (ONS Postcode Directory, Open Government Licence; contains OS data © Crown copyright). Walking times are estimates. Garden sun times are worked out from the sun's position${PUBLIC?"; cloud cover from Open-Meteo.com (CC BY 4.0)":""}.</p>${PUBLIC?`${a2Offer()?`<p class="foot fb" style="border:0;padding-top:0;margin-bottom:6px">On your phone? <button class="a2-link" data-a2="open">Add Smiff's Compass to your home screen</button>.</p>`:""}<p class="foot fb" style="border:0;padding-top:0">Spotted something wrong, or know a gig or quiz that's missing? <a href="${esc(mailHref("Smiff's Cambridge Compass"))}">Email Smiff</a>.</p><p class="foot fb" style="border:0;padding-top:0;margin-top:6px">Run a pub? Your listing is free. <a href="${esc(mailHref("Run a pub: events and Featured spot"))}" data-gc="owner/general">Send your events, or ask about a Featured spot</a>.</p><p class="foot" style="margin-top:8px;border:0;padding-top:0">Privacy: Near me uses your location on your device only; it isn't stored or sent anywhere. Visitor numbers, and taps on each pub's card, page and links, are counted anonymously, without cookies. Your pub crawl is saved on your device. The street map is loaded from OpenStreetMap and cloud cover from Open-Meteo.</p>`:""}`;
 }
 $("pane").addEventListener("click",e=>{
+  const gb=e.target.closest("[data-game]");if(gb){S.game=gb.dataset.game;render();drawPins();announce();return}
   if(e.target.closest("[data-daypick]")){openCal();return}
   if(e.target.closest("[data-dayclear]")){setDay(null);const b=$("pane").querySelector("[data-daypick]");if(b)b.focus({preventScroll:true});return}
   const k=e.target.closest("[data-kind]");if(k){S.kind=(k.classList.contains("tn")&&S.kind===k.dataset.kind)?"all":k.dataset.kind;render();drawPins();announce();const again=$("pane").querySelector((k.classList.contains("tn")?".tn":".kinds .chip")+'[data-kind="'+k.dataset.kind+'"]');if(again)again.focus({preventScroll:true});return}
@@ -2650,7 +2665,7 @@ function landShow(custom){
 function landClose(){const el=$("landing");if(el)el.hidden=true;document.documentElement.classList.remove("ld-open");$("panel")&&($("panel").scrollTop=0)}
 function landGo(o){
   /* start from a clean slate, then apply what they picked */
-  S.kind=o.kind||"all";S.day=o.day||null;S.cat="all";S.q=o.q||"";S.open=false;S.am=Object.assign({},o.am||{});const qi=$("q");if(qi)qi.value=S.q;
+  S.kind=o.kind||"all";S.day=o.day||null;S.cat="all";S.game="";S.q=o.q||"";S.open=false;S.am=Object.assign({},o.am||{});const qi=$("q");if(qi)qi.value=S.q;
   const vw=o.view||"whatson";if(S.view!==vw)setView(vw);
   landClose();renderChips();render();drawPins();announce();
   try{const ns={k:navKey(),view:S.view,sel:null,prev:S.prev,ev:null,i:1,f:{kind:S.kind,day:S.day,q:S.q,am:S.am}},hs=history.state;
