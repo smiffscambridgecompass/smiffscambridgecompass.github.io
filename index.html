@@ -2597,7 +2597,7 @@ function landHtml(){
   return `<div class="ld-in">
   <button class="ld-menu" data-land="menu" aria-label="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   <div class="ld-brand"><img src="favicon.svg" alt="" class="ld-logo">
-  <h1>Smiff&rsquo;s Cambridge Compass</h1><p>What&rsquo;s on in Cambridge, <span class="ld-hl">tonight</span></p></div>
+  <h1>Smiff&rsquo;s Cambridge Compass</h1></div>
   <div class="ld-grid">${tiles.map(t=>`<button class="ld-t" data-land="${t.a}"><span class="ld-e" aria-hidden="true">${t.e}</span>${t.n?`<span class="ld-n">${t.n}</span>`:""}<b>${esc(t.t)}</b></button>`).join("")}</div>
   <div class="ld-days" role="group" aria-label="Pick a day">${days.map(d=>`<button class="ld-d" data-land="day" data-d="${d.k}" aria-pressed="${d.t}"><small>${esc(d.w)}</small><b>${d.n}</b></button>`).join("")}<button class="ld-d ld-cal" data-land="cal" aria-label="More dates"><b aria-hidden="true">📅</b></button></div>
   <a class="ld-feat" href="mailto:${"smiffscompass@gmail.com"}?subject=${encodeURIComponent("I want to feature on the page")}" data-gc="landing/feature"><span class="ld-fe" aria-hidden="true">📣</span><span><b>Run a pub or venue?</b><small>Want to feature here? Get in touch</small></span><span class="ld-fa" aria-hidden="true">›</span></a>
