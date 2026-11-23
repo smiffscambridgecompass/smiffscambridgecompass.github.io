@@ -605,6 +605,44 @@ def build_picks(pages):
         pages.append(path)
 
 
+GAME_RX = [("Pool", r"\bpool\b"), ("Darts", r"\bdarts\b"), ("Bar billiards", r"bar billiards"), ("Skittles", r"skittles"),
+           ("Shuffleboard", r"shuffleboard"), ("Pinball", r"pinball"), ("Board games", r"board games"),
+           ("Retro games", r"retro (gaming|computers)"), ("Indoor golf", r"indoor golf"), ("Games", r"\bgames\b")]
+
+
+def games_of(v):
+    """Pool, darts and pub games a venue lists (same rules as the app's filter)."""
+    t = " | ".join(list(v.get("features") or []) + [w.get("title", "") for w in v.get("weekly") or []]
+                   + [o if isinstance(o, str) else (o or {}).get("title", "") for o in v.get("offers") or []])
+    t = re.sub(r"gaelic games|liverpool", "", t, flags=re.I)
+    out = [l for l, rx in GAME_RX if re.search(rx, t, re.I)]
+    return [l for l in out if l != "Games"] if len(out) > 1 else out
+
+
+def build_games(pages):
+    path = "/pool-darts-pub-games/"
+    rows = [(v, games_of(v)) for v in V if not closed(v) and games_of(v)]
+    if not rows:
+        return
+    OTHER = ("Bar billiards", "Skittles", "Shuffleboard", "Pinball", "Retro games", "Indoor golf")
+    groups = [("Pool and darts", lambda g: "Pool" in g or "Darts" in g),
+              ("Bar billiards, skittles, shuffleboard and more", lambda g: any(x in g for x in OTHER) and not ("Pool" in g or "Darts" in g)),
+              ("Board games and pub games", lambda g: not any(x in g for x in OTHER + ("Pool", "Darts")))]
+    body = (f"<h1>Pool, darts and pub games in Cambridge</h1><p class=\"lede\">{len(rows)} Cambridge pubs and bars with a pool table, a dartboard, "
+            "bar billiards, skittles, shuffleboard or a stack of board games. Leagues and game nights are on the map too.</p>")
+    for title, test in groups:
+        items = [f'<li><a href="/pubs/{e(v["id"])}/"><span class="n">{e(v["name"])}</span></a>'
+                 f'<span class="sub">{e(", ".join(g))} &middot; {addr(v)}</span></li>' for v, g in rows if test(g)]
+        if items:
+            body += grp(e(title), items)
+    body += (f'<p>Spotted a pool table or dartboard we&rsquo;ve missed? Email <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>'
+             '<p class="cta-row"><a class="cta" href="/">Open the map</a></p>')
+    write(path, shell(path, "Pool, darts and pub games in Cambridge",
+                      f"{len(rows)} Cambridge pubs with pool tables, dartboards, bar billiards, skittles, shuffleboard and board games, with addresses.",
+                      body, crumbs=[("Pool, darts and pub games", None)]))
+    pages.append(path)
+
+
 def build_ghosts(pages):
     path = "/pub-ghosts/"
     ghosts = [(v, STORIES[v["id"]]) for v in V if "ghosts" in STORIES.get(v["id"], {}).get("themes", [])]
@@ -972,6 +1010,7 @@ def nav_html():
         ("Areas", "/areas/", [("/areas/near-the-station/", "Near the station", False)] +
          [(f"/areas/{s}/", l, False) for s, l, *_ in AREAS]),
         ("Every pub A to Z", "/pubs/", None),
+        ("Pool, darts and pub games", "/pool-darts-pub-games/", None),
         ("Smiff's best beer", "/best-beer/", None),
         ("Smiff's best wine", "/best-wine/", None),
         ("Cambridge pub ghosts", "/pub-ghosts/", None),
@@ -1042,6 +1081,7 @@ def main():
     build_newsletter(pages)
     build_ghosts(pages)
     build_picks(pages)
+    build_games(pages)
     for v in V:
         path, doc = venue_page(v)
         write(path, doc)
