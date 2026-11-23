@@ -1,7 +1,7 @@
 {
  "meta": {
-  "checked": "2026-11-20",
-  "checkedLabel": "Fri 20 Nov 2026"
+  "checked": "2026-11-23",
+  "checkedLabel": "Mon 23 Nov 2026"
  },
  "venues": [
   {
@@ -27,7 +27,7 @@
    "group": "Greene King",
    "offers": [
     "Greene King app Spin to Win: chance to win a main, pud or pint",
-    "Black Friday offer teased (details not yet announced; Email Club sign-up)",
+    "Black Friday (23-30 Nov 2026): buy a Greene King eGift voucher from £40 and get an extra £10 free per £40 (bonus on up to £240)",
     "Christmas 2026: festive menus, buffets and seasonal drinks; Christmas quizzes and karaoke mentioned (no dates)"
    ],
    "eventsUrl": "https://www.greeneking.co.uk/pubs/cambridgeshire/eagle/whats-on",
@@ -523,7 +523,7 @@
    "group": "Greene King",
    "offers": [
     "Spin to Win: free main, pud or pint via the Greene King app",
-    "Black Friday offer coming soon (details not yet published)",
+    "Black Friday: £10 free when you buy a £40 eGift voucher",
     "Christmas 2026 festive menus and party buffet"
    ],
    "weekly": [
@@ -531,11 +531,6 @@
      "day": "Mon",
      "title": "Pub quiz",
      "kind": "quiz"
-    },
-    {
-     "day": "Sun",
-     "title": "Sunday roast (12-8pm)",
-     "kind": "offer"
     }
    ],
    "amen": {
@@ -575,8 +570,7 @@
    "lng": 0.127743,
    "group": "Greene King",
    "offers": [
-    "Spin to Win: free main, pud or pint via the Greene King app",
-    "Black Friday offer (details not yet announced; Email Club sign-up)",
+    "Black Friday: £10 free when you buy a £40 eGift voucher (until 30 Nov 2026)",
     "Christmas 2026 festive menus"
    ],
    "weekly": [],
@@ -756,17 +750,10 @@
     "src": "https://www.kingstbrewhousecambridge.co.uk/"
    },
    "offers": [
-    "Autumn Nations rugby on the screens (no fixtures listed)",
-    "Christmas 2026 bookings (see website)",
-    "Winter cocktails"
+    "Autumn Nations rugby on the big screens (no fixtures listed)",
+    "Christmas 2026 bookings (see website)"
    ],
-   "events": [
-    {
-     "date": "2026-11-20",
-     "title": "King Street Christmas Switch-On",
-     "kind": "event"
-    }
-   ],
+   "events": [],
    "indie": false,
    "group": "Young's",
    "checkSocials": "Website has no listings (events calendar empty this month)"
@@ -992,11 +979,6 @@
    "pos": "exact",
    "events": [
     {
-     "date": "2026-11-21",
-     "title": "The Silverbacks Blues Band, 8:30pm, free",
-     "kind": "music"
-    },
-    {
      "date": "2026-11-26",
      "title": "Gentle Billy, 8:30pm, free",
      "kind": "music"
@@ -1048,11 +1030,6 @@
     }
    ],
    "events": [
-    {
-     "date": "2026-11-22",
-     "title": "Downpipe, 8:30pm (£5)",
-     "kind": "music"
-    },
     {
      "date": "2026-11-24",
      "title": "Bone Funk (jazz-funk), 8:30pm (£7/£5)",
@@ -1196,11 +1173,6 @@
     },
     {
      "date": "2027-09-05",
-     "title": "Sunday Session Nomads (traditional music), 2-5pm, free",
-     "kind": "music"
-    },
-    {
-     "date": "2027-10-03",
      "title": "Sunday Session Nomads (traditional music), 2-5pm, free",
      "kind": "music"
     }
@@ -1354,23 +1326,8 @@
    ],
    "events": [
     {
-     "date": "2026-11-20",
-     "title": "Wandering Yak food truck (from 5:30pm)",
-     "kind": "event"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Pasta Bar food truck (from 5:30pm)",
-     "kind": "event"
-    },
-    {
      "date": "2026-11-24",
      "title": "Titanic Distillers Irish whiskey guided tasting, 7:30pm (book ahead)",
-     "kind": "event"
-    },
-    {
-     "date": "2026-11-24",
-     "title": "Titanic Whisky Tasting",
      "kind": "event"
     },
     {
@@ -1409,6 +1366,11 @@
      "kind": "comedy"
     },
     {
+     "date": "2026-12-02",
+     "title": "Hitwrap food truck (from 5:30pm)",
+     "kind": "event"
+    },
+    {
      "date": "2026-12-03",
      "title": "Papas Locas food truck (from 5:30pm)",
      "kind": "event"
@@ -1420,12 +1382,17 @@
     },
     {
      "date": "2026-12-05",
-     "title": "Mikkeller Running Club, 3pm: 5k run, then 10% off tap beer and soft drinks",
+     "title": "Smash & Grab food truck (from 5:30pm)",
      "kind": "event"
     },
     {
      "date": "2026-12-05",
-     "title": "Smash & Grab food truck (from 5:30pm)",
+     "title": "Mikkeller Running Club, 3pm: 5k run, then 10% off tap beer and soft drinks",
+     "kind": "event"
+    },
+    {
+     "date": "2026-12-10",
+     "title": "Tikka Tonic food truck (from 5:30pm)",
      "kind": "event"
     },
     {
@@ -1445,7 +1412,7 @@
     },
     {
      "date": "2026-12-17",
-     "title": "Tikka Tonic food truck (from 5:30pm)",
+     "title": "Azahar food truck (from 5:30pm)",
      "kind": "event"
     },
     {
@@ -1469,18 +1436,78 @@
      "kind": "event"
     },
     {
-     "date": "2026-12-31",
-     "title": "NYE Taco Party with Tacoman, 7pm-1am: welcome drink, sharing nachos and non-stop tacos (£40pp)",
+     "date": "2026-12-29",
+     "title": "Smash & Grab food truck (from 5:30pm)",
      "kind": "event"
     },
     {
      "date": "2026-12-31",
-     "title": "NYE Non-Stop Taco Party (£40)",
-     "kind": "club"
+     "title": "NYE Taco Party with Tacoman, 7pm-1am: welcome drink, sharing nachos and non-stop tacos (£40pp, 18+)",
+     "kind": "event"
+    },
+    {
+     "date": "2027-01-01",
+     "title": "Closed (New Year's Day)",
+     "kind": "event"
+    },
+    {
+     "date": "2027-01-02",
+     "title": "Smash & Grab food truck (from 5:30pm)",
+     "kind": "event"
     },
     {
      "date": "2027-01-02",
      "title": "Mikkeller Running Club, 3pm: 5k run, then 10% off tap beer and soft drinks",
+     "kind": "event"
+    },
+    {
+     "date": "2027-01-07",
+     "title": "Papas Locas food truck (from 5:30pm)",
+     "kind": "event"
+    },
+    {
+     "date": "2027-01-08",
+     "title": "Aunty Pams food truck (from 5:30pm)",
+     "kind": "event"
+    },
+    {
+     "date": "2027-01-09",
+     "title": "Hitwrap food truck (from 5:30pm)",
+     "kind": "event"
+    },
+    {
+     "date": "2027-01-15",
+     "title": "Wandering Yak food truck (from 5:30pm)",
+     "kind": "event"
+    },
+    {
+     "date": "2027-01-16",
+     "title": "Pasta Bar food truck (from 5:30pm)",
+     "kind": "event"
+    },
+    {
+     "date": "2027-01-19",
+     "title": "Comical Reactions comedy night, 8pm (doors 7:30pm; tickets TBC)",
+     "kind": "comedy"
+    },
+    {
+     "date": "2027-01-21",
+     "title": "Tikka Tonic food truck (from 5:30pm)",
+     "kind": "event"
+    },
+    {
+     "date": "2027-01-28",
+     "title": "Azahar food truck (from 5:30pm)",
+     "kind": "event"
+    },
+    {
+     "date": "2027-01-29",
+     "title": "Guerrilla Kitchen food truck (from 5:30pm)",
+     "kind": "event"
+    },
+    {
+     "date": "2027-01-30",
+     "title": "Steak & Honour food truck (from 5:30pm)",
      "kind": "event"
     }
    ],
@@ -1507,16 +1534,6 @@
    ],
    "src": "https://camra.org.uk/pubs/131340",
    "events": [
-    {
-     "date": "2026-11-21",
-     "title": "Bottomless brunch: ABBA, 11am",
-     "kind": "event"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Silent disco, 9pm",
-     "kind": "club"
-    },
     {
      "date": "2026-12-05",
      "title": "Silent disco, 9pm",
@@ -1660,7 +1677,7 @@
     "Bombs: 2 for £9",
     "Greene King app Spin to Win: chance of a free main, pud or pint",
     "Karaoke, bingo and shuffleboard",
-    "Black Friday offer coming soon (details not yet published)",
+    "Black Friday: £10 free when you buy a £40 eGift voucher (until 30 Nov 2026)",
     "Christmas 2026 festive and buffet menus"
    ],
    "weekly": [
@@ -1774,8 +1791,7 @@
     }
    ],
    "indie": false,
-   "group": "Knight Pub Company",
-   "checkSocials": "Website could not be read (page came back empty)"
+   "group": "Knight Pub Company"
   },
   {
    "id": "alma",
@@ -1979,18 +1995,8 @@
    "src": "https://camra.org.uk/pubs/131242",
    "events": [
     {
-     "date": "2026-11-21",
-     "title": "The Zangwills, with The Ariston and Oli Harris",
-     "kind": "music"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Baskery",
-     "kind": "music"
-    },
-    {
      "date": "2026-12-03",
-     "title": "Trash Kit and Blue Cinema",
+     "title": "Trash Kit, with Blue Cinema",
      "kind": "music"
     },
     {
@@ -2025,7 +2031,7 @@
     },
     {
      "date": "2027-01-22",
-     "title": "Shit and Shine, with The Twenty",
+     "title": "Shit and Shine, with Twenty Three Hanging Trees and Swimming Wraith",
      "kind": "music"
     },
     {
@@ -2099,6 +2105,11 @@
      "kind": "music"
     },
     {
+     "date": "2027-04-07",
+     "title": "Trevor Moss & Hannah-Lou",
+     "kind": "music"
+    },
+    {
      "date": "2027-04-09",
      "title": "George Boomsma",
      "kind": "music"
@@ -2139,6 +2150,11 @@
      "kind": "music"
     },
     {
+     "date": "2027-05-20",
+     "title": "Rob Heron & The Tea Pad Orchestra",
+     "kind": "music"
+    },
+    {
      "date": "2027-05-23",
      "title": "The Miki Berenyi Trio",
      "kind": "music"
@@ -2146,6 +2162,11 @@
     {
      "date": "2027-06-18",
      "title": "Shonen Knife",
+     "kind": "music"
+    },
+    {
+     "date": "2027-06-20",
+     "title": "Moving Pictures",
      "kind": "music"
     },
     {
@@ -2370,7 +2391,7 @@
     "Seniors deal (over 60s) Mon-Fri 12-5pm: 2 courses from £8.45 / 3 for £9.95",
     "Spin to Win: free main, pud or pint for Greene King app users",
     "Christmas 2026 menus and bookings",
-    "Black Friday offer coming soon"
+    "Black Friday: buy a £40 eGift voucher get £10 free (up to £60 free on £240), until 30 Nov 2026"
    ],
    "notes": [
     "Live music and singalongs (“Live At Your Local”) and live sport, but no dates listed"
@@ -2548,7 +2569,7 @@
     "Cocktail Club: £6 serves, Sun-Thu from 4pm till close",
     "Kids eat for £1, Mon-Fri in school holidays",
     "Matchday Club: 10% off food and drink, free drink on sign-up",
-    "Lunch deal: any sub, salad or personal pizza with a drink for £8"
+    "Note: website says the kitchen is temporarily closed for maintenance (food offers may be affected)"
    ],
    "eventsUrl": "https://www.carpentersarmscambridge.com/whats-on-cambridge/",
    "lat": 52.215801,
@@ -2585,56 +2606,6 @@
     "Club nights"
    ],
    "events": [
-    {
-     "date": "2026-11-20",
-     "title": "Elephant Sessions",
-     "kind": "music"
-    },
-    {
-     "date": "2026-11-20",
-     "title": "Harriet Kemsley: Floozy (last few tickets)",
-     "kind": "comedy"
-    },
-    {
-     "date": "2026-11-20",
-     "title": "Matt Winning: Solastalgia",
-     "kind": "comedy"
-    },
-    {
-     "date": "2026-11-20",
-     "title": "Museum Encounters (workshop, to 18 Dec)",
-     "kind": "event"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Ferg's Imaginary Big Band (Cambridge Jazz Festival)",
-     "kind": "music"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Hang Massive",
-     "kind": "music"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "New Routes: Smith & Brewer Band, Emilia Quinn (sold out)",
-     "kind": "music"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Mark Thomas: 40 in Stand Up Years (last few tickets)",
-     "kind": "comedy"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Milo Edwards: Catamaran, extra date (sold out)",
-     "kind": "comedy"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Shakespeare in a Suitcase: Hamlet (family)",
-     "kind": "event"
-    },
     {
      "date": "2026-11-23",
      "title": "Life Drawing Class (workshop, to 22 Mar 2027)",
@@ -2771,6 +2742,11 @@
      "kind": "music"
     },
     {
+     "date": "2026-12-04",
+     "title": "Museum Encounters (workshop, to 18 Dec)",
+     "kind": "event"
+    },
+    {
      "date": "2026-12-05",
      "title": "Adam Riches IS Sean Bean IN 'How the Bean Saved Christmas'",
      "kind": "comedy"
@@ -2782,7 +2758,7 @@
     },
     {
      "date": "2026-12-06",
-     "title": "A Winter Union",
+     "title": "A Winter Union (last few tickets)",
      "kind": "music"
     },
     {
@@ -2797,12 +2773,12 @@
     },
     {
      "date": "2026-12-08",
-     "title": "Cambridge Film Festival BIG Christmas Quiz",
+     "title": "Cambridge Film Festival BIG Christmas Quiz (last few tickets)",
      "kind": "quiz"
     },
     {
      "date": "2026-12-08",
-     "title": "James Yorkston (just announced)",
+     "title": "James Yorkston, support from Melody Coles (just announced)",
      "kind": "music"
     },
     {
@@ -2912,7 +2888,7 @@
     },
     {
      "date": "2027-01-08",
-     "title": "These Wicked Rivers: Acoustic Road Trip (last few tickets)",
+     "title": "These Wicked Rivers: Acoustic Road Trip, with Kit Trigg (last few tickets)",
      "kind": "music"
     },
     {
@@ -3107,7 +3083,7 @@
     },
     {
      "date": "2027-02-10",
-     "title": "Tyler Braden (last few tickets)",
+     "title": "Tyler Braden, support from Chanel Yates (sold out)",
      "kind": "music"
     },
     {
@@ -3920,16 +3896,6 @@
    ],
    "events": [
     {
-     "date": "2026-11-20",
-     "title": "Del Amitri and Former Champ",
-     "kind": "music"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Embrace, with The Bracknell and Rolling People",
-     "kind": "music"
-    },
-    {
      "date": "2026-11-26",
      "title": "Ocean Colour Scene",
      "kind": "music"
@@ -3999,11 +3965,6 @@
    ],
    "events": [
     {
-     "date": "2026-11-21",
-     "title": "Rachmaninov Piano Concerto No. 4 & Shostakovich 10, Cambridge University Orchestra (cond. Duncan Ward)",
-     "kind": "classical"
-    },
-    {
      "date": "2026-11-23",
      "title": "Around the World: CUWO Michaelmas Concert",
      "kind": "classical"
@@ -4031,6 +3992,11 @@
     {
      "date": "2026-11-28",
      "title": "Walton, Prokofiev & Elgar, City of Cambridge Symphony Orchestra",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-30",
+     "title": "Arutiunian, Haydn & Tchaikovsky, Cambridge University Symphony Orchestra",
      "kind": "classical"
     },
     {
@@ -4144,13 +4110,13 @@
    ],
    "events": [
     {
-     "date": "2026-11-22",
-     "title": "Emma Rawicz",
+     "date": "2026-12-17",
+     "title": "Talisk",
      "kind": "music"
     },
     {
-     "date": "2026-12-17",
-     "title": "Talisk",
+     "date": "2026-12-18",
+     "title": "Morganway",
      "kind": "music"
     },
     {
@@ -4166,6 +4132,11 @@
     {
      "date": "2027-04-29",
      "title": "Lanterns on the Lake, with CLOTH",
+     "kind": "music"
+    },
+    {
+     "date": "2027-08-07",
+     "title": "Tom Robinson Band",
      "kind": "music"
     }
    ],
@@ -4314,8 +4285,13 @@
    ],
    "events": [
     {
-     "date": "2026-11-21",
-     "title": "Clam Records presents Gino + more, 10:30pm (from £4)",
+     "date": "2026-11-25",
+     "title": "just dance party, 11pm (from £5.75)",
+     "kind": "club"
+    },
+    {
+     "date": "2026-11-30",
+     "title": "TRASH: Indie Xmas Party, 11pm",
      "kind": "club"
     },
     {
@@ -4416,6 +4392,7 @@
    "weekly": [],
    "offers": [
     "Christmas Corpus menu throughout December, £175 per guest",
+    "Christmas Trinity menu throughout December, £135 per guest",
     "Closed 24 Dec-16 Jan for winter"
    ],
    "events": [
@@ -4527,6 +4504,11 @@
      "date": "2026-12-05",
      "title": "Breakfast with Elves (5-23 Dec)",
      "kind": "event"
+    },
+    {
+     "date": "2026-12-31",
+     "title": "New Year's Eve (details on website)",
+     "kind": "event"
     }
    ],
    "guinness": {
@@ -4553,21 +4535,6 @@
    "lat": 52.200454,
    "lng": 0.138464,
    "events": [
-    {
-     "date": "2026-11-20",
-     "title": "Cambridge Jazz Festival: Freedom Sound! (music inspired by Sunday afternoons at Dingwalls), Gwydir St, 6pm",
-     "kind": "music"
-    },
-    {
-     "date": "2026-11-20",
-     "title": "Freedom Sound: Jazz Dance Night (£8)",
-     "kind": "music"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Cambridge Jazz Festival: Aspyrian at The Roastery, Shepreth, 6pm",
-     "kind": "music"
-    },
     {
      "date": "2026-11-26",
      "title": "Mill Road Poetry, Gwydir St, 6:30-10pm",
@@ -4622,7 +4589,8 @@
    "weekly": [],
    "offers": [
     "Coffee Club: 25% off your first three orders with code COFFEECLUB25 (new customers)"
-   ]
+   ],
+   "checkSocials": "Events page listings could not be read (loaded from ticketing site)"
   },
   {
    "id": "aromi",
@@ -4911,16 +4879,6 @@
    ],
    "events": [
     {
-     "date": "2026-11-21",
-     "title": "Live music: Charly Says (high-energy band, for fans of The Prodigy, EMF, The Chemical Brothers), 8:30pm",
-     "kind": "music"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Folk Jam Sunday, 8pm (every other Sunday)",
-     "kind": "music"
-    },
-    {
      "date": "2026-11-27",
      "title": "Off The Rails open jam night with Jam Sandwich, 8pm (last Friday of the month)",
      "kind": "music"
@@ -4928,11 +4886,6 @@
     {
      "date": "2026-12-06",
      "title": "Folk Jam Sunday, 8pm (every other Sunday)",
-     "kind": "music"
-    },
-    {
-     "date": "2026-12-25",
-     "title": "Off The Rails open jam night, 8pm (last Friday of the month)",
      "kind": "music"
     }
    ],
@@ -5216,8 +5169,7 @@
    ],
    "src": "https://camra.org.uk/pubs/131308",
    "offers": [
-    "Christmas 2026 bookings open",
-    "New Year's Eve celebration (no details)",
+    "Christmas 2026 bookings open; open Christmas Day 8am-6pm (food by reservation)",
     "Autumn international rugby on the big screen",
     "Winter Sips seasonal cocktails (no prices given)"
    ],
@@ -5239,7 +5191,13 @@
     "note": "Runs a Guinness Six Nations promotion",
     "src": "https://www.thewatermancambridge.com/"
    },
-   "events": [],
+   "events": [
+    {
+     "date": "2026-12-31",
+     "title": "New Year's Eve live acoustic music, 6-8pm",
+     "kind": "music"
+    }
+   ],
    "weekly": [
     {
      "day": "Sun",
@@ -5248,8 +5206,7 @@
     }
    ],
    "indie": false,
-   "group": "Young's",
-   "checkSocials": "Website has no listings (What's On calendar is empty)"
+   "group": "Young's"
   },
   {
    "id": "burleigh-arms",
@@ -5357,7 +5314,7 @@
     "Shots 3 for £9; bombs 2 for £9",
     "Nations Championship rugby shown this November (TNT Sports, Sky)",
     "Spin to Win: free main, pud or pint for Greene King app users",
-    "Black Friday offer teased (details not yet announced)"
+    "Black Friday (23-30 Nov 2026): buy a Greene King eGift voucher from £40 and get an extra £10 free per £40 (bonus on up to £240)"
    ],
    "weekly": [],
    "amen": {
@@ -5439,7 +5396,7 @@
     "Small plates: 3 for £17.45 or 5 for £25.45, all day every day",
     "Shots 3 for £9; bombs 2 for £9",
     "Spin to Win: free main, pudding or pint via the Greene King app",
-    "Black Friday offer teased (details to come via the email club)",
+    "Black Friday: £10 free when you buy a £40 eGift voucher",
     "Festive, buffet and festive drinks menus available (prices not listed)",
     "Live sport on Sky Sports and TNT Sports: football, rugby (Nations Championship this November) (no fixtures listed)"
    ],
@@ -5629,17 +5586,16 @@
     },
     {
      "day": "Sun",
-     "title": "Sunday Roast",
+     "title": "Sunday Roast (served 11:30am-8pm)",
      "kind": "offer"
     }
    ],
    "offers": [
     "Small plates: 3 for £17.45 or 5 for £25.45 (all day, every day)",
     "Shots 3 for £9; bombs 2 for £9",
-    "Spin to Win on the Greene King app: win a free main, pud or pint",
-    "Black Friday offer teased (details to come via the email club)",
-    "Festive menus, buffet menus and Christmas Day menus available (prices not listed)",
-    "Nations Championship rugby this November (no fixtures listed)"
+    "Spin to Win on the Greene King app: win free food or drink",
+    "Black Friday: £10 free when you buy a £40 eGift voucher",
+    "Festive menus, buffet menus and Christmas Day menus available (prices not listed)"
    ],
    "src": "https://www.greeneking.co.uk/pubs/cambridgeshire/bath-house",
    "lat": 52.204089,
@@ -5652,6 +5608,11 @@
    },
    "pos": "exact",
    "events": [
+    {
+     "date": "2026-11-27",
+     "title": "Nations Championship Finals Weekend, 27-29 Nov (no kick-offs listed)",
+     "kind": "sport"
+    },
     {
      "date": "2027-03-17",
      "title": "St Patrick's Day",
@@ -5698,14 +5659,16 @@
     }
    ],
    "offers": [
-    "Two mains from £15.95",
-    "Lunch Club from £8.95",
-    "3 small plates for £15.25",
+    "Two mains for £15.95, all day Mon-Sat",
+    "Lunch Club from £8.95 (lunch dish, chips and a drink), Mon-Sat 12-4pm",
+    "3 small plates for £15.25, every day",
     "Seniors menu (over 60s) Mon-Fri until 5pm: 2 courses £7.95, 3 courses £8.95",
-    "Spin to Win on the Greene King app: free main, pudding or pint",
+    "Three shots for £6",
+    "Spirit & mixer from £4.50",
+    "Black Friday: buy a Greene King e-gift card and get £10 free for every £40 (max £60 free on £240), until 30 Nov",
+    "Spin to Win on the Greene King app: free food or drink for newcomers",
     "Christmas: Festive Fayre menu, Christmas Day menu and Breakfast with Santa (dates and prices not listed)",
-    "Live sport: football, rugby (Nations Championship this November) (no fixtures listed)",
-    "Black Friday offer teased (details to come via the email club)"
+    "Live sport on Sky Sports & TNT Sports: Premier League, EFL, WSL, European football, Nations Championship rugby (no fixtures listed)"
    ],
    "src": "https://camra.org.uk/pubs/131494",
    "lat": 52.2276,
@@ -5746,7 +5709,7 @@
    "offers": [
     "Brunch menu (no prices listed)",
     "Spin to Win: free main, pud or pint for Greene King app users",
-    "Black Friday offer teased (details to come via the email club)"
+    "Black Friday (23-30 Nov 2026): buy a Greene King eGift voucher from £40 and get an extra £10 free per £40 (bonus on up to £240)"
    ],
    "src": "https://www.greeneking.co.uk/pubs/cambridgeshire/robin-hood",
    "lat": 52.183998,
@@ -6231,7 +6194,7 @@
     }
    ],
    "offers": [
-    "Autumn Nations rugby shown live (no fixtures listed)"
+    "Autumn international rugby shown live (no fixtures listed)"
    ],
    "events": [
     {
@@ -6295,7 +6258,7 @@
    ],
    "events": [
     {
-     "date": "2026-11-22",
+     "date": "2026-11-29",
      "title": "Christmas Wreath Workshop",
      "kind": "event"
     }
@@ -6422,11 +6385,6 @@
     {
      "date": "2026-12-10",
      "title": "Autreau de Champillon Champagne masterclass, 8pm (£40)",
-     "kind": "event"
-    },
-    {
-     "date": "2026-12-12",
-     "title": "Behind the Wines: Merry Fizzmas, 8pm (£40)",
      "kind": "event"
     }
    ],
@@ -6645,8 +6603,13 @@
    "events": [
     {
      "date": "2026-11-28",
-     "title": "Festive wreath making workshop with Flower by Elizabeth Jane, 6-8pm",
+     "title": "Festive wreath making workshop with Flower by Elizabeth Jane, 6-8pm (£55)",
      "kind": "event"
+    },
+    {
+     "date": "2026-12-16",
+     "title": "Christmas Movies Quiz, 8pm (£3 cash entry, £100 bar tab prize)",
+     "kind": "quiz"
     },
     {
      "date": "2026-12-31",
@@ -6875,56 +6838,6 @@
    ],
    "events": [
     {
-     "date": "2026-11-21",
-     "title": "Manchester City v Fulham, 12:30pm (TNT Sports 1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Millwall v QPR, 12:30pm (Sky Sports 1 Main Event)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "England v New Zealand, 2:10pm (ITV1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Newcastle United v Arsenal, 5:30pm (Sky Sports 1 Main Event)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Grand Slam of Darts, 7pm (Sky Sports Plus)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Burnley v Blackburn Rovers, 12pm (Sky Sports 3 Football)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Grand Slam of Darts: Semi-Finals, 1pm (Sky Sports Plus)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Hull City v Brighton, 2pm (Sky Sports 1 Main Event)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Liverpool v Manchester United, 4:30pm (Sky Sports 1 Main Event)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Grand Slam of Darts: Final, 7pm (Sky Sports 1 Main Event)",
-     "kind": "sport"
-    },
-    {
      "date": "2026-11-23",
      "title": "Brentford v Everton, 8pm (Sky Sports 1 Main Event)",
      "kind": "sport"
@@ -6983,6 +6896,16 @@
      "date": "2026-11-27",
      "title": "Nottingham Forest v Chelsea, 8pm (Sky Sports 1 Main Event)",
      "kind": "sport"
+    },
+    {
+     "date": "2026-11-28",
+     "title": "Preston North End v Norwich City, 12:30pm (Sky Sports 3 Football)",
+     "kind": "sport"
+    },
+    {
+     "date": "2026-11-28",
+     "title": "Ipswich Town v Aston Villa, 5:30pm (Sky Sports 1 Main Event)",
+     "kind": "sport"
     }
    ],
    "offers": [
@@ -7021,38 +6944,38 @@
    "weekly": [
     {
      "day": "Mon",
-     "title": "2 for £16 cocktails (2 for £8 alcohol-free cocktails)",
+     "title": "2 for £16 cocktails, all day (not available 17-31 Dec)",
      "kind": "offer"
     },
     {
      "day": "Tue",
-     "title": "2 for £16 cocktails (2 for £8 alcohol-free cocktails)",
+     "title": "2 for £16 cocktails, all day (not available 17-31 Dec)",
      "kind": "offer"
     },
     {
      "day": "Wed",
-     "title": "2 for £16 cocktails (2 for £8 alcohol-free cocktails)",
+     "title": "2 for £16 cocktails, all day (not available 17-31 Dec)",
      "kind": "offer"
     },
     {
      "day": "Thu",
-     "title": "2 for £16 cocktails (2 for £8 alcohol-free cocktails)",
+     "title": "2 for £16 cocktails, all day (not available 17-31 Dec)",
      "kind": "offer"
     },
     {
      "day": "Fri",
-     "title": "2 for £16 cocktails (2 for £8 alcohol-free cocktails)",
+     "title": "2 for £16 cocktails, all day (not available 17-31 Dec)",
      "kind": "offer"
     },
     {
      "day": "Fri",
-     "title": "Sparkling Fridays: 30% off champagne and sparkling wine via the Rewards app",
+     "title": "Sparkling Fridays: 30% off selected champagne and sparkling wine via the Rewards app (not 18-25 Dec)",
      "kind": "offer"
     }
    ],
    "events": [],
    "offers": [
-    "Free glass of champagne when you register for Rewards"
+    "Free glass of Moet & Chandon champagne when you register for Rewards"
    ],
    "src": "https://camra.org.uk/pubs/131504",
    "lat": 52.176556,
@@ -7298,13 +7221,7 @@
     "Roof terrace",
     "Fenced garden"
    ],
-   "weekly": [
-    {
-     "day": "Sun",
-     "title": "Sunday menu with family-style roasts (£20-26), 12-9pm",
-     "kind": "offer"
-    }
-   ],
+   "weekly": [],
    "events": [],
    "offers": [
     "Christmas party bookings 20 Nov-24 Dec 2026 (min 6 people)"
@@ -7328,7 +7245,8 @@
    "guinness": {
     "note": "Guinness is on their drinks list",
     "src": "https://therupertbrooke.com/wp-content/uploads/2025/06/Drinks-Menu-Website.pdf"
-   }
+   },
+   "checkSocials": "Website has no listings (Sunday roast menu no longer described)"
   },
   {
    "id": "blue-ball",
@@ -7388,91 +7306,6 @@
    ],
    "weekly": [],
    "events": [
-    {
-     "date": "2026-11-21",
-     "title": "England v New Zealand (rugby), 2:10pm",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "France v Argentina (rugby), 8:10pm (ITV2)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Grand Slam of Darts, 7pm",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Ireland v South Africa (rugby), 4:40pm",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Italy v Fiji (rugby), 4:40pm (ITV4)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Manchester City v Fulham, 12:30pm (TNT Sports 1)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Millwall v QPR, 12:30pm (Sky Sports 1 Main Event)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Motherwell v Rangers, 8pm",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Newcastle United v Arsenal, 5:30pm (Sky Sports 1 Main Event)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Scotland v Japan (rugby), 2:10pm",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Wales v Australia (rugby), 8:10pm",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Burnley v Blackburn Rovers, 12pm (Sky Sports 3 Football)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Grand Slam of Darts final, 7pm",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Grand Slam of Darts semi-finals, 1pm",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Hull City v Brighton, 2pm (Sky Sports 1 Main Event)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Liverpool v Manchester United, 4:30pm (Sky Sports 1 Main Event)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Man City Women v Tottenham Women (WSL), 12pm",
-     "kind": "sport"
-    },
     {
      "date": "2026-11-23",
      "title": "Brentford v Everton, 8pm (Sky Sports 1 Main Event)",
@@ -7546,6 +7379,16 @@
     {
      "date": "2026-11-27",
      "title": "Southampton v Middlesbrough, 8pm (Sky Sports 3 Football)",
+     "kind": "sport"
+    },
+    {
+     "date": "2026-11-28",
+     "title": "Preston North End v Norwich City, 12:30pm (Sky Sports 3 Football)",
+     "kind": "sport"
+    },
+    {
+     "date": "2026-11-28",
+     "title": "Ipswich Town v Aston Villa, 5:30pm (Sky Sports 1 Main Event)",
      "kind": "sport"
     }
    ],
@@ -7750,26 +7593,6 @@
    ],
    "events": [
     {
-     "date": "2026-11-21",
-     "title": "Man City v Fulham, 12:30pm (Premier League)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Newcastle v Arsenal, 5:30pm (Premier League)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Hull City v Brighton, 2pm (Premier League)",
-     "kind": "sport"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Liverpool v Man United, 4:30pm (Premier League)",
-     "kind": "sport"
-    },
-    {
      "date": "2026-11-23",
      "title": "Brentford v Everton, 8pm (Premier League)",
      "kind": "sport"
@@ -7807,6 +7630,21 @@
     {
      "date": "2026-11-28",
      "title": "Ipswich v Aston Villa, 5:30pm (Premier League)",
+     "kind": "sport"
+    },
+    {
+     "date": "2026-11-29",
+     "title": "Everton v Liverpool, 12pm (Premier League)",
+     "kind": "sport"
+    },
+    {
+     "date": "2026-11-29",
+     "title": "Brighton v Newcastle, 2:05pm (Premier League)",
+     "kind": "sport"
+    },
+    {
+     "date": "2026-11-29",
+     "title": "Fulham v Bournemouth, 2:05pm (Premier League)",
      "kind": "sport"
     }
    ],
@@ -7925,23 +7763,7 @@
     "Riverside garden with views west",
     "Calverley's beers"
    ],
-   "weekly": [
-    {
-     "day": "Wed",
-     "title": "Kids eat free 5-6pm (one kids' meal per adult main)",
-     "kind": "offer"
-    },
-    {
-     "day": "Thu",
-     "title": "Kids eat free 5-6pm (one kids' meal per adult main)",
-     "kind": "offer"
-    },
-    {
-     "day": "Fri",
-     "title": "Kids eat free 5-6pm (one kids' meal per adult main)",
-     "kind": "offer"
-    }
-   ],
+   "weekly": [],
    "events": [],
    "offers": [],
    "notes": [
@@ -7957,7 +7779,8 @@
     "sport": false,
     "dogs": true
    },
-   "indie": true
+   "indie": true,
+   "checkSocials": "Website has no listings (kids-eat-free deal no longer shown)"
   },
   {
    "id": "wrestlers",
@@ -8061,7 +7884,7 @@
    "events": [],
    "offers": [
     "10% off collection orders placed by phone or at the bar",
-    "Live sport on Sky Sports, TNT Sports, DAZN and Prime Video, big screen for big matches (book ahead); no fixture list"
+    "Live sport on Sky Sports, TNT Sports (incl. Champions League), DAZN and Prime Video (incl. Tuesday matches); no fixture list, phone to check"
    ],
    "src": "https://camra.org.uk/pubs/131458",
    "lat": 52.2094,
@@ -8391,6 +8214,11 @@
      "date": "2026-11-28",
      "title": "Bring Your Own Vinyl Christmas",
      "kind": "club"
+    },
+    {
+     "date": "2026-11-28",
+     "title": "douce Christmas Flea, Eddington Square",
+     "kind": "event"
     }
    ],
    "offers": [],
@@ -8401,7 +8229,6 @@
    "lat": 52.21905,
    "lng": 0.08778,
    "pos": "exact",
-   "checkSocials": "Website has no listings; no douce events on ma.to",
    "amen": {
     "garden": false,
     "fire": false,
@@ -8483,11 +8310,6 @@
     "Free entry to services (no tickets required)"
    ],
    "events": [
-    {
-     "date": "2026-11-22",
-     "title": "Sunday organ recital: Benjamin Nicholas (Merton College, Oxford), 6pm",
-     "kind": "classical"
-    },
     {
      "date": "2026-11-28",
      "title": "Advent Carol Service, 6pm",
@@ -8657,23 +8479,13 @@
    ],
    "events": [
     {
-     "date": "2026-11-20",
-     "title": "Lunchtime recital: Alexandra Chepurenko (violin) & Douglas Tang - Mozart, Saint-Saëns, Grieg, 1pm (free, retiring collection)",
-     "kind": "classical"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "St Cecilia's-tide concert: choristers' and youth choir solos, then 'Captain Noah and his Floating Zoo', 1pm (free, retiring collection)",
-     "kind": "classical"
-    },
-    {
-     "date": "2026-11-22",
-     "title": "Christ the King: Choral Eucharist 10am; Choral Mattins 11:30am; Choral Evensong 4pm; Peace Vigil 5:30pm",
-     "kind": "classical"
-    },
-    {
      "date": "2026-11-27",
      "title": "Lunchtime recital: Sofiia Holovchuk (violin) & Douglas Tang (organ) - Bach, Rheinberger, Olson, Beach, 1pm (free, retiring collection)",
+     "kind": "classical"
+    },
+    {
+     "date": "2026-11-28",
+     "title": "'O Come O Come: Contemplating the O Antiphons' with Owen Dodds (piano), Dr Charli Mills (soprano) and Malcolm Guite, at Michaelhouse, 5pm (free)",
      "kind": "classical"
     },
     {
@@ -8757,16 +8569,6 @@
    ],
    "events": [
     {
-     "date": "2026-11-21",
-     "title": "Guided House Tour, 11am",
-     "kind": "event"
-    },
-    {
-     "date": "2026-11-21",
-     "title": "Friends' Art Book Sale (Free)",
-     "kind": "event"
-    },
-    {
      "date": "2026-11-24",
      "title": "Audio Described Tour: Sunil Gupta: Life with a Camera, 10:15am",
      "kind": "event"
@@ -8810,11 +8612,6 @@
      "date": "2027-01-14",
      "title": "New Music: John Butcher and Angharad Davies, 8pm",
      "kind": "classical"
-    },
-    {
-     "date": "2027-01-14",
-     "title": "John Butcher & Angharad Davies",
-     "kind": "music"
     },
     {
      "date": "2027-01-21",
@@ -8916,11 +8713,6 @@
     "Visitors welcome at services"
    ],
    "events": [
-    {
-     "date": "2026-11-22",
-     "title": "Choral Evensong (preacher: Revd William Ellis), 6pm",
-     "kind": "classical"
-    },
     {
      "date": "2026-11-23",
      "title": "Choral Compline, 9pm, followed by cocoa",
