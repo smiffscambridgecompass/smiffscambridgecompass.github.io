@@ -1,34 +1,34 @@
 {
   "_note": "The latest newsletter issue, shown on smiffs.uk/newsletter/. Replace this each Friday after the email goes out; the page rebuilds on push.",
   "subscribe_url": "https://justins-newsletter-bec391.beehiiv.com/subscribe",
-  "sent": "2026-11-20",
-  "title": "Lights on, live blues and a free bar tab: your week in Cambridge pubs",
-  "range": "Friday 20 to Thursday 26 November",
-  "web_url": "https://justins-newsletter-bec391.beehiiv.com/p/comedy-flamenco-and-a-star-wars-quiz-your-week-in-cambridge-pubs-1",
+  "sent": "2026-11-27",
+  "title": "Black Friday? Lovely time for a Guinness: your week in Cambridge pubs",
+  "range": "Friday 27 November to Thursday 3 December",
+  "web_url": "https://justins-newsletter-bec391.beehiiv.com/p/comedy-flamenco-and-a-star-wars-quiz-your-week-in-cambridge-pubs-1-1",
   "pick": {
-    "what": "Charly Says",
-    "venue": "earl-beaconsfield",
-    "venue_name": "the Earl of Beaconsfield",
-    "detail": "Saturday 21 November, 8.30pm. A high-energy live band for fans of The Prodigy, EMF and The Chemical Brothers. The perfect way to kick off a Saturday night on Mill Road."
+    "what": "Vinyl All-Dayer",
+    "venue": "kingston-arms",
+    "venue_name": "The Kingston Arms",
+    "detail": "Sunday 29 November, free. A whole day of records spinning at a much-loved local just off Mill Road. Settle in with a pint and let the needle do the work."
   },
   "days": [
     {
-      "day": "Friday 20 Nov",
+      "day": "Friday 27 Nov",
       "items": [
         {
-          "what": "King Street Christmas Switch-On",
-          "venue": "brew-house",
-          "venue_name": "King Street Brew House",
+          "what": "Off The Rails open jam night, with Jam Sandwich",
+          "venue": "earl-beaconsfield",
+          "venue_name": "the Earl of Beaconsfield",
+          "detail": "8pm"
+        },
+        {
+          "what": "Pub quiz (last Friday of the month)",
+          "venue": "kings-head-fen-ditton",
+          "venue_name": "the Kings Head, Fen Ditton",
           "detail": ""
         },
         {
-          "what": "Freedom Sound: Jazz Dance Night (Cambridge Jazz Festival)",
-          "venue": "hot-numbers",
-          "venue_name": "Hot Numbers",
-          "detail": "Gwydir St (£8)"
-        },
-        {
-          "what": "Elephant Sessions",
+          "what": "The Comedy Store",
           "venue": "junction",
           "venue_name": "Cambridge Junction",
           "detail": ""
@@ -36,88 +36,88 @@
       ]
     },
     {
-      "day": "Saturday 21 Nov",
+      "day": "Saturday 28 Nov",
       "items": [
         {
-          "what": "The Silverbacks Blues Band",
-          "venue": "six-bells",
-          "venue_name": "The Six Bells",
-          "detail": "8.30pm (free)"
+          "what": "Beans and Biscuits, free live music",
+          "venue": "hudsons",
+          "venue_name": "Hudson's Ale House",
+          "detail": "7.30 to 10.30pm"
         },
         {
-          "what": "The Zangwills, with The Ariston and Oli Harris",
-          "venue": "portland-arms",
-          "venue_name": "The Portland Arms",
+          "what": "Live music (the monthly last-Saturday gig)",
+          "venue": "panton-arms",
+          "venue_name": "The Panton Arms",
           "detail": ""
         },
         {
-          "what": "Silent disco",
-          "venue": "town-gown",
-          "venue_name": "Town & Gown",
-          "detail": "9pm"
-        }
-      ]
-    },
-    {
-      "day": "Sunday 22 Nov",
-      "items": [
-        {
-          "what": "Downpipe live",
-          "venue": "geldart",
-          "venue_name": "The Geldart",
-          "detail": "8.30pm (£5)"
-        }
-      ]
-    },
-    {
-      "day": "Monday 23 Nov",
-      "items": [
-        {
-          "what": "Speed quizzing",
-          "venue": "cambridge-tap",
-          "venue_name": "The Cambridge Tap",
-          "detail": "8pm"
-        }
-      ]
-    },
-    {
-      "day": "Tuesday 24 Nov",
-      "items": [
-        {
-          "what": "Boozy Book Club",
-          "venue": "alexandra-arms",
-          "venue_name": "The Alexandra Arms",
-          "detail": "7 to 9pm"
-        }
-      ]
-    },
-    {
-      "day": "Wednesday 25 Nov",
-      "items": [
-        {
-          "what": "Chouffe Belgian beer party",
-          "venue": "maypole",
-          "venue_name": "The Maypole",
-          "detail": "with instant prizes to win"
-        }
-      ]
-    },
-    {
-      "day": "Thursday 26 Nov",
-      "items": [
-        {
-          "what": "Useless Quiz",
+          "what": "Cuban salsa pop-up",
           "venue": "thirsty",
           "venue_name": "Thirsty",
-          "detail": "teams of up to 4, £2 a head, and the winners get their whole tab paid. Book via ben@wearethirsty.co.uk"
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "day": "Sunday 29 Nov",
+      "items": [
+        {
+          "what": "Shake Your Tail Feather",
+          "venue": "elm-tree",
+          "venue_name": "The Elm Tree",
+          "detail": "free"
+        }
+      ]
+    },
+    {
+      "day": "Monday 30 Nov",
+      "items": [
+        {
+          "what": "TRASH: Indie Xmas Party",
+          "venue": "kiki",
+          "venue_name": "Kiki",
+          "detail": "11pm (from £4)"
+        }
+      ]
+    },
+    {
+      "day": "Tuesday 1 Dec",
+      "items": [
+        {
+          "what": "Monthly charity quiz",
+          "venue": "cambridge-blue",
+          "venue_name": "The Cambridge Blue",
+          "detail": "hosted by landlord Jethro, 7pm"
+        }
+      ]
+    },
+    {
+      "day": "Wednesday 2 Dec",
+      "items": [
+        {
+          "what": "Christmas Party Night",
+          "venue": "station-tavern",
+          "venue_name": "Station Tavern",
+          "detail": "festive feast, live music and a DJ"
+        }
+      ]
+    },
+    {
+      "day": "Thursday 3 Dec",
+      "items": [
+        {
+          "what": "Monthly tap takeover",
+          "venue": "blue-moon",
+          "venue_name": "The Blue Moon",
+          "detail": "10 beers from one brewery, plus street food"
         }
       ]
     }
   ],
   "deal": {
-    "what": "Wing Wednesday",
-    "venue": "anchor",
-    "venue_name": "The Anchor",
-    "detail": "five full wings for £5, then £1 for each extra wing"
+    "what": "Black Friday eGift vouchers",
+    "venue": "eagle",
+    "venue_name": "The Eagle",
+    "detail": "and other Greene King pubs: spend £40, get £10 free, until Monday 30 November"
   }
 }
